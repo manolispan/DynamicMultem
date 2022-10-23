@@ -1,0 +1,6 @@
+.page h3 {
+    background-color: var(--blue1);
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}

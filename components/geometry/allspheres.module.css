@@ -1,0 +1,8 @@
+.allspheres {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.allspheres >div {
+    min-width: 380px;
+}

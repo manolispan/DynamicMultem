@@ -1,0 +1,122 @@
+
+
+.page {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+}
+
+
+
+.navBar {
+position: fixed;
+top: 0px;
+background-color: rgba(255, 255, 255, 0.603);
+width: 100%;
+left: 0px;
+right: 0px;
+padding: 10px;
+}
+
+.cardschange {
+  width: 100%;
+  margin: auto;
+  padding: 10px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.301);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 40px;
+  
+}
+
+.cardschange h4 {
+  padding: 0px 40px;
+  height: 100%;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  
+}
+
+
+.notchosen {
+  font-weight: 500;
+  
+  
+
+}
+
+.chosen:hover, .notchosen:hover {
+ 
+  cursor: pointer;
+}
+
+.chosen{
+  font-weight: 600;
+  border-bottom: 2px solid var(--fluo2);
+  
+
+}
+
+
+.body {
+  padding-top: 150px;
+}
+
+.layertitle {
+  background-color: var(--red1);
+  border-radius: 10px;
+  text-align: left;
+  padding-left: 50px;
+  color: white;
+  margin-top: 0px;
+}
+
+
+.show {
+  animation: promtappear;
+  animation-duration: 200ms;
+  transform-origin: left;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+
+
+}
+
+
+@keyframes promtappear{
+  0% {
+      transform: scale(0);
+      opacity: 0;
+  }
+  100% {
+      transform: scale(1);
+      opacity: 1;
+  }
+}
+
+
+
+.hidden {
+  display: none
+}
+
+
+
+.geometryview {
+  position: fixed;
+  z-index: 2;
+  bottom: 20px;
+  right: 0px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid black;
+  width: 50%;
+  height: 100%;
+}
+
+.geometryview h1 {
+  text-align: center;
+}
