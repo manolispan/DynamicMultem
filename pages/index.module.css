@@ -56,7 +56,7 @@ padding: 10px;
 
 .chosen{
   font-weight: 600;
-  border-bottom: 2px solid var(--fluo2);
+  border-bottom: 2px solid var(--blue1);
   
 
 }
@@ -73,8 +73,22 @@ padding: 10px;
   padding-left: 50px;
   color: white;
   margin-top: 0px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
+.layerType  {
+font-size: 20px;
+padding-left: 20px;
+}
+
+.selectType {
+  font-size: 18px;
+  border-radius: 5px;
+  margin-left: 4px;
+
+}
 
 .show {
   animation: promtappear;
@@ -101,18 +115,22 @@ padding: 10px;
 
 
 .hidden {
-  display: none
+  display: none;
+  
 }
 
-
+.lightcat h4{
+margin-top: 15px;
+margin-bottom: 2px;
+}
 
 .geometryview {
   position: fixed;
   z-index: 2;
-  bottom: 20px;
+  bottom: 0px;
   right: 0px;
   background-color: rgb(255, 255, 255);
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.24);
   width: 50%;
   height: 100%;
 }

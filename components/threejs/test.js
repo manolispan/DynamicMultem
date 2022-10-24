@@ -29,8 +29,6 @@ export default function BoxesPage(props) {
           <mesh
             {...props}
             ref={ref}
-            scale={clicked ? 1.5 : 1}
-            onClick={(event) => click(!clicked)}
             onPointerOver={(event) => hover(true)}
             onPointerOut={(event) => hover(false)}>
             <sphereGeometry args={[props.radius, 20, 20]} />
@@ -64,12 +62,12 @@ const kk=(lay,N1,N2,dradded)=>
 
    { 
     
-    for (let ii=0; ii<N1;ii++)
-{   for (let jj=0; jj<N2;jj++)
+    for (let ii=0; ii<2*N1+1;ii++)
+{   for (let jj=0; jj<2*N2+1;jj++)
    { let position=layersScaterrers[lay][i]["position"];
     let newPosition =
-    [position[0]+ii*periodicBase[lay][0]+jj*periodicBase[lay][2],
-    position[1]+ii*periodicBase[lay][1]+jj*periodicBase[lay][3],position[2]+dradded]
+    [position[0]+(ii-N1)*periodicBase[lay][0]+(jj-N2)*periodicBase[lay][2],
+    position[1]+(ii-N1)*periodicBase[lay][1]+(jj-N2)*periodicBase[lay][3],position[2]+dradded]
     let radius=layersScaterrers[lay][i]["rad"];
     td.push(<Sphere radius={radius} position={newPosition} 
     />)
@@ -95,7 +93,7 @@ const kk=(lay,N1,N2,dradded)=>
 <OrbitControls/>
     <ambientLight />
     <primitive object={new THREE.AxesHelper(10)} />
-    <pointLight position={[15, 32, 16]} />
+    <pointLight position={[15, 32, 16]}  />
    {ShowAllLayers()}
  {/*    <Sphere radius={layersScaterrers[0][0]["rad"]} position={layersScaterrers[0][0]["position"]} />
     <Sphere radius={0.4} position={[1, 0, 0]} /> */}

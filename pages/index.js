@@ -87,13 +87,13 @@ const [modes,setModes]= useState([false,false,false]);
 <h1>Dynamic Multem</h1>
       <div className={classes.cardschange}>
           <h4
-          className={chosenCategory==1? classes.chosen : classes.notchosen}
+          className={chosenCategory=="basic"? classes.chosen : classes.notchosen}
           onClick={()=> setChosenCategory("basic")}
           >Basic Parameters </h4> 
-          <h4 className={chosenCategory==2? classes.chosen : classes.notchosen}
+          <h4 className={chosenCategory=="light"? classes.chosen : classes.notchosen}
           onClick={()=> setChosenCategory("light")}
           >Light and Loops </h4>
-          <h4 className={chosenCategory==3? classes.chosen : classes.notchosen}
+          <h4 className={chosenCategory=="geometry"? classes.chosen : classes.notchosen}
           onClick={()=> setChosenCategory("geometry")}
           >Geometry </h4>
         </div>
@@ -259,107 +259,38 @@ Nfft: <input type="number"/></div>
           <div className={chosenCategory=="light" ? classes.show : classes.hidden}>
             <Card>
             <h2>Select What do you want to scan:</h2>
-            <div className={classes.checkboxselectsweep}>
-              <div>
-                <input
-                  type="checkbox"
-                  id="Static"
-                  name="Static"
-                  value="Static"
-                />
-                <label htmlFor="Static"> Frequency</label>
-
-                <div>
-                  {" "}
-                  Starting : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Ending : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Points (Static) : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Points (Adiabatic) : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Points (Dynamic) : <input type="number" />
-                </div>
+<div className={classes.lightcat}> 
+              <div><h4>Theta</h4> 
+              From : <input type="number" 
+             /> To : <input type="number" 
+             /> Points : <input type="number" 
+             />
               </div>
 
-              <div>
-                <input
-                  type="checkbox"
-                  id="Static"
-                  name="Static"
-                  value="Static"
-                />
-                <label htmlFor="Static"> Angle</label>
-
-                <div>
-                  {" "}
-                  Starting : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Ending : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Points: <input type="number" />
-                </div>
+              <div><h4>Phi</h4> 
+              value : <input type="number" 
+             /> 
               </div>
 
-              <div>
-                <input
-                  type="checkbox"
-                  id="Static"
-                  name="Static"
-                  value="Static"
-                />
-                <label htmlFor="Static"> Omega</label>
 
-                <div>
-                  {" "}
-                  Starting : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Ending : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Points: <input type="number" />
-                </div>
+
+              <div><h4>Omega</h4> 
+              From : <input type="number" 
+             /> To : <input type="number" 
+             /> Points : <input type="number" 
+             />
               </div>
 
-              <div>
-                <input
-                  type="checkbox"
-                  id="Static"
-                  name="Static"
-                  value="Static"
-                />
-                <label htmlFor="Static"> Vibration Amplitude</label>
-
-                <div>
-                  {" "}
-                  Starting : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Ending : <input type="number" />
-                </div>
-                <div>
-                  {" "}
-                  Points: <input type="number" />
-                </div>
+              <div><h4>Vibration Freq</h4> 
+              From : <input type="number" 
+             /> To : <input type="number" 
+             /> Points : <input type="number" 
+             />
               </div>
-            </div></Card>
+
+</div>
+
+            </Card>
           </div>
        
 
@@ -400,7 +331,15 @@ Nfft: <input type="number"/></div>
         {numberOfLayers > 0 && (
           <div><Card>
             {" "}
-            <h2 className={classes.layertitle}>Layer 1</h2>
+            <h2 className={classes.layertitle}>
+              <div>Layer 1 </div><span className={classes.layerType}>Type : </span>
+              <select className={classes.selectType}>
+  <option>Periodic</option>
+  <option>Interface</option>
+  <option>Slab</option>
+  </select></h2>
+
+
 <Layer type="periodic" 
 layer={0}
 onChange={PassValues} 

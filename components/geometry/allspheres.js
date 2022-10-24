@@ -26,7 +26,7 @@ function AllSpheres(props) {
 
     return <div className={classes.page}>
    <div>
-  How many spheres : <input type="number" min="1" id={"noSpheres" + layer} defaultValue={numberOfSpheres}
+  How many spheres per base : <input type="number" min="1" id={"noSpheres" + layer} defaultValue={numberOfSpheres}
     onChange={()=>{setNumberOfSpheres(document.getElementById("noSpheres" + layer).value);
     props.noSpheres(document.getElementById("noSpheres" + layer).value);
 }}

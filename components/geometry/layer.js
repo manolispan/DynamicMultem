@@ -1,4 +1,4 @@
-import classes from './sphere.module.css';
+import classes from './layer.module.css';
 import { useEffect,useState,useRef } from 'react';
 import SphereGeometry from './sphere';
 import AllSpheres from './allspheres';
@@ -59,7 +59,20 @@ if (props.dr[layer] && props.dr[layer]!="")
     }
 
     return <div className={classes.page}>
-{type=="periodic" &&  <><div>
+      <h4>Environment constants</h4>
+              <div>
+          ε = <input type="number" defaultValue={1} />+{" "}
+          <input type="number" defaultValue={1}/>i
+        </div>
+        <div>
+          μ = <input type="number"  
+          defaultValue={1}/>+{" "}
+          <input type="number"    
+          defaultValue={1}/>i
+        </div>
+{type=="periodic" &&  <>
+<h4>Base Vectors</h4>
+<div>
               a1x = <input type="number" id={"layer"+layer+"a1x"}  
               ref={a1xRef}
               onChange={PassValues2}/>
@@ -78,7 +91,8 @@ if (props.dr[layer] && props.dr[layer]!="")
             </div>
             distance from previous layer = <input type="number" id={"layer"+layer+"dr"} 
               ref={drRef}
-              onChange={PassValues2}/>
+              onChange={PassValues2}
+              defaultValue={dr[layer]}/>
             <div>
 
 
