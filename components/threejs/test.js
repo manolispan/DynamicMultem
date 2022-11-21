@@ -11,7 +11,9 @@ export default function BoxesPage(props) {
         const type=props.type;
         const noScat=props.noScat;
         const layersScaterrers =props.layersScaterrers;
-        const periodicBase=props.periodicBase;
+        //const periodicBase=props.periodicBase;
+        const a1=props.a1;
+        const a2= props.a2
         const numberOfLayers=props.numberOfLayers;
         const dr=props.dr;
 
@@ -66,8 +68,8 @@ const kk=(lay,N1,N2,dradded)=>
 {   for (let jj=0; jj<2*N2+1;jj++)
    { let position=layersScaterrers[lay][i]["position"];
     let newPosition =
-    [position[0]+(ii-N1)*periodicBase[lay][0]+(jj-N2)*periodicBase[lay][2],
-    position[1]+(ii-N1)*periodicBase[lay][1]+(jj-N2)*periodicBase[lay][3],position[2]+dradded]
+    [position[0]+(ii-N1)*a1[0]+(jj-N2)*a2[0],
+    position[1]+(ii-N1)*a1[1]+(jj-N2)*a2[1],position[2]+dradded]
     let radius=layersScaterrers[lay][i]["rad"];
     td.push(<Sphere radius={radius} position={newPosition} 
     />)

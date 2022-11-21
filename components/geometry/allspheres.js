@@ -17,16 +17,18 @@ function AllSpheres(props) {
     
     }
 
+   
+
     useEffect(()=>{
         const number= parseInt(props.totalScat[layer]) ;
-        document.getElementById("noSpheres" + layer).value=number;
         setNumberOfSpheres(number);
 
-    },[])
+    },[props.totalScat[layer]])
 
     return <div className={classes.page}>
    <div>
-  How many spheres per base : <input type="number" min="1" id={"noSpheres" + layer} defaultValue={numberOfSpheres}
+  How many spheres per base : 
+  <input type="number" min="1" id={"noSpheres" + layer} defaultValue={parseInt(props.totalScat[layer])}
     onChange={()=>{setNumberOfSpheres(document.getElementById("noSpheres" + layer).value);
     props.noSpheres(document.getElementById("noSpheres" + layer).value);
 }}

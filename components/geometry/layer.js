@@ -17,7 +17,7 @@ function Layer(props) {
 
     useEffect(()=>
    {
-    if (props.periodicBase[layer][0] && props.periodicBase[layer][0]!="")
+    /* if (props.periodicBase[layer][0] && props.periodicBase[layer][0]!="")
     {document.getElementById("layer"+layer+"a1x").value=parseFloat(props.periodicBase[layer][0]) ;
 }
 
@@ -32,10 +32,14 @@ if (props.periodicBase[layer][2] && props.periodicBase[layer][2]!="")
 if (props.periodicBase[layer][3] && props.periodicBase[layer][3]!="")
 {document.getElementById("layer"+layer+"a2y").value=parseFloat(props.periodicBase[layer][3]) ;
 }
-
+*/
 if (props.dr[layer] && props.dr[layer]!="")
 {document.getElementById("layer"+layer+"dr").value=parseFloat(props.dr[layer]) ;
-}
+} 
+
+
+
+
    } 
     ,[])
 
@@ -49,8 +53,8 @@ if (props.dr[layer] && props.dr[layer]!="")
     }
 
     const PassValues2 = ()=>{
-        const a1=[a1xRef.current.value,a1yRef.current.value,a2xRef.current.value,a2yRef.current.value]
-        props.passArrayBase(a1,props.layer,drRef.current.value)
+        //const a1=[a1xRef.current.value,a1yRef.current.value,a2xRef.current.value,a2yRef.current.value]
+        props.passArrayBase(props.layer,drRef.current.value)
     }
 
     const noSpheres=(number)=>{
@@ -71,7 +75,7 @@ if (props.dr[layer] && props.dr[layer]!="")
           defaultValue={1}/>i
         </div>
 {type=="periodic" &&  <>
-<h4>Base Vectors</h4>
+{/* <h4>Base Vectors</h4>
 <div>
               a1x = <input type="number" id={"layer"+layer+"a1x"}  
               ref={a1xRef}
@@ -88,7 +92,7 @@ if (props.dr[layer] && props.dr[layer]!="")
               ref={a2yRef} 
               onChange={PassValues2}/>
             
-            </div>
+            </div> */}
             distance from previous layer = <input type="number" id={"layer"+layer+"dr"} 
               ref={drRef}
               onChange={PassValues2}

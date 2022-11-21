@@ -2,12 +2,6 @@ import '../styles/globals.css';
 import {UserContextProvider} from '../stores/LoginStore';
 import Head from 'next/head';
 
-// import {socket,SocketContext} from '../socketstore/socket';
-
-/* import * as gtag from "../lib/ga";
-import {useRouter} from 'next/router';
-import { useEffect } from 'react';
- */
 
 
 
