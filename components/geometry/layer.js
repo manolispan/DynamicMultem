@@ -66,13 +66,13 @@ if (props.dr[layer] && props.dr[layer]!="")
       <h4>Environment constants</h4>
               <div>
           ε = <input type="number" defaultValue={1} />+{" "}
-          <input type="number" defaultValue={1}/>i
+          <input type="number" defaultValue={0}/>i
         </div>
         <div>
           μ = <input type="number"  
           defaultValue={1}/>+{" "}
           <input type="number"    
-          defaultValue={1}/>i
+          defaultValue={0}/>i
         </div>
 {type=="periodic" &&  <>
 {/* <h4>Base Vectors</h4>

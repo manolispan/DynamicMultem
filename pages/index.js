@@ -29,11 +29,11 @@ useEffect(()=>{
       }
    
       
-    if (input.NLIGHTdyn==0)  
+    if (input.NLIGHTDYN==0)  
       {temp[1]=false} 
       else  
       {temp[1]=true; document.getElementById("Dynamic").checked=true;
-      freqPointstemp[1]=input.NLIGHTdyn;}
+      freqPointstemp[1]=input.NLIGHTDYN;}
 
     if (input.NADIAB==0 )
       {temp[2]=false }
@@ -57,13 +57,13 @@ useEffect(()=>{
     setN0(input.N0);
 
     // geometry
-    setEpsEnvR(input.EPSENVre);
-    setEpsEnvI(input.EPSENVim);
-    setMuEnvR(input.MUENVre);
-    setMuEnvI(input.MUENVim);
+    setEpsEnvR(input.EPSENVRE);
+    setEpsEnvI(input.EPSENVIM);
+    setMuEnvR(input.MUENVRE);
+    setMuEnvI(input.MUENVIM);
 
-    setA1([input.AR1x,input.AR1y]);
-    setA2([input.AR2x,input.AR2y]);
+    setA1([input.AR1X,input.AR1Y]);
+    setA2([input.AR2X,input.AR2Y]);
 
     // spheres for layer 1
 
@@ -73,11 +73,25 @@ useEffect(()=>{
       type : "sphere",
       layer : 0,
       scatterer : 0,
-      eps : [input.EPSSPHre,input.EPSSPHim],
-      mu : [input.MUSPHre,input.MUSPHim],
+      eps : [input.EPSSPHRE,input.EPSSPHIM],
+      mu : [input.MUSPHRE,input.MUSPHIM],
       rad : parseFloat(input.RADIOUS),
       position : [0,0,0],
       vibAmpl : input.STARTG0,
+  }
+
+  if (input.NBASIS>1)
+  {
+    layerScat[0][1]={
+      type : "sphere",
+      layer : 0,
+      scatterer : 1,
+      eps : [input.EPSSPHRE2,input.EPSSPHIM2],
+      mu : [input.MUSPHRE2,input.MUSPHIM2],
+      rad : parseFloat(input.RADIOUS2),
+      position : [input.SPHERE2X,input.SPHERE2Y,input.SPHERE2ZSTART],
+      vibAmpl : input.STARTG0,
+  }
   }
 
 
