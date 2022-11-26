@@ -82,48 +82,48 @@ props.layersScaterrers[layer][scatterer]["vibAmpl"]}
     return <div className={classes.page}>
         <h3>scatterer {scatterer+1}</h3>
 
-    <div>ε = <input type="number" ref={epsRealRef} 
+    <div>ε = <input type="text" ref={epsRealRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"epsr"}
     />+ 
 
-    <input type="number" ref={epsImRef} 
+    <input type="text" ref={epsImRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"epsi"}
     />i</div>
 
-    <div>μ = <input type="number" ref={muRealRef} 
+    <div>μ = <input type="text" ref={muRealRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"mur"}
     />+ 
 
-    <input type="number" ref={muImRef} 
+    <input type="text" ref={muImRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"mui"}
     />i</div>
 
-    <div>radious = <input type="number" ref={radRef}
+    <div>radious = <input type="text" ref={radRef}
      onChange={PassValues}
      id={"layer"+layer+"scatterer"+scatterer+"rad"}
      /></div>
 
-    <div>Position (x,y,z) = <input type="number" ref={posXRef} 
+    <div>Position (x,y,z) = <input type="text" ref={posXRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"x"}
     />
 
-    <input type="number" ref={posYRef} 
+    <input type="text" ref={posYRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"y"}
     />
 
-    <input type="number" ref={posZRef} 
+    <input type="text" ref={posZRef} 
     onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"z"}
     />
 
     </div>
-    <div>η = <input type="number" ref={vibAmplRef} onChange={PassValues}
+    <div>η = <input type="text" ref={vibAmplRef} onChange={PassValues}
     id={"layer"+layer+"scatterer"+scatterer+"h"}
     /></div>
 </div>

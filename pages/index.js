@@ -6,6 +6,8 @@ import Layer from "../components/geometry/layer";
 import BoxesPage from "../components/threejs/test";
 import Card from "../components/ui/card";
 import Axios from "axios";
+import Link from "next/link";
+import ConfirmPrompt from "../components/ui/confirmprompt/confirmprompt";
 
 function Homepage(props) {
 
@@ -97,9 +99,12 @@ useEffect(()=>{
 
   });
 
+
+
 },[])
 
 
+  const [loading,setLoading]= useState(false);
 
   const [appear,setAppear]=useState(false);
 
@@ -158,6 +163,11 @@ const [modes,setModes]= useState([false,false,false]);
   const [a2,setA2]=useState([0,0]);
   //const [theta,setTheta]=useState([0,0,0]);
 
+  //vars for list input
+  const [inputList,setInputList]=useState([])
+  const [inputListPrompt,setInputListPrompt]=useState(false);
+  const [chosenInput,setChosenInput]=useState("");
+
   const PassValues = (layer, scatterer, sphere) => {
     let temp = layersScaterrers.slice(0);
     temp[layer][scatterer] = sphere;
@@ -180,14 +190,204 @@ const [modes,setModes]= useState([false,false,false]);
   }
 
 
- // console.log(dr)
-//console.log(noScat)
-//  console.log(periodicBase);
-  //console.log(layersScaterrers)
 
-  return (
+async function RunMultemHandler() {
+  setLoading(true);
+
+  let EPSSPHRE2=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].eps[0] && layersScaterrers[0][1].eps[0]!="")
+  {EPSSPHRE2=layersScaterrers[0][1].eps[0]}
+
+  let EPSSPHIM2=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].eps[1] && layersScaterrers[0][1].eps[1]!="")
+  {EPSSPHIM2=layersScaterrers[0][1].eps[1]}
+
+  let MUSPHRE2=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].mu[0] && layersScaterrers[0][1].mu[0]!="")
+  {MUSPHRE2=layersScaterrers[0][1].mu[0]}
+
+  let MUSPHIM2=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].mu[1] && layersScaterrers[0][1].mu[1]!="")
+  {MUSPHIM2=layersScaterrers[0][1].mu[1]}
+
+  let RADIOUS2=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].rad && layersScaterrers[0][1].rad!="")
+  {RADIOUS2=layersScaterrers[0][1].rad}
+
+
+  let SPHERE2X=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].position[0] && layersScaterrers[0][1].position[0]!="")
+  {SPHERE2X=layersScaterrers[0][1].position[0]}
+
+  let SPHERE2Y=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].position[1] && layersScaterrers[0][1].position[1]!="")
+  {SPHERE2Y=layersScaterrers[0][1].position[1]}
+
+  let SPHERE2Z=0
+  if (layersScaterrers[0][1] && layersScaterrers[0][1].position[2] && layersScaterrers[0][1].position[2]!="")
+  {SPHERE2Z=layersScaterrers[0][1].position[2]}
+
+  let N0in=5
+  if (N0 && N0!="")
+  {N0in=N0}
+
+  let NLIGHT=0
+  if (modes[0]===true && modes[0]!="" && freqPoints[0])
+  {NLIGHT= freqPoints[0]}
+
+  let NLIGHTDYN=0
+  if (modes[1]===true && modes[1]!="" && freqPoints[1])
+  {NLIGHTDYN= freqPoints[1]}
+
+  let NADIAB=0
+  if (modes[2]===true && modes[2]!="" && freqPoints[2])
+  {NADIAB= freqPoints[2]}
+
+  let G0=0
+  if (layersScaterrers[0][0] && layersScaterrers[0][0].vibAmpl && layersScaterrers[0][0].vibAmpl!="")
+  {G0=layersScaterrers[0][0].vibAmpl}
+
+  let OMEGASTART=0
+  {omega[0] && omega[0]!="" ? OMEGASTART=omega[0] : null}
+
+  let OMEGAEND=0
+  {omega[1] && omega[1]!="" ? OMEGAEND=omega[1] : null}
+
+  let NOMEGA=0
+  {omega[2] && omega[2]!="" ? NOMEGA=omega[2] : null}
+
+  const input = {
+    MODE : "eps",
+    NBASIS : parseInt(noScat[0]),
+    EPSSPHRE : layersScaterrers[0][0].eps[0],
+    EPSSPHIM : layersScaterrers[0][0].eps[1],
+    MUSPHRE : layersScaterrers[0][0].mu[0],
+    MUSPHIM : layersScaterrers[0][0].mu[1],
+    EPSSPHRE2 : EPSSPHRE2,
+    EPSSPHIM2 : EPSSPHIM2,
+    MUSPHRE2 : MUSPHRE2,
+    MUSPHIM2 : MUSPHIM2,
+    EPSENVRE  : EpsEnvR, 
+    EPSENVIM  : EpsEnvI, 
+    MUENVRE  : MuEnvR,
+    MUENVIM   : MuEnvI,
+    RADIOUS : layersScaterrers[0][0].rad,
+    RADIOUS2 : RADIOUS2,
+    SPHERE2X : SPHERE2X,
+    SPHERE2Y : SPHERE2Y,
+    SPHERE2ZSTART : SPHERE2Z,
+    SPHERE2ZEND : SPHERE2Z,
+    NSPHERE2Z: 1,
+    NPHASE2: 1,
+    PHASE2START: 0.0,
+    PHASE2END: 0.0,
+    AR1X: a1[0],
+    AR1Y: a1[1],
+    AR2X: a2[0],
+    AR2Y: a2[1],
+    LMAX: Lmax,
+    N0: N0in,
+    NFFT: 600,
+    NSPLIT: 1,
+    NTHETA: theta[2],
+    STARTTHETA : theta[0],
+    ENDTHETA : theta[1],
+    FI: phi,
+    NLIGHT: NLIGHT,
+    NLIGHTDYN: NLIGHTDYN,
+    NADIAB: NADIAB,
+    START1: freqRange[0],
+    END1: freqRange[1],
+    NG0: 1,
+    STARTG0: G0,
+    ENDG0: G0,
+    NVIBRA: NOMEGA,
+    STARTVIB: OMEGASTART,
+    ENDVIB  : OMEGAEND,
+    RMAX	 : Rmax, 
+    iEWALDRECIP:  iEwald[1], 
+    iEWALDREAL:  iEwald[0],  
+    EWALDSCALE :  iEwald[2], 
+    GAMMA   : 0.0,   
+    SCALEFACTOR: 1, 
+    OPTOMECHANICAL  :"F",     
+    OMEGA_RESONANCE : 0.91601122142, 
+    SCSFILE :'breath.scs0'
+  }
+
+console.log(input)
+
+  const result = await Axios.post(
+    'http://localhost:3001/run',
+    input
+  )
+
+setLoading(false);
+}
+
+
+async function GetInputList () {
+  const result = await Axios.get(
+    'http://localhost:3001/inputlist'
+  );
+  setInputList(result.data.trim().split("\n"))
+  setInputListPrompt(true);
+}
+
+
+async function LoadNewInputHandler () {
+  if (chosenInput=="") {alert("Chose an Input!")}
+  else 
+{ const result = await Axios.get('http://localhost:3001/loadinput/'+chosenInput);
+ if (result.data=="ok") {
+  window.location.reload()
+ }}
+  
+}
+
+
+console.log(chosenInput)
+
+  return (<>{loading && <div className={classes.loading}>LOADING</div>}
     <div className={classes.page}>
+      {inputListPrompt &&
+      <ConfirmPrompt
+      text = {<div>
+      <h4>Which input to load?</h4>
+      <div className={classes.inputlist}>
+        {inputList.map((name)=>
+        <div
+        key={name}
+        id={name}
+        onClick={(e)=> setChosenInput(e.target.id)}
+        className ={chosenInput==name ? classes.inputlistchosen : null}
+        >{name}</div>
+        )}
+      </div>
+      </div>
+        }
+        cancel ={()=>setInputListPrompt(false)}
+        notext = "Cancel"
+        yestext ="Ok"
+        ok = {LoadNewInputHandler}
+      />
+      }
       
+      <div className={classes.runMultem}>
+        <div onClick={RunMultemHandler}>RUN MULTEM</div>
+        
+        
+      </div>
+
+      <div className={classes.loadinput}>
+<div onClick={GetInputList}>load Input</div>
+      </div>
+
+      <div className={classes.results}>
+<Link href="/plot">RESULTS</Link>
+</div>
+
+
       <div className={classes.navBar}>
 <h1>Dynamic Multem</h1>
       <div className={classes.cardschange}>
@@ -229,7 +429,7 @@ const [modes,setModes]= useState([false,false,false]);
                
 
             <span className={modes[0] ? classes.show :classes.hidden}>
-            Num of freq : <input type="number" 
+            Num of freq : <input type="text" 
              defaultValue={parseInt(freqPoints[0])}
              onChange={(e)=>{const number=e.target.value;
               let a=freqPoints.slice(0);
@@ -260,10 +460,10 @@ const [modes,setModes]= useState([false,false,false]);
 
 
              <span className={modes[1] ? classes.show :classes.hidden}>
-             Num of freq : <input type="number" 
+             Num of freq : <input type="text" 
            defaultValue={parseInt(freqPoints[1])}
            onChange={(e)=>{const number=e.target.value;
-            let a=freqPoints.slice(1);
+            let a=freqPoints.slice(0);
             a[1]=number;
             setFreqPoints(a);
     
@@ -298,7 +498,7 @@ const [modes,setModes]= useState([false,false,false]);
                 }}
               />
         <span className={modes[2] ? classes.show :classes.hidden}>
-Num of freq : <input type="number" 
+Num of freq : <input type="text" 
            defaultValue={parseInt(freqPoints[2])}
            onChange={(e)=>{const number=e.target.value;
             let a=freqPoints.slice(0);
@@ -316,7 +516,7 @@ Num of freq : <input type="number"
 
 <div>
   <h3>Light Frequencies</h3>
-  From : <input type="number" 
+  From : <input type="text" 
              defaultValue={parseFloat(freqRange[0])}
              onChange={(e)=>{const number=e.target.value;
               let a=freqRange.slice(0);
@@ -325,7 +525,7 @@ Num of freq : <input type="number"
              }}
              />
 
-To : <input type="number" 
+To : <input type="text" 
              defaultValue={parseFloat(freqRange[1])}
              onChange={(e)=>{const number=e.target.value;
               let a=freqRange.slice(0);
@@ -346,14 +546,14 @@ To : <input type="number"
 </select>
 
 </div>
-<div>Lmax: <input type="number"
+<div>Lmax: <input type="text"
 defaultValue={parseFloat(Lmax)}
 onChange={(e)=>{const number=e.target.value;
  setLmax(number);
 }}/></div>
 
 <div className={modes[1]? classes.show : classes.hidden}>
-N0 (Number anelastic beams): <input type="number"
+N0 (Number anelastic beams): <input type="text"
               defaultValue={parseInt(N0)}
               onChange={(e)=>{const number=e.target.value;
                setN0(number);
@@ -361,15 +561,15 @@ N0 (Number anelastic beams): <input type="number"
 /></div>
 
 <div className={modes[1] || modes[2]? classes.show : classes.hidden}>
-Nfft: <input type="number" defaultValue={600} /></div>
+Nfft: <input type="text" defaultValue={600} /></div>
 
-<div>Rmax: <input type="number"
+<div>Rmax: <input type="text"
              defaultValue={parseFloat(Rmax)}
              onChange={(e)=>{const number=e.target.value;
               setRmax(number);
              }}
 /></div>
-<div>iEwaldRecip: <input type="number" 
+<div>iEwaldRecip: <input type="text" 
 defaultValue={parseFloat(iEwald[1])}
 onChange={(e)=>{const number=e.target.value;
  let a=iEwald.slice(0);
@@ -377,7 +577,7 @@ onChange={(e)=>{const number=e.target.value;
  setIEwald(a);
 }}
 /></div>
-<div>iEwaldReal: <input type="number"
+<div>iEwaldReal: <input type="text"
              defaultValue={parseFloat(iEwald[0])}
              onChange={(e)=>{const number=e.target.value;
               let a=iEwald.slice(0);
@@ -385,7 +585,7 @@ onChange={(e)=>{const number=e.target.value;
               setIEwald(a);
              }}
 /></div>
-<div>EwaldScale: <input type="number"
+<div>EwaldScale: <input type="text"
              defaultValue={parseFloat(iEwald[2])}
              onChange={(e)=>{const number=e.target.value;
               let a=iEwald.slice(0);
@@ -402,15 +602,14 @@ onChange={(e)=>{const number=e.target.value;
             <h2>Select What do you want to scan:</h2>
 <div className={classes.lightcat}> 
               <div><h4>Theta</h4> 
-              From : <input type="number"
+              From : <input type="text"
               defaultValue={parseFloat(theta[0])}
               onChange={(e)=>{const number=e.target.value;
                let a=theta.slice(0);
                a[0]=number;
                setTheta(a);
-       
               }} 
-             /> To : <input type="number" 
+             /> To : <input type="text" 
              defaultValue={parseFloat(theta[1])}
               onChange={(e)=>{const number=e.target.value;
                let a=theta.slice(0);
@@ -418,7 +617,7 @@ onChange={(e)=>{const number=e.target.value;
                setTheta(a);
        
               }} 
-             /> Points : <input type="number" 
+             /> Points : <input type="text" 
              defaultValue={parseInt(theta[2])}
               onChange={(e)=>{const number=e.target.value;
                let a=theta.slice(0);
@@ -430,7 +629,7 @@ onChange={(e)=>{const number=e.target.value;
               </div>
 
               <div><h4>Phi</h4> 
-              value : <input type="number" 
+              value : <input type="text" 
               defaultValue={parseFloat(phi)}
               onChange={(e)=>{const number=e.target.value;
                setPhi(number);
@@ -442,24 +641,24 @@ onChange={(e)=>{const number=e.target.value;
 
 
               <div><h4>Omega</h4> 
-              From : <input type="number" 
+              From : <input type="text" 
               defaultValue={parseFloat(omega[0])}
               onChange={(e)=>{const number=e.target.value;
-               let a=theta.slice(0);
+               let a=omega.slice(0);
                a[0]=number;
                setOmega(a);
               }} 
-             /> To : <input type="number" 
+             /> To : <input type="text" 
              defaultValue={parseFloat(omega[1])}
              onChange={(e)=>{const number=e.target.value;
-              let a=theta.slice(0);
+              let a=omega.slice(0);
               a[1]=number;
               setOmega(a);
              }} 
-             /> Points : <input type="number" 
+             /> Points : <input type="text" 
              defaultValue={parseInt(omega[2])}
              onChange={(e)=>{const number=e.target.value;
-              let a=theta.slice(0);
+              let a=omega.slice(0);
               a[2]=number;
               setOmega(a);
              }} 
@@ -467,9 +666,9 @@ onChange={(e)=>{const number=e.target.value;
               </div>
 
 {/*               <div><h4>Vibration Freq</h4> 
-              From : <input type="number" 
-             /> To : <input type="number" 
-             /> Points : <input type="number" 
+              From : <input type="text" 
+             /> To : <input type="text" 
+             /> Points : <input type="text" 
              />
               </div> */}
 
@@ -487,14 +686,14 @@ onChange={(e)=>{const number=e.target.value;
           <h2>General Geometry Settings</h2>
           <h4>Base Vectors</h4>
 <div>
-              a1x = <input type="number"   
+              a1x = <input type="text"   
               defaultValue={a1[0]}
               onChange={(e) =>
                 { let tempa= a1.slice(0);
                   tempa[0]=e.target.value
                   setA1(tempa)}
               }/>
-              a1y = <input type="number" 
+              a1y = <input type="text" 
               defaultValue={a1[1]}
               onChange={(e) =>
                 { let tempa= a1.slice(0);
@@ -503,14 +702,14 @@ onChange={(e)=>{const number=e.target.value;
               } />
             </div>
             <div>
-              a2x = <input type="number" 
+              a2x = <input type="text" 
               defaultValue={a2[0]}
               onChange={(e) =>
                 { let tempa= a2.slice(0);
                   tempa[0]=e.target.value
                   setA2(tempa)}
               }/>
-              a2y = <input type="number"  
+              a2y = <input type="text"  
               defaultValue={a2[1]}
               onChange={(e) =>
                 { let tempa= a2.slice(0);
@@ -521,23 +720,23 @@ onChange={(e)=>{const number=e.target.value;
             </div> 
         <h3>Embedding Medium</h3>
         <div>
-          ε = <input type="number" onChange={(e)=>setEpsEnvR(e.target.value)} 
+          ε = <input type="text" onChange={(e)=>setEpsEnvR(e.target.value)} 
                         defaultValue={parseFloat(EpsEnvR)} />+{" "}
-          <input type="number"  onChange={(e)=>setEpsEnvI(e.target.value)}
+          <input type="text"  onChange={(e)=>setEpsEnvI(e.target.value)}
            defaultValue={parseFloat(EpsEnvI)} 
            />i
         </div>
         <div>
-          μ = <input type="number" onChange={(e)=>setMuEnvR(e.target.value)} 
+          μ = <input type="text" onChange={(e)=>setMuEnvR(e.target.value)} 
           defaultValue={parseFloat(MuEnvR)}/>+{" "}
-          <input type="number"   onChange={(e)=>setMuEnvI(e.target.value)} 
+          <input type="text"   onChange={(e)=>setMuEnvI(e.target.value)} 
           defaultValue={parseFloat(MuEnvI)}/>i
         </div>
 
         <div>
           How many layers :{" "}
           <input
-            type="number"
+            type="text"
             min="1"
             id="noLayers"
             defaultValue={numberOfLayers}
@@ -670,7 +869,7 @@ dr={dr}
    </div>
 
 
-    </div>
+    </div></>
   );
 }
 

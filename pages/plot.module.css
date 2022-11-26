@@ -1,0 +1,67 @@
+.savePrompt {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+}
+
+.savePrompt div {
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 255, 0.849);
+    color : white;
+    border-radius: 10px;
+    transition: 200ms;
+}
+
+.savePrompt div:hover {
+    background-color: rgba(3, 3, 90, 0.849);
+    cursor: pointer;
+}
+
+.savedfiles {
+    display: flex;
+    flex-direction: row;
+}
+
+.savedfilesprompt {
+    position: absolute;
+    z-index: 10;
+    top: 10%;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    max-height: 400px;
+    padding: 10px 20px;
+    width: min-content;
+    background-color: white;
+
+    overflow-y: auto;
+}
+
+
+.savedfilesprompt div {
+    background-color: white;
+    padding: 0px;
+}
+
+.inputlist {
+    background-color: white;
+    padding: 5px;
+    text-align: left;
+    font-size: 16px;
+    height: 200px;
+    overflow-y: scroll;
+  }
+  
+  .inputlist div:hover {
+    background-color: rgb(107, 107, 221);
+    color: white;
+    cursor: pointer;
+    
+  }
+  
+  
+  .inputlistchosen {
+    background-color: rgb(7, 7, 207) !important;
+    color: white !important;
+  
+  }

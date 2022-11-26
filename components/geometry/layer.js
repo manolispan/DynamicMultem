@@ -65,35 +65,35 @@ if (props.dr[layer] && props.dr[layer]!="")
     return <div className={classes.page}>
       <h4>Environment constants</h4>
               <div>
-          ε = <input type="number" defaultValue={1} />+{" "}
-          <input type="number" defaultValue={0}/>i
+          ε = <input type="text" defaultValue={1} />+{" "}
+          <input type="text" defaultValue={0}/>i
         </div>
         <div>
-          μ = <input type="number"  
+          μ = <input type="text"  
           defaultValue={1}/>+{" "}
-          <input type="number"    
+          <input type="text"    
           defaultValue={0}/>i
         </div>
 {type=="periodic" &&  <>
 {/* <h4>Base Vectors</h4>
 <div>
-              a1x = <input type="number" id={"layer"+layer+"a1x"}  
+              a1x = <input type="text" id={"layer"+layer+"a1x"}  
               ref={a1xRef}
               onChange={PassValues2}/>
-              a1y = <input type="number" id={"layer"+layer+"a1y"} 
+              a1y = <input type="text" id={"layer"+layer+"a1y"} 
               ref={a1yRef}
               onChange={PassValues2} />
             </div>
             <div>
-              a2x = <input type="number" id={"layer"+layer+"a2x"} 
+              a2x = <input type="text" id={"layer"+layer+"a2x"} 
               ref={a2xRef}
               onChange={PassValues2}/>
-              a2y = <input type="number" id={"layer"+layer+"a2y"} 
+              a2y = <input type="text" id={"layer"+layer+"a2y"} 
               ref={a2yRef} 
               onChange={PassValues2}/>
             
             </div> */}
-            distance from previous layer = <input type="number" id={"layer"+layer+"dr"} 
+            distance from previous layer = <input type="text" id={"layer"+layer+"dr"} 
               ref={drRef}
               onChange={PassValues2}
               defaultValue={dr[layer]}/>
