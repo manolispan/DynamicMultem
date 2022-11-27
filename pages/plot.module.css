@@ -1,3 +1,26 @@
+.alldata {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.alldata div {
+    margin: 5px;
+}
+
+.addgraph {
+    display: flex;
+    font-size: 12px;
+}
+
+.addgraph div {
+    background-color: var(--blue1);
+    color: white;
+    padding: 5px 10px;
+    height: min-content;
+}
+
+
 .savePrompt {
     position: fixed;
     top: 50px;
