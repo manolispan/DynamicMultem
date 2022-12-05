@@ -1,0 +1,4 @@
+.allplots {
+    display: flex;
+    flex-direction: row;
+}

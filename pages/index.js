@@ -8,6 +8,7 @@ import Card from "../components/ui/card";
 import Axios from "axios";
 import Link from "next/link";
 import ConfirmPrompt from "../components/ui/confirmprompt/confirmprompt";
+import LoadingPrompt from "../components/ui/loadingPrompt/loadingPrompt";
 
 function Homepage(props) {
 
@@ -97,6 +98,7 @@ useEffect(()=>{
   }
 
 
+
   });
 
 
@@ -129,9 +131,10 @@ useEffect(()=>{
 const [layersType, setLayersType] = useState(["","","","","","",""]);
 
 
-//layers props contains basic info about layer like periodicity for arrays
+//Materials array contains all materials info
+const [materials,setMaterials]=useState([])
 
-//const [periodicBase, setPeriodicBase] = useState([[],[],[],[],[],[],[]]);
+
 
 
 ///how many scatterers per array if periodic
@@ -346,9 +349,9 @@ async function LoadNewInputHandler () {
 }
 
 
-console.log(chosenInput)
 
-  return (<>{loading && <div className={classes.loading}>LOADING</div>}
+
+  return (<>{loading && <LoadingPrompt/>}
     <div className={classes.page}>
       {inputListPrompt &&
       <ConfirmPrompt

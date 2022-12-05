@@ -1,16 +1,21 @@
 .alldata {
     display: flex;
     justify-content: left;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .alldata div {
     margin: 5px;
+    background-color: rgb(196, 197, 202);
+    border-radius: 10px;
 }
 
 .addgraph {
     display: flex;
     font-size: 12px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
 }
 
 .addgraph div {
