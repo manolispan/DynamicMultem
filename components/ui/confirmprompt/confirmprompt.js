@@ -6,7 +6,8 @@ function ConfirmPrompt(props) {
     return (       <>  {props.back? <div className={classes.backdrop}
       onClick={props.back}></div> : <div className={classes.backdrop}
       onClick={props.cancel}></div>}  
-        <div className={classes.promptpage}>
+        <div className={classes.promptpage}
+        style = {{top : props.top ? props.top : null}}>
 <div className={classes.text
 }>{props.text}</div>
             

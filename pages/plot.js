@@ -167,6 +167,65 @@ setIsLoading(false);
     <>
 
 {isLoading && <LoadingPrompt/>}
+{savedFilesPrompt &&
+                    <ConfirmPrompt
+                    top = "5%"
+                      text={<div>
+                        <h4>Which file to load?</h4>
+                        <div>Static</div>
+                        <div className={classes.inputlist}>
+                          {savedResults.static.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "savedstatic"
+
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        </div>
+
+                        <div>Dynamic</div>
+                        <div className={classes.inputlist}>
+                          {savedResults.dyn.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "saveddyn"
+
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        </div>
+
+                        <div>Adiabatic</div>
+                        <div className={classes.inputlist}>
+                          {savedResults.adiab.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "savedadiab"
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        </div>
+                      </div>
+                      }
+                      cancel={() => setSavedFilesPrompt(false)}
+                      notext="Cancel"
+                      yestext="Ok"
+                      ok={LoadOutputHandler}
+                    />
+                  }
       {savePrompt &&
         <ConfirmPrompt
           text={
@@ -248,64 +307,7 @@ setIsLoading(false);
 
                 <div style={{ position: "relative" }}><button onClick={() => setSavedFilesPrompt(true)}>Saved Files</button>
 
-                  {savedFilesPrompt &&
-                    <ConfirmPrompt
-                      text={<div>
-                        <h4>Which file to load?</h4>
-                        <div>Static</div>
-                        <div className={classes.inputlist}>
-                          {savedResults.static.map((name) =>
-                            <div
-                              key={name}
-                              id={name}
-                              onClick={(e) => {
-                                setChosenOutput(e.target.id);
-                                outputTypeRef.current = "savedstatic"
 
-                              }}
-                              className={chosenOutput == name ? classes.inputlistchosen : null}
-                            >{name}</div>
-                          )}
-                        </div>
-
-                        <div>Dynamic</div>
-                        <div className={classes.inputlist}>
-                          {savedResults.dyn.map((name) =>
-                            <div
-                              key={name}
-                              id={name}
-                              onClick={(e) => {
-                                setChosenOutput(e.target.id);
-                                outputTypeRef.current = "saveddyn"
-
-                              }}
-                              className={chosenOutput == name ? classes.inputlistchosen : null}
-                            >{name}</div>
-                          )}
-                        </div>
-
-                        <div>Adiabatic</div>
-                        <div className={classes.inputlist}>
-                          {savedResults.adiab.map((name) =>
-                            <div
-                              key={name}
-                              id={name}
-                              onClick={(e) => {
-                                setChosenOutput(e.target.id);
-                                outputTypeRef.current = "savedadiab"
-                              }}
-                              className={chosenOutput == name ? classes.inputlistchosen : null}
-                            >{name}</div>
-                          )}
-                        </div>
-                      </div>
-                      }
-                      cancel={() => setSavedFilesPrompt(false)}
-                      notext="Cancel"
-                      yestext="Ok"
-                      ok={LoadOutputHandler}
-                    />
-                  }
                 </div>
 
               </div>
