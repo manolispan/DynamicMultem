@@ -4,3 +4,23 @@
     color: white;
     text-align: center;
 }
+
+.page {
+    animation: promtappear3;
+  animation-duration: 200ms;
+  transform-origin: left;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;  
+}
+
+
+@keyframes promtappear3{
+  0% {
+      
+      opacity: 0;
+  }
+  100% {
+      
+      opacity: 1;
+  }
+}

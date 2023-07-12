@@ -12,11 +12,10 @@ import LoadingPrompt from "../components/ui/loadingPrompt/loadingPrompt";
 
 function Homepage(props) {
 
-useEffect(()=>{
+useEffect(async()=>{
 
-  Axios.get('http://localhost:3001/')
-  .then((response) => {
-    console.log(response.data);
+  const response = await Axios.get('http://localhost:3001/');
+ 
     const input = response.data;
 
 
@@ -95,16 +94,17 @@ useEffect(()=>{
       position : [input.SPHERE2X,input.SPHERE2Y,input.SPHERE2ZSTART],
       vibAmpl : input.STARTG0,
   }
-  }
+  };
 
+setLoadingData(false);
 
-
-  });
+ 
 
 
 
 },[])
 
+const [loadingData,setLoadingData]= useState(true);
 
   const [loading,setLoading]= useState(false);
 
@@ -351,8 +351,10 @@ async function LoadNewInputHandler () {
 
 
 
-  return (<>{loading && <LoadingPrompt/>}
-    <div className={classes.page}>
+  return (<>
+   {loadingData && <LoadingPrompt/>}
+  {loading && <LoadingPrompt/>}
+    <div className={classes.page} key={loadingData? "wait" : "ready"}>
       {inputListPrompt &&
       <ConfirmPrompt
       text = {<div>
