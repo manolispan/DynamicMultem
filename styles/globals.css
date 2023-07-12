@@ -1,8 +1,7 @@
-
- 
  html {
   box-sizing: border-box;
   background: #e3e2df;
+  background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893);
   --red1: #5d001e;
   --white: #e3e2df;
   --pink1: #e3afbc;
@@ -12,12 +11,13 @@
   --grey: rgb(187, 190, 197);
   --blue1: rgb(31, 31, 228);
   background-size: cover;
-  background-repeat: no-repeat;
+  padding: 0px;
+  margin: 0px;
 
 }
 
 *, *:before, *:after {
-  box-sizing: inherit;
+  box-sizing: border-box;
 }
 
 body {

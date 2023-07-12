@@ -1,0 +1,66 @@
+.navbar {
+    background-color: #EBEFF8;
+    position: fixed;
+    top: 0px;
+width: 100vw;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #061ab0;
+    font-size: 20px;
+    padding: 5px 30px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: unset;
+}
+
+.navfile {
+    border: 2px solid #061ab000;
+    padding: 3px 15px;
+    transition: 200ms;
+    border-radius: 4px;
+    
+}
+
+.navfile:hover {
+    border: 2px solid #061ab0;
+    padding: 3px 15px;
+    cursor: pointer;
+    
+}
+
+.navbar span {
+    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+
+.loginnav {
+    height: 100%;
+    background-color: #061ab0bd;
+    color: #EBEFF8;
+    padding: 5px 15px;
+    border-radius: 3px;
+    transition: 100ms;
+}
+
+.loginnav:hover {
+    background-color: #061ab0;
+    cursor: pointer;
+
+}
+
+.rightside {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rightside>div:first-of-type {
+    margin-right: 15px;    
+}

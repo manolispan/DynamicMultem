@@ -94,6 +94,12 @@ const kk=(lay,N1,N2,dradded)=>
     <ambientLight />
     <primitive object={new THREE.AxesHelper(10)} />
     <pointLight position={[15, 32, 16]}  />
+{/*     <mesh
+    position={[0,0,2]}
+    >
+            <planeBufferGeometry attach="geometry" args={[15, 15]} />
+            <meshPhongMaterial attach="material" color="green" />
+         </mesh> */}
    {ShowAllLayers()}
  {/*    <Sphere radius={layersScaterrers[0][0]["rad"]} position={layersScaterrers[0][0]["position"]} />
     <Sphere radius={0.4} position={[1, 0, 0]} /> */}
