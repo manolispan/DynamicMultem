@@ -140,6 +140,26 @@
     margin-bottom: 5px;
 }
 
+.runMultem {
+    position: fixed;
+    z-index: 1000;
+    bottom: 0px;
+    right: 0px;
+    margin: 40px;
+    z-index: 10;
+   }
+   
+   .runMultem div {
+     padding: 10px;
+     background-color: white;
+     color: #061BB0;
+     border-radius: 10px;
+   }
+   
+   .runMultem div:hover {
+     cursor: pointer;
+   } 
+
 
 @media screen and (min-width: 1700px) {
     .allpage {

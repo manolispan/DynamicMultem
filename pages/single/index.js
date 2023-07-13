@@ -1,32 +1,51 @@
 import { useEffect, useState } from "react";
 import BoxesPage from "../../components/threejs/singlescat";
 import classes from "./index.module.css";
+import Axios from "axios";
+import LoadingPrompt from "../../components/ui/loadingPrompt/loadingPrompt";
 
 export default function Homepage(props) {
-  const ΕίδηΣκεδαστών = ["sphere", "cylinder", "spheroid"];
+  const [loading,setLoading]= useState(false);
+  const [loadingValues,setLoadingValues]= useState(true);
+  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE"];
   const unitsFreq = ["MHz", "GHz", "THz"];
-  const unitsLength = ["mm", "μm", "nm"];
+  const unitsLength = ["mm", "microm", "nm"];
   const polarizationChoices = ["P", "S", "L", "R"];
-  const [typeofScat, setTypeOfScat] = useState("sphere");
+  const [typeofScat, setTypeOfScat] = useState("SPHERE");
   const [typeofMaterial,setTypeofMaterial]=useState("userdefined");
   const [lengthUnitsScat,setLengthUnitsScat]=useState("nm");
+  const [sweeps,setSweeps]= useState({
+    frequency : true,
+    wavelength : true,
+    thetaIn : false,
+    phiIn: false,
+    epsReal : false,
+    epsImag :false,
+    muReal : false,
+    muImag : false,
+    radius : false,
+    height : false,
+    radius1 : false,
+    radius2 :false
+
+  })
   const [scatValues, setScatValues] = useState({
-    sphere: {
+    SPHERE: {
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
       muImag: [1, 1, 1],
       radius: [1, 4, 1],
     },
-    cylinder: {
+    CYLINDER: {
+      epsReal: [12, 12, 1],
+      epsImag: [0, 12, 1],
+      muReal: [1, 1, 1],
+      muImag: [1, 1, 1],
+      radius: [1, 4, 1],
       height: [1, 4, 1],
-      epsReal: [12, 12, 1],
-      epsImag: [0, 12, 1],
-      muReal: [1, 1, 1],
-      muImag: [1, 1, 1],
-      radius: [1, 4, 1],
     },
-    spheroid: {
+    ELIPSE: {
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
@@ -53,8 +72,8 @@ export default function Homepage(props) {
 
   const [multExpansion, setMultExpansion] = useState({
     lmax: 4,
-    ltmax: 10,
-    Ngauss :22
+    ltmax: 6,
+    Ngauss :256
   });
 
   function ScatChoices(items) {
@@ -82,7 +101,7 @@ export default function Homepage(props) {
               />
             ))}
 
-          <input
+{/*           <input
             type="checkbox"
             checked={
               scatValues[typeofScat][key][2] != 0 &&
@@ -102,7 +121,7 @@ export default function Homepage(props) {
                 setScatValues(temp);
               }
             }}
-          />
+          /> */}
 
           {scatValues[typeofScat][key][2] != 0 &&
             scatValues[typeofScat][key][2] != 1 && (
@@ -158,8 +177,114 @@ export default function Homepage(props) {
     return <>{text}</>;
   }
 
-  return (
-    <div className={classes.allpage}>
+  async function RunMultemHandler() {
+
+  setLoading(true)
+    
+  
+    const input = {
+      typeofScat : typeofScat,
+      lengthUnitsScat : lengthUnitsScat,
+      ...scatValues[typeofScat],
+      ...envValues,
+      ...lightValues,
+      ...multExpansion
+
+    }
+  
+
+  
+  const result = await Axios.post(
+    'http://localhost:3001/runsingle',
+    input
+  )
+  setLoading(false)
+
+  }
+
+  useEffect(async()=>{
+    const response = await Axios.get('http://localhost:3001/singleinputdefault');
+   
+      const input = response.data;
+      console.log(input)
+      setTypeOfScat(input[1]);
+      setLengthUnitsScat(input[2]);
+      if (input[1]=="SPHERE") {
+        setScatValues({
+          SPHERE: {
+            epsReal: input[3].split(" "),
+            epsImag: input[4].split(" "),
+            muReal: input[5].split(" "),
+            muImag: input[6].split(" "),
+            radius: input[7].split(" "),
+          },
+          CYLINDER: {
+            epsReal: input[3].split(" "),
+            epsImag: input[4].split(" "),
+            muReal: input[5].split(" "),
+            muImag: input[6].split(" "),
+            radius: input[7].split(" "),
+            height: input[7].split(" "),
+          },
+          ELIPSE: {
+            epsReal: input[3].split(" "),
+            epsImag: input[4].split(" "),
+            muReal: input[5].split(" "),
+            muImag: input[6].split(" "),
+            radius1: input[7].split(" "),
+            radius2: input[7].split(" "),
+          },
+        });
+      
+      setEnvValues({
+        epsEnv: input[8],
+        muEnv: input[9],
+      });
+
+      let a = true;
+      let b = false;
+      if (input[10].split(" ")[3]=="false")
+      {a= false;
+        b=true; }
+
+      setLightValues({
+        frequency: [input[10].split(" ")[0],
+        input[10].split(" ")[1],
+        input[10].split(" ")[2],a],
+        wavelength: [input[11].split(" ")[0],
+        input[11].split(" ")[1],
+        input[11].split(" ")[2],b],
+        thetaIn: input[12].split(" "),
+        phiIn: input[13].split(" "),
+        polarization: input[14],
+        unitsOfFreq: input[15],
+        unitsOfWavelength: input[16],
+      });
+
+      setMultExpansion({
+        lmax: input[17],
+        ltmax: input[18],
+        Ngauss: input[19]
+      });
+
+
+      }
+  
+      setLoadingValues(false);
+     
+  
+   
+  
+  
+  
+  },[])
+  
+  return (<>    
+  {loading && <LoadingPrompt/>}
+  {loadingValues && <LoadingPrompt/>}
+  <div className={classes.allpage}
+  key={loadingValues? "wait" : "done"}
+  >
       <div className={classes.allproperties}>
         <div id="lightproperties" className={classes.lightproperties}>
           <h1>Light Properties</h1>
@@ -265,7 +390,7 @@ export default function Homepage(props) {
           </div>
 
           <div key={lightValues.frequency[3] === true ? "freq" : "wave"}>
-            {lightValues.frequency[3] == true && (
+{/*             {lightValues.frequency[3] == true && (
               <>
                 <h2 className={classes.inline}>
                   {Object.keys(lightValues)[0]} ({lightValues.unitsOfFreq}):
@@ -370,8 +495,67 @@ export default function Homepage(props) {
                 )}
               </>
             )}
+ */}
 
-{lightValues.wavelength[3] == true && (
+{lightValues.frequency[3] == true && (
+              <>
+                <h2 className={classes.inline}>
+                  {Object.keys(lightValues)[0]} ({lightValues.unitsOfFreq}):
+                </h2>{" "}
+                  <div>
+                    start:{" "}
+                    <input
+                      defaultValue={lightValues.frequency[0]}
+                      onChange={(e) => {
+                        setLightValues({
+                          ...lightValues,
+                          frequency: [
+                            e.target.value.replaceAll(",", "."),
+                            lightValues.frequency[1],
+                            lightValues.frequency[2],
+                            lightValues.frequency[3],
+                          ],
+                        });
+                      }}
+                    />
+                    end:{" "}
+                    <input
+                      defaultValue={lightValues.frequency[1]}
+                      onChange={(e) => {
+                        setLightValues({
+                          ...lightValues,
+                          frequency: [
+                            lightValues.frequency[0],
+                            e.target.value.replaceAll(",", "."),
+                            lightValues.frequency[2],
+                            lightValues.frequency[3],
+                          ],
+                        });
+                      }}
+                    />
+                    points:{" "}
+                    <input
+                      defaultValue={lightValues.frequency[2]}
+                      onChange={(e) => {
+                        setLightValues({
+                          ...lightValues,
+                          frequency: [
+                            lightValues.frequency[0],
+                            lightValues.frequency[1],
+                            e.target.value.replaceAll(",", "."),
+                            lightValues.frequency[3],
+                          ],
+                        });
+                      }}
+                    />
+                  </div>
+                
+              </>
+            )}
+
+
+
+{/* {lightValues.wavelength[3] == true && (
               <>
                 <h2 className={classes.inline}>
                   {Object.keys(lightValues)[1]}  ({lightValues.unitsOfWavelength}):
@@ -475,7 +659,67 @@ export default function Homepage(props) {
                   </div>
                 )}
               </>
+            )} */}
+
+{lightValues.wavelength[3] == true && (
+              <>
+                <h2 className={classes.inline}>
+                  {Object.keys(lightValues)[1]}  ({lightValues.unitsOfWavelength}):
+                </h2>{" "}
+
+
+                  <div>
+                    start:{" "}
+                    <input
+                      defaultValue={lightValues.wavelength[0]}
+                      onChange={(e) => {
+                        setLightValues({
+                          ...lightValues,
+                          wavelength: [
+                            e.target.value.replaceAll(",", "."),
+                            lightValues.wavelength[1],
+                            lightValues.wavelength[2],
+                            lightValues.wavelength[3],
+                          ],
+                        });
+                      }}
+                    />
+                    end:{" "}
+                    <input
+                      defaultValue={lightValues.wavelength[1]}
+                      onChange={(e) => {
+                        setLightValues({
+                          ...lightValues,
+                          wavelength: [
+                            lightValues.wavelength[0],
+                            e.target.value.replaceAll(",", "."),
+                            lightValues.wavelength[2],
+                            lightValues.wavelength[3],
+                          ],
+                        });
+                      }}
+                    />
+                    points:{" "}
+                    <input
+                      defaultValue={lightValues.wavelength[2]}
+                      onChange={(e) => {
+                        setLightValues({
+                          ...lightValues,
+                          wavelength: [
+                            lightValues.wavelength[0],
+                            lightValues.wavelength[1],
+                            e.target.value.replaceAll(",", "."),
+                            lightValues.wavelength[3],
+                          ],
+                        });
+                      }}
+                    />
+                  </div>
+                
+              </>
             )}
+
+
           </div>
 
           {typeofScat != "sphere" && (
@@ -484,7 +728,7 @@ export default function Homepage(props) {
 <h2 className={classes.inline}>
                   ThetaIn (deg):
                 </h2>{" "}
-                {(lightValues.thetaIn[2] == 0 || lightValues.thetaIn[2] == 1) && (
+                {1==1 && (
                   <input
                     defaultValue={lightValues.thetaIn[0]}
                     onChange={(e) => {
@@ -499,7 +743,7 @@ export default function Homepage(props) {
                     }}
                   />
                 )}{" "}
-                <h2 className={classes.inline}>
+{/*                 <h2 className={classes.inline}>
                   <label htmlFor={"sweep" + "thetaIn"}>
                     sweep:
                   </label>
@@ -529,10 +773,10 @@ export default function Homepage(props) {
                       });
                     }
                   }}
-                />
+                /> */}
 
 
-{lightValues.thetaIn[2] != 0 && lightValues.thetaIn[2] != 1 && (
+{/* {lightValues.thetaIn[2] != 0 && lightValues.thetaIn[2] != 1 && (
                   <div>
                     start:{" "}
                     <input
@@ -577,13 +821,13 @@ export default function Homepage(props) {
                       }}
                     />
                   </div>
-                )}
+                )} */}
 
 <div>
 <h2 className={classes.inline}>
                   PhiIn (deg):
                 </h2>{" "}
-                {(lightValues.phiIn[2] == 0 || lightValues.phiIn[2] == 1) && (
+                {1==1 && (
                   <input
                     defaultValue={lightValues.phiIn[0]}
                     onChange={(e) => {
@@ -598,7 +842,7 @@ export default function Homepage(props) {
                     }}
                   />
                 )}{" "}
-                <h2 className={classes.inline}>
+{/*                 <h2 className={classes.inline}>
                   <label htmlFor={"sweep" + "phiIn"}>
                     sweep:
                   </label>
@@ -628,9 +872,9 @@ export default function Homepage(props) {
                       });
                     }
                   }}
-                />
+                /> */}
 </div>
-
+{/* 
 {lightValues.phiIn[2] != 0 && lightValues.phiIn[2] != 1 && (
                   <div>
                     start:{" "}
@@ -676,7 +920,7 @@ export default function Homepage(props) {
                       }}
                     />
                   </div>
-                )}
+                )} */}
 
 
               <div>
@@ -750,7 +994,7 @@ export default function Homepage(props) {
 
           <h2 style={{ display: "inline" }}>Ngauss: </h2>
           <input
-            defaultValue={multExpansion.ltmax}
+            defaultValue={multExpansion.Ngauss}
             onChange={(e) => {
               setMultExpansion({
                 ...multExpansion,
@@ -764,27 +1008,6 @@ export default function Homepage(props) {
 
         </div>
 
-        {/*     <div id="scatterer">
-        <h1>Scatterer Properties</h1>
-        <h2 style={{display: "inline"}}>Type of Scatterer: </h2><select onChange={(e) => setTypeOfScat(e.target.value)}>
-          {ΕίδηΣκεδαστών.map((item) => {
-            return <option value={item}>{item}</option>;
-          })}
-        </select>
-{typeofScat=="sphere" && 
-<div>
-<img src="https://media.istockphoto.com/id/179022209/photo/blue-ball-isolated-on-a-white-background.jpg?s=612x612&w=0&k=20&c=j2nb5L2GO9YbbEc7N0HkiS3OO6PRwZnEBSw-mYyKDYc="/>
- </div> }      
-{typeofScat=="cylinder" && 
-<div>
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wIZmirlb8pFfHMeT-IBrC3BZcivNAI2ysQ&usqp=CAU"/>
-</div> } 
-        {typeofScat && (
-          <div>
-            <div key={typeofScat}>{ScatChoices(scatValues[typeofScat])}</div>
-          </div>
-        )}
-      </div> */}
       </div>
 
       <div className={classes.allproperties2}>
@@ -814,12 +1037,12 @@ export default function Homepage(props) {
           </select>
           </div>
 
-          {typeofScat == "sphere" && (
+          {typeofScat == "SPHERE" && (
             <div>
               <img src="https://media.istockphoto.com/id/179022209/photo/blue-ball-isolated-on-a-white-background.jpg?s=612x612&w=0&k=20&c=j2nb5L2GO9YbbEc7N0HkiS3OO6PRwZnEBSw-mYyKDYc=" />
             </div>
           )}
-          {typeofScat == "cylinder" && (
+          {typeofScat == "CYLINDER" && (
             <div>
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wIZmirlb8pFfHMeT-IBrC3BZcivNAI2ysQ&usqp=CAU" />
             </div>
@@ -860,6 +1083,16 @@ defaultValue={typeofMaterial}
         <h1>Geometry</h1>
         <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} />
       </div>
+
+            <div
+            className={classes.runMultem}
+            onClick={RunMultemHandler}
+            ><div>Run Multem</div>
+              
+            </div>
+
     </div>
+  </>
+
   );
 }

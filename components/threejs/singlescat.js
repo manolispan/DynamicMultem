@@ -26,7 +26,7 @@ export default function BoxesPage(props) {
             ref={ref}
             onPointerOver={(event) => hover(true)}
             onPointerOut={(event) => hover(false)}>
-            <sphereGeometry args={[props.radius, 20, 20]} />
+            <sphereGeometry args={[props.radius/props.radius, 20, 20]} />
             <meshStandardMaterial color="orange" />
           </mesh>
         )
@@ -48,7 +48,7 @@ export default function BoxesPage(props) {
             ref={ref}
             onPointerOver={(event) => hover(true)}
             onPointerOut={(event) => hover(false)}>
-            <cylinderGeometry args={[props.radius, props.radius, props.height,32]} />
+            <cylinderGeometry args={[props.radius/props.radius, props.radius/props.radius, props.height/props.radius,32]} />
             <meshStandardMaterial color="orange" />
           </mesh>
         )
@@ -94,10 +94,10 @@ export default function BoxesPage(props) {
             <meshPhongMaterial attach="material" color="green" />
          </mesh> */}
   {/*  <Polyhedron /> */}
-    {type=="sphere" && 
+    {type=="SPHERE" && 
     <Sphere radius={scatterer.radius[0]} position={0} />}
 
-    {type=="cylinder"&&
+    {type=="CYLINDER"&&
     <Cylinder radius={scatterer.radius[0]}
     height = {scatterer.height[0]}
     position={0}/>
