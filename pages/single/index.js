@@ -3,10 +3,14 @@ import BoxesPage from "../../components/threejs/singlescat";
 import classes from "./index.module.css";
 import Axios from "axios";
 import LoadingPrompt from "../../components/ui/loadingPrompt/loadingPrompt";
+import ConfirmPrompt from "../../components/ui/confirmprompt/confirmprompt";
+import { useRouter } from "next/router";
 
 export default function Homepage(props) {
+  const router = useRouter();
   const [loading,setLoading]= useState(false);
   const [loadingValues,setLoadingValues]= useState(true);
+  const [multemEnd,setMultemEnd]=useState(false);
   const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE"];
   const unitsFreq = ["MHz", "GHz", "THz"];
   const unitsLength = ["mm", "microm", "nm"];
@@ -198,7 +202,8 @@ export default function Homepage(props) {
     'http://localhost:3001/runsingle',
     input
   )
-  setLoading(false)
+  setLoading(false);
+  setMultemEnd(true);
 
   }
 
@@ -270,6 +275,70 @@ export default function Homepage(props) {
 
       }
   
+
+      if (input[1]=="ELIPSE") {
+        setScatValues({
+          SPHERE: {
+            epsReal: input[3].split(" "),
+            epsImag: input[4].split(" "),
+            muReal: input[5].split(" "),
+            muImag: input[6].split(" "),
+            radius: input[7].split(" "),
+          },
+          CYLINDER: {
+            epsReal: input[3].split(" "),
+            epsImag: input[4].split(" "),
+            muReal: input[5].split(" "),
+            muImag: input[6].split(" "),
+            radius: input[7].split(" "),
+            height: input[8].split(" "),
+          },
+          ELIPSE: {
+            epsReal: input[3].split(" "),
+            epsImag: input[4].split(" "),
+            muReal: input[5].split(" "),
+            muImag: input[6].split(" "),
+            radius1: input[7].split(" "),
+            radius2: input[8].split(" "),
+          },
+        });
+      
+      setEnvValues({
+        epsEnv: input[9],
+        muEnv: input[10],
+      });
+
+      let a = true;
+      let b = false;
+      if (input[11].split(" ")[3]=="false")
+      {a= false;
+        b=true; }
+
+      setLightValues({
+        frequency: [input[11].split(" ")[0],
+        input[11].split(" ")[1],
+        input[11].split(" ")[2],a],
+        wavelength: [input[12].split(" ")[0],
+        input[12].split(" ")[1],
+        input[12].split(" ")[2],b],
+        thetaIn: input[13].split(" "),
+        phiIn: input[14].split(" "),
+        polarization: input[15],
+        unitsOfFreq: input[16],
+        unitsOfWavelength: input[17],
+      });
+
+      setMultExpansion({
+        lmax: input[18],
+        ltmax: input[19],
+        Ngauss: input[20]
+      });
+
+
+      }
+
+
+
       setLoadingValues(false);
      
   
@@ -282,6 +351,14 @@ export default function Homepage(props) {
   return (<>    
   {loading && <LoadingPrompt/>}
   {loadingValues && <LoadingPrompt/>}
+  {multemEnd && <ConfirmPrompt
+  text="Success! Multem has ended"
+  yestext= "Go to results"
+  notext = "Stay here"
+  cancel = {()=>setMultemEnd(false)}
+  ok = {()=> router.push("/single/results")}
+  />}
+
   <div className={classes.allpage}
   key={loadingValues? "wait" : "done"}
   >
@@ -722,7 +799,7 @@ export default function Homepage(props) {
 
           </div>
 
-          {typeofScat != "sphere" && (
+          {typeofScat != "SPHERE" && (
             <>
 
 <h2 className={classes.inline}>
