@@ -276,11 +276,15 @@ setIsLoading(false);
                     }
                     }>
                     <option disabled selected>Select File</option>
-                    {loadedResultFilesList.map((keyName, i) => (
-                      <option key={i + "tt"} value={keyName}>
-                        {keyName}
-                      </option>
-                    ))}
+                    {loadedResultFilesList.map((keyName, i) => {
+                      let fileName= keyName;
+                      if (keyName=="scs") {fileName="single_scatterer"}
+                      return  <option key={i + "tt"} value={keyName}>
+                      {fileName}
+                    </option>
+                    }
+
+                    )}
 
                   </select></div>
 

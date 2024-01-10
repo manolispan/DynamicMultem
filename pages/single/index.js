@@ -38,14 +38,14 @@ export default function Homepage(props) {
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
-      muImag: [1, 1, 1],
+      muImag: [0, 1, 1],
       radius: [1, 4, 1],
     },
     CYLINDER: {
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
-      muImag: [1, 1, 1],
+      muImag: [0, 1, 1],
       radius: [1, 4, 1],
       height: [1, 4, 1],
     },
@@ -53,7 +53,7 @@ export default function Homepage(props) {
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
-      muImag: [1, 1, 1],
+      muImag: [0, 1, 1],
       radius1: [1, 4, 1],
       radius2: [1, 4, 1],
     },
@@ -89,7 +89,8 @@ export default function Homepage(props) {
       text.push(
         <div>
           <h2 className={classes.inline}>{key} {key=="radius" || key=="height" ?
-          <>({lengthUnitsScat})</>:null}:</h2>
+          <>
+          ({lengthUnitsScat!="microm" ? <>{lengthUnitsScat}</>:<>μm</>})</>:null}:</h2>
           {scatValues[typeofScat][key][2] == 0 ||
             (scatValues[typeofScat][key][2] == 1 && (
               <input
@@ -276,7 +277,7 @@ export default function Homepage(props) {
       }
   
 
-      if (input[1]=="ELIPSE") {
+      if (input[1]=="ELIPSE" || input[1]=="CYLINDER") {
         setScatValues({
           SPHERE: {
             epsReal: input[3].split(" "),
@@ -336,7 +337,6 @@ export default function Homepage(props) {
 
 
       }
-
 
 
       setLoadingValues(false);
@@ -458,7 +458,10 @@ export default function Homepage(props) {
                   defaultValue={lightValues.unitsOfWavelength}
                 >
                   {unitsLength.map((item) => {
-                    return <option value={item}>{item}</option>;
+                    let textToshow= item;
+                    if (item=="microm")
+                    {textToshow="μm"}
+                    return <option value={item}>{textToshow}</option>;
                   })}
                 </select>{" "}
                 <i className="fa fa-question-circle" aria-hidden="true" />
@@ -741,7 +744,7 @@ export default function Homepage(props) {
 {lightValues.wavelength[3] == true && (
               <>
                 <h2 className={classes.inline}>
-                  {Object.keys(lightValues)[1]}  ({lightValues.unitsOfWavelength}):
+                  {Object.keys(lightValues)[1]}  ({lightValues.unitsOfWavelength=="microm"? <>μm</> : <>{lightValues.unitsOfWavelength}</>}):
                 </h2>{" "}
 
 
@@ -1056,7 +1059,9 @@ export default function Homepage(props) {
             }}
           /> <i className="fa fa-question-circle" aria-hidden="true" />
 
-          <div>
+
+ {typeofScat != "SPHERE" && 
+           <div>
           <h2 style={{ display: "inline" }}>Ltmax: </h2>
           <input
             defaultValue={multExpansion.ltmax}
@@ -1081,6 +1086,8 @@ export default function Homepage(props) {
           />{" "}
           <i className="fa fa-question-circle" aria-hidden="true" />
 </div>
+ }
+
 
 
         </div>
@@ -1109,7 +1116,9 @@ export default function Homepage(props) {
           defaultValue={lengthUnitsScat}  
         >
             {unitsLength.map((item) => {
-              return <option value={item}>{item}</option>;
+              let toShow = item;
+              if (item=="microm") {toShow="μm"}
+              return <option value={item}>{toShow}</option>;
             })}
           </select>
           </div>
