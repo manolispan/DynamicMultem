@@ -64,7 +64,7 @@ export default function Homepage(props) {
       muReal: [1, 1, 1],
       muImag: [0, 1, 1],
       coreRadius: [1, 4, 1],
-      NumOfCells: 1,
+      NumOfCells: [1,0,1],
       epsRealCell1: [12, 12, 1],
       epsImagCell1: [0, 12, 1],
       muRealCell1: [1, 1, 1],
@@ -230,7 +230,19 @@ export default function Homepage(props) {
 
   setLoading(true)
     
-  
+  const coreCells= parseInt(scatValues["CORESHELL"]["NumOfCells"][0]);
+  let allCells = {};
+  for (let i=0 ; i<coreCells; i++) {
+    const j=i+1
+    const tempCells= {
+      ["epsRealCell"+j] : scatValues["CORESHELL"]["epsRealCell"+j],
+      ["epsImagCell"+j] : scatValues["CORESHELL"]["epsImagCell"+j],
+      ["muRealCell"+j] : scatValues["CORESHELL"]["muRealCell"+j],
+      ["muImagCell"+j] : scatValues["CORESHELL"]["muImagCell"+j],
+      ["radiusCell"+j] : scatValues["CORESHELL"]["radiusCell"+j],
+    }
+    allCells={...allCells,...tempCells}
+  }
     const input = {
       typeofScat : typeofScat,
       lengthUnitsScat : lengthUnitsScat,
@@ -252,12 +264,20 @@ export default function Homepage(props) {
       muImagE: scatValues["ELIPSE"]["muImag"],
       radius1E: scatValues["ELIPSE"]["radius1"],
       radius2E: scatValues["ELIPSE"]["radius2"],
+      epsRealCS: scatValues["CORESHELL"]["epsReal"],
+      epsImagCS: scatValues["CORESHELL"]["epsImag"],
+      muRealCS: scatValues["CORESHELL"]["muReal"],
+      muImagCS: scatValues["CORESHELL"]["muImag"],
+      coreRadiusCS: scatValues["CORESHELL"]["coreRadius"],
+      NumOfCells: scatValues["CORESHELL"]["NumOfCells"], 
+      ...allCells,    
       ...envValues,
       ...lightValues,
       ...multExpansion
 
     }
   
+
 
   
   const result = await Axios.post(
@@ -286,7 +306,6 @@ export default function Homepage(props) {
         }
         allCells={...allCells,...tempCells}
       }
-      console.log(input)
       setTypeOfScat(input[1]);
       setLengthUnitsScat(input[2]);
         setScatValues({
@@ -366,7 +385,6 @@ export default function Homepage(props) {
   },[])
 
 
-  console.log(scatValues["CORESHELL"])
   
   
   return (<>    
@@ -1154,6 +1172,12 @@ export default function Homepage(props) {
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wIZmirlb8pFfHMeT-IBrC3BZcivNAI2ysQ&usqp=CAU" />
             </div>
           )}
+          {typeofScat == "CORESHELL" && (
+            <div>
+              <img src="/photos/coreshell-small.jpeg" />
+            </div>
+          )}
+
 
    <div className={classes.materialdiv}>
     <h2 className={classes.inline}>Material: </h2>
