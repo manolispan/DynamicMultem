@@ -5,6 +5,7 @@ import Axios from "axios";
 import LoadingPrompt from "../../components/ui/loadingPrompt/loadingPrompt";
 import ConfirmPrompt from "../../components/ui/confirmprompt/confirmprompt";
 import { useRouter } from "next/router";
+import { Cylinder } from "@react-three/drei";
 
 export default function Homepage(props) {
   const router = useRouter();
@@ -190,7 +191,24 @@ export default function Homepage(props) {
     const input = {
       typeofScat : typeofScat,
       lengthUnitsScat : lengthUnitsScat,
-      ...scatValues[typeofScat],
+      //...scatValues[typeofScat],
+      epsReal: scatValues["SPHERE"]["epsReal"],
+      epsImag: scatValues["SPHERE"]["epsImag"],
+      muReal: scatValues["SPHERE"]["muReal"],
+      muImag: scatValues["SPHERE"]["muImag"],
+      radius: scatValues["SPHERE"]["radius"],
+      epsRealC: scatValues["CYLINDER"]["epsReal"],
+      epsImagC: scatValues["CYLINDER"]["epsImag"],
+      muRealC: scatValues["CYLINDER"]["muReal"],
+      muImagC: scatValues["CYLINDER"]["muImag"],
+      radiusC: scatValues["CYLINDER"]["radius"],
+      heightC: scatValues["CYLINDER"]["height"],
+      epsRealE: scatValues["ELIPSE"]["epsReal"],
+      epsImagE: scatValues["ELIPSE"]["epsImag"],
+      muRealE: scatValues["ELIPSE"]["muReal"],
+      muImagE: scatValues["ELIPSE"]["muImag"],
+      radius1E: scatValues["ELIPSE"]["radius1"],
+      radius2E: scatValues["ELIPSE"]["radius2"],
       ...envValues,
       ...lightValues,
       ...multExpansion
@@ -215,7 +233,6 @@ export default function Homepage(props) {
       console.log(input)
       setTypeOfScat(input[1]);
       setLengthUnitsScat(input[2]);
-      if (input[1]=="SPHERE") {
         setScatValues({
           SPHERE: {
             epsReal: input[3].split(" "),
@@ -225,59 +242,59 @@ export default function Homepage(props) {
             radius: input[7].split(" "),
           },
           CYLINDER: {
-            epsReal: input[3].split(" "),
-            epsImag: input[4].split(" "),
-            muReal: input[5].split(" "),
-            muImag: input[6].split(" "),
-            radius: input[7].split(" "),
-            height: input[7].split(" "),
+            epsReal: input[8].split(" "),
+            epsImag: input[9].split(" "),
+            muReal: input[10].split(" "),
+            muImag: input[11].split(" "),
+            radius: input[12].split(" "),
+            height: input[13].split(" "),
           },
           ELIPSE: {
-            epsReal: input[3].split(" "),
-            epsImag: input[4].split(" "),
-            muReal: input[5].split(" "),
-            muImag: input[6].split(" "),
-            radius1: input[7].split(" "),
-            radius2: input[7].split(" "),
+            epsReal: input[14].split(" "),
+            epsImag: input[15].split(" "),
+            muReal: input[16].split(" "),
+            muImag: input[17].split(" "),
+            radius1: input[18].split(" "),
+            radius2: input[19].split(" "),
           },
         });
       
       setEnvValues({
-        epsEnv: input[8],
-        muEnv: input[9],
+        epsEnv: input[20],
+        muEnv: input[21],
       });
 
       let a = true;
       let b = false;
-      if (input[10].split(" ")[3]=="false")
+      if (input[22].split(" ")[3]=="false")
       {a= false;
         b=true; }
 
       setLightValues({
-        frequency: [input[10].split(" ")[0],
-        input[10].split(" ")[1],
-        input[10].split(" ")[2],a],
+        frequency: [input[22].split(" ")[0],
+        input[22].split(" ")[1],
+        input[22].split(" ")[2],a],
         wavelength: [input[11].split(" ")[0],
-        input[11].split(" ")[1],
-        input[11].split(" ")[2],b],
-        thetaIn: input[12].split(" "),
-        phiIn: input[13].split(" "),
-        polarization: input[14],
-        unitsOfFreq: input[15],
-        unitsOfWavelength: input[16],
+        input[23].split(" ")[1],
+        input[23].split(" ")[2],b],
+        thetaIn: input[24].split(" "),
+        phiIn: input[25].split(" "),
+        polarization: input[26],
+        unitsOfFreq: input[27],
+        unitsOfWavelength: input[28],
       });
 
       setMultExpansion({
-        lmax: input[17],
-        ltmax: input[18],
-        Ngauss: input[19]
+        lmax: input[29],
+        ltmax: input[30],
+        Ngauss: input[31]
       });
 
 
-      }
+      
   
 
-      if (input[1]=="ELIPSE" || input[1]=="CYLINDER") {
+/*       if (input[1]=="ELIPSE" || input[1]=="CYLINDER") {
         setScatValues({
           SPHERE: {
             epsReal: input[3].split(" "),
@@ -337,7 +354,7 @@ export default function Homepage(props) {
 
 
       }
-
+ */
 
       setLoadingValues(false);
      
