@@ -12,7 +12,7 @@ export default function Homepage(props) {
   const [loading,setLoading]= useState(false);
   const [loadingValues,setLoadingValues]= useState(true);
   const [multemEnd,setMultemEnd]=useState(false);
-  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE"];
+  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE","CORESHELL"];
   const unitsFreq = ["MHz", "GHz", "THz"];
   const unitsLength = ["mm", "microm", "nm"];
   const polarizationChoices = ["P", "S", "L", "R"];
@@ -58,6 +58,20 @@ export default function Homepage(props) {
       radius1: [1, 4, 1],
       radius2: [1, 4, 1],
     },
+    CORESHELL: {
+      epsReal: [12, 12, 1],
+      epsImag: [0, 12, 1],
+      muReal: [1, 1, 1],
+      muImag: [0, 1, 1],
+      coreRadius: [1, 4, 1],
+      NumOfCells: 1,
+      epsRealCell1: [12, 12, 1],
+      epsImagCell1: [0, 12, 1],
+      muRealCell1: [1, 1, 1],
+      muImagCell1: [0, 1, 1],
+      radiusCell1 : [1, 4, 1],
+
+    },
   });
 
   const [envValues, setEnvValues] = useState({
@@ -87,7 +101,55 @@ export default function Homepage(props) {
       if (typeofMaterial=="userdefined" || 
       (key!="epsReal" && key!="epsImag" && key!="muReal" && key!="muImag")
       )
-      text.push(
+      {
+        if (key=="NumOfCells") 
+        {
+          text.push(<div>
+{/* <h2 className={classes.inline}>Number of Cells</h2>
+<input
+                defaultValue={scatValues[typeofScat][key][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat][key][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> */}
+             <button
+             onClick={()=>{
+              const temp = Object.assign({}, scatValues);
+              let previousNo= parseInt(scatValues[typeofScat][key][0]);
+              if (previousNo==1) {return}
+              let newNo= previousNo-1;
+              temp[typeofScat][key][0]= newNo;
+              delete temp[typeofScat]["epsRealCell"+previousNo];
+              delete temp[typeofScat]["epsImagCell"+previousNo];
+              delete temp[typeofScat]["muRealCell"+previousNo];
+              delete temp[typeofScat]["muImagCell"+previousNo]; 
+              delete temp[typeofScat]["radiusCell"+previousNo];
+              setScatValues(temp);
+             }}
+             >-</button> {scatValues[typeofScat][key][0]} <button
+             onClick={()=>{
+              const temp = Object.assign({}, scatValues);
+              let previousNo= parseInt(scatValues[typeofScat][key][0]);
+              let newNo= previousNo+1;
+              temp[typeofScat][key][0]= newNo;
+              temp[typeofScat]["epsRealCell"+newNo]=temp[typeofScat]["epsRealCell"+previousNo].slice();
+              temp[typeofScat]["epsImagCell"+newNo]=temp[typeofScat]["epsImagCell"+previousNo].slice();
+              temp[typeofScat]["muRealCell"+newNo]=temp[typeofScat]["muRealCell"+previousNo].slice();
+              temp[typeofScat]["muImagCell"+newNo]=temp[typeofScat]["muImagCell"+previousNo].slice(); 
+              temp[typeofScat]["radiusCell"+newNo]=temp[typeofScat]["radiusCell"+previousNo].slice();
+              setScatValues(temp);
+             }}
+             >+</button> 
+          </div>)
+
+        }
+        else 
+{      text.push(
         <div>
           <h2 className={classes.inline}>{key} {key=="radius" || key=="height" ?
           <>
@@ -107,27 +169,6 @@ export default function Homepage(props) {
               />
             ))}
 
-{/*           <input
-            type="checkbox"
-            checked={
-              scatValues[typeofScat][key][2] != 0 &&
-              scatValues[typeofScat][key][2] != 1
-                ? true
-                : false
-            }
-            id={"sweep" + typeofScat + key}
-            onChange={(e) => {
-              if (!e.target.checked) {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat][key][2] = 1;
-                setScatValues(temp);
-              } else {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat][key][2] = 2;
-                setScatValues(temp);
-              }
-            }}
-          /> */}
 
           {scatValues[typeofScat][key][2] != 0 &&
             scatValues[typeofScat][key][2] != 1 && (
@@ -177,7 +218,9 @@ export default function Homepage(props) {
               </div>
             )}
         </div>
-      );
+      )}
+      ;
+    }
     });
 
     return <>{text}</>;
@@ -230,6 +273,19 @@ export default function Homepage(props) {
     const response = await Axios.get('http://localhost:3001/singleinputdefault');
    
       const input = response.data;
+      const coreCells= parseInt(input[25].split(" ")[0]);
+      let allCells = {};
+      for (let i=0 ; i<coreCells; i++) {
+        const j=i+1
+        const tempCells= {
+          ["epsRealCell"+j] : input[25+5*i+1].split(" "),
+          ["epsImagCell"+j] : input[25+5*i+2].split(" "),
+          ["muRealCell"+j] : input[25+5*i+3].split(" "),
+          ["muImagCell"+j] : input[25+5*i+4].split(" "),
+          ["radiusCell"+j] : input[25+5*i+5].split(" "),
+        }
+        allCells={...allCells,...tempCells}
+      }
       console.log(input)
       setTypeOfScat(input[1]);
       setLengthUnitsScat(input[2]);
@@ -257,113 +313,61 @@ export default function Homepage(props) {
             radius1: input[18].split(" "),
             radius2: input[19].split(" "),
           },
+          CORESHELL: {
+            epsReal: input[20].split(" "),
+            epsImag: input[21].split(" "),
+            muReal: input[22].split(" "),
+            muImag: input[23].split(" "),
+            coreRadius: input[24].split(" "),
+            NumOfCells: input[25].split(" "),
+            ...allCells
+          }
         });
       
       setEnvValues({
-        epsEnv: input[20],
-        muEnv: input[21],
+        //epsEnv: input[20],
+        epsEnv: input[20+6+coreCells*5],
+        muEnv: input[21+6+coreCells*5],
       });
 
       let a = true;
       let b = false;
-      if (input[22].split(" ")[3]=="false")
+      if (input[22+6+coreCells*5].split(" ")[3]=="false")
       {a= false;
         b=true; }
 
       setLightValues({
-        frequency: [input[22].split(" ")[0],
-        input[22].split(" ")[1],
-        input[22].split(" ")[2],a],
-        wavelength: [input[11].split(" ")[0],
-        input[23].split(" ")[1],
-        input[23].split(" ")[2],b],
-        thetaIn: input[24].split(" "),
-        phiIn: input[25].split(" "),
-        polarization: input[26],
-        unitsOfFreq: input[27],
-        unitsOfWavelength: input[28],
+        frequency: 
+        [input[22+6+coreCells*5].split(" ")[0],
+        input[22+6+coreCells*5].split(" ")[1],
+        input[22+6+coreCells*5].split(" ")[2],a],
+        wavelength: 
+        [input[23+6+coreCells*5].split(" ")[0],
+        input[23+6+coreCells*5].split(" ")[1],
+        input[23+6+coreCells*5].split(" ")[2],b],
+        thetaIn: input[24+6+coreCells*5].split(" "),
+        phiIn: input[25+6+coreCells*5].split(" "),
+        polarization: input[26+6+coreCells*5],
+        unitsOfFreq: input[27+6+coreCells*5],
+        unitsOfWavelength: input[28+6+coreCells*5],
       });
 
       setMultExpansion({
-        lmax: input[29],
-        ltmax: input[30],
-        Ngauss: input[31]
+        lmax: input[29+6+coreCells*5],
+        ltmax: input[30+6+coreCells*5],
+        Ngauss: input[31+6+coreCells*5]
       });
 
-
-      
-  
-
-/*       if (input[1]=="ELIPSE" || input[1]=="CYLINDER") {
-        setScatValues({
-          SPHERE: {
-            epsReal: input[3].split(" "),
-            epsImag: input[4].split(" "),
-            muReal: input[5].split(" "),
-            muImag: input[6].split(" "),
-            radius: input[7].split(" "),
-          },
-          CYLINDER: {
-            epsReal: input[3].split(" "),
-            epsImag: input[4].split(" "),
-            muReal: input[5].split(" "),
-            muImag: input[6].split(" "),
-            radius: input[7].split(" "),
-            height: input[8].split(" "),
-          },
-          ELIPSE: {
-            epsReal: input[3].split(" "),
-            epsImag: input[4].split(" "),
-            muReal: input[5].split(" "),
-            muImag: input[6].split(" "),
-            radius1: input[7].split(" "),
-            radius2: input[8].split(" "),
-          },
-        });
-      
-      setEnvValues({
-        epsEnv: input[9],
-        muEnv: input[10],
-      });
-
-      let a = true;
-      let b = false;
-      if (input[11].split(" ")[3]=="false")
-      {a= false;
-        b=true; }
-
-      setLightValues({
-        frequency: [input[11].split(" ")[0],
-        input[11].split(" ")[1],
-        input[11].split(" ")[2],a],
-        wavelength: [input[12].split(" ")[0],
-        input[12].split(" ")[1],
-        input[12].split(" ")[2],b],
-        thetaIn: input[13].split(" "),
-        phiIn: input[14].split(" "),
-        polarization: input[15],
-        unitsOfFreq: input[16],
-        unitsOfWavelength: input[17],
-      });
-
-      setMultExpansion({
-        lmax: input[18],
-        ltmax: input[19],
-        Ngauss: input[20]
-      });
-
-
-      }
- */
 
       setLoadingValues(false);
      
-  
-   
-  
-  
+
   
   },[])
+
+
+  console.log(scatValues["CORESHELL"])
+  
   
   return (<>    
   {loading && <LoadingPrompt/>}
