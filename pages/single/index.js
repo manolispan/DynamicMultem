@@ -1144,7 +1144,9 @@ export default function Homepage(props) {
           defaultValue={typeofScat}
           >
             {ΕίδηΣκεδαστών.map((item) => {
-              return <option value={item}>{item}</option>;
+              let name= item;
+              if (name=="ELIPSE") {name="SPHEROID"}
+              return <option value={item}>{name}</option>;
             })}
           </select>
           </div>

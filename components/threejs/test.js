@@ -91,7 +91,7 @@ const kk=(lay,N1,N2,dradded)=>
 
   return (
     <div className={classes.page}>
-  <Canvas>
+  <Canvas camera={{fov:"40"}}>
 <OrbitControls/>
     <ambientLight />
     <primitive object={new THREE.AxesHelper(10)} />

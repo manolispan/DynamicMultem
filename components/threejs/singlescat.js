@@ -25,12 +25,46 @@ export default function BoxesPage(props) {
             {...props}
             ref={ref}
             onPointerOver={(event) => hover(true)}
-            onPointerOut={(event) => hover(false)}>
-            <sphereGeometry args={[props.radius/props.radius, 20, 20]} />
-            <meshStandardMaterial color="orange" />
+            onPointerOut={(event) => hover(false)}
+            scale={[1,props.ellipseratio,1]}
+            >
+            <sphereGeometry args={[props.radius[0]/props.radius[0], 20, 20]} 
+            />
+            <meshStandardMaterial color="rgb(100, 150, 100)" 
+            transparent={true} side={THREE.DoubleSide} />
           </mesh>
         )
       }
+
+      function SphereEl(props) {
+        const radius= props.radius;
+      
+        const opacity = props.opacity;
+        const anglecut = props.anglecut;
+        // This reference gives us direct access to the THREE.Mesh object
+        const ref = useRef()
+        // Hold state for hovered and clicked events
+        const [hovered, hover] = useState(false)
+        const [clicked, click] = useState(false)
+        // Subscribe this component to the render-loop, rotate the mesh every frame
+       // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
+        // Return the view, these are regular Threejs elements expressed in JSX
+        return (
+          <mesh
+            {...props}
+            ref={ref}
+            onPointerOver={(event) => hover(true)}
+            onPointerOut={(event) => hover(false)}
+            scale={[1,props.ellipseratio,1]}
+            >
+            <sphereGeometry args={[radius, 20, 20,0,anglecut]} 
+            />
+            <meshStandardMaterial color="rgb(100, 150, 100)" 
+            transparent={true} side={THREE.DoubleSide} opacity={opacity}/>
+          </mesh>
+        )
+      }
+
 
       function Cylinder(props) {
 
@@ -48,8 +82,9 @@ export default function BoxesPage(props) {
             ref={ref}
             onPointerOver={(event) => hover(true)}
             onPointerOut={(event) => hover(false)}>
-            <cylinderGeometry args={[props.radius/props.radius, props.radius/props.radius, props.height/props.radius,32]} />
-            <meshStandardMaterial color="orange" />
+            <cylinderGeometry args={[props.radius[0]/props.radius[0], props.radius[0]/props.radius[0], props.height[0]/props.radius[0],32]} />
+            <meshStandardMaterial color="rgb(100, 150, 100)" 
+            transparent={true} side={THREE.DoubleSide}/>
           </mesh>
         )
       }  
@@ -80,29 +115,93 @@ export default function BoxesPage(props) {
 
   return (
     <div className={classes.page}>
-  <Canvas>
+  <Canvas camera={{fov:"40"}}>
 <OrbitControls/>
-    <ambientLight />
+    <ambientLight
+    color="white"
+    intensity={0.2}/>
     <primitive object={new THREE.AxesHelper(50)} />
-    <primitive object={new THREE.Vector3(0, 10, 3)} />
+   {/*  <primitive object={new THREE.Vector3(0, 10, 3)} /> */}
  
-    <pointLight position={[3, 3, 1]}  />
+    <pointLight position={[0, 10, 20]}  />
 {/*     <mesh
     position={[0,0,2]}
     >
             <planeBufferGeometry attach="geometry" args={[15, 15]} />
             <meshPhongMaterial attach="material" color="green" />
          </mesh> */}
-  {/*  <Polyhedron /> */}
+ 
     {type=="SPHERE" && 
-    <Sphere radius={scatterer.radius[0]} position={0} />}
+    <Sphere radius={scatterer.radius[0]} position={0} 
+    ellipseratio={1}
+    />
 
-    {type=="CYLINDER"&&
+    }
+
+    {type=="CYLINDER" &&
     <Cylinder radius={scatterer.radius[0]}
     height = {scatterer.height[0]}
     position={0}/>
     }
 
+
+{type=="CORESHELL" && <>
+    <SphereEl  
+    radius={scatterer.coreRadius[0]/scatterer.coreRadius[0]}
+    position={0}
+    ellipseratio={1}
+    opacity={0.5}
+    anglecut= {5}
+    />
+     <SphereEl  
+    radius={scatterer.radiusCell1[0]/scatterer.coreRadius[0]}
+    position={0}
+    ellipseratio={1}
+    opacity={0.7}
+    anglecut= {5}
+    /> 
+
+{scatterer.NumOfCells[0]>1 &&
+     <SphereEl  
+     radius={scatterer.radiusCell2[0]/scatterer.coreRadius[0]}
+     position={0}
+     ellipseratio={1}
+     opacity={0.8}
+     anglecut= {5}
+     /> 
+} 
+
+
+{scatterer.NumOfCells[0]>2 &&
+     <SphereEl  
+     radius={scatterer.radiusCell3[0]/scatterer.coreRadius[0]}
+     position={0}
+     ellipseratio={1}
+     opacity={0.9}
+     anglecut= {5}
+     /> 
+} 
+
+
+{scatterer.NumOfCells[0]>3 &&
+     <SphereEl  
+     radius={scatterer.radiusCell4[0]/scatterer.coreRadius[0]}
+     position={0}
+     ellipseratio={1}
+     opacity={1}
+     anglecut= {3.14}
+     /> 
+} 
+
+
+    </>
+    }
+
+{type=="ELIPSE" &&
+<Sphere radius={scatterer.radius1[0]} position={0}
+ellipseratio={scatterer.radius2[0]/scatterer.radius1[0]}
+/>}
+    
     
   </Canvas>
     </div>
