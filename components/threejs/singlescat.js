@@ -49,6 +49,14 @@ export default function BoxesPage(props) {
         // Subscribe this component to the render-loop, rotate the mesh every frame
        // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
         // Return the view, these are regular Threejs elements expressed in JSX
+        let eps = props.color;
+        if (eps > 14) {eps=14}
+        else if (eps<1) {eps=1}
+        
+        let hslratio = parseFloat(eps/14);
+        hslratio = parseFloat(hslratio*360)
+
+        
         return (
           <mesh
             {...props}
@@ -59,7 +67,7 @@ export default function BoxesPage(props) {
             >
             <sphereGeometry args={[radius, 20, 20,0,anglecut]} 
             />
-            <meshStandardMaterial color="rgb(100, 150, 100)" 
+            <meshStandardMaterial color={`hsl(${hslratio}, 80%, 40%)` }
             transparent={true} side={THREE.DoubleSide} opacity={opacity}/>
           </mesh>
         )
@@ -150,15 +158,17 @@ export default function BoxesPage(props) {
     radius={scatterer.coreRadius[0]/scatterer.coreRadius[0]}
     position={0}
     ellipseratio={1}
-    opacity={0.5}
+    opacity={1}
     anglecut= {5}
+    color = {scatterer.epsReal[0]}
     />
      <SphereEl  
     radius={scatterer.radiusCell1[0]/scatterer.coreRadius[0]}
     position={0}
     ellipseratio={1}
-    opacity={0.7}
+    opacity={1}
     anglecut= {5}
+    color ={scatterer.epsRealCell1[0]}
     /> 
 
 {scatterer.NumOfCells[0]>1 &&
@@ -166,8 +176,9 @@ export default function BoxesPage(props) {
      radius={scatterer.radiusCell2[0]/scatterer.coreRadius[0]}
      position={0}
      ellipseratio={1}
-     opacity={0.8}
+     opacity={1}
      anglecut= {5}
+     color ={scatterer.epsRealCell2[0]}
      /> 
 } 
 
@@ -177,8 +188,9 @@ export default function BoxesPage(props) {
      radius={scatterer.radiusCell3[0]/scatterer.coreRadius[0]}
      position={0}
      ellipseratio={1}
-     opacity={0.9}
+     opacity={1}
      anglecut= {5}
+     color ={scatterer.epsRealCell3[0]}
      /> 
 } 
 
@@ -189,7 +201,8 @@ export default function BoxesPage(props) {
      position={0}
      ellipseratio={1}
      opacity={1}
-     anglecut= {3.14}
+     anglecut= {5}
+     color ={scatterer.epsRealCell4[0]}
      /> 
 } 
 
