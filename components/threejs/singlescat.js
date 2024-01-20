@@ -20,6 +20,11 @@ export default function BoxesPage(props) {
         // Subscribe this component to the render-loop, rotate the mesh every frame
        // useFrame((state, delta) => (ref.current.rotation.x += 0.01))
         // Return the view, these are regular Threejs elements expressed in JSX
+        const origin = new THREE.Vector3( 0, 4, 0 );
+        const dir  = new THREE.Vector3( 1, -1, 0);
+        dir.normalize();
+        const length = 2;
+        const hex = 0xffff00;
         return (
           <mesh
             {...props}
@@ -32,6 +37,9 @@ export default function BoxesPage(props) {
             />
             <meshStandardMaterial color="rgb(100, 150, 100)" 
             transparent={true} side={THREE.DoubleSide} />
+            
+            {/* <arrowHelper args={[dir,origin,length]} /> */}
+
           </mesh>
         )
       }
@@ -129,15 +137,10 @@ export default function BoxesPage(props) {
     color="white"
     intensity={0.2}/>
     <primitive object={new THREE.AxesHelper(50)} />
-   {/*  <primitive object={new THREE.Vector3(0, 10, 3)} /> */}
+    
  
     <pointLight position={[0, 10, 20]}  />
-{/*     <mesh
-    position={[0,0,2]}
-    >
-            <planeBufferGeometry attach="geometry" args={[15, 15]} />
-            <meshPhongMaterial attach="material" color="green" />
-         </mesh> */}
+
  
     {type=="SPHERE" && 
     <Sphere radius={scatterer.radius[0]} position={0} 

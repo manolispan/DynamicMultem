@@ -12,7 +12,7 @@ export default function Homepage(props) {
   const [loading,setLoading]= useState(false);
   const [loadingValues,setLoadingValues]= useState(true);
   const [multemEnd,setMultemEnd]=useState(false);
-  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE","CORESHELL"];
+  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE","CORESHELL","GYROELECTRICSPHERE"];
   const unitsFreq = ["MHz", "GHz", "THz"];
   const unitsLength = ["mm", "microm", "nm"];
   const polarizationChoices = ["P", "S", "L", "R"];
@@ -70,7 +70,18 @@ export default function Homepage(props) {
       muRealCell1: [1, 1, 1],
       muImagCell1: [0, 1, 1],
       radiusCell1 : [1, 4, 1],
-
+    },
+    GYROELECTRICSPHERE: {
+      epsxxReal: [12, 12, 1],
+      epsxxImag: [0, 12, 1],
+      epsxyReal: [12, 12, 1],
+      epsxyImag: [0, 12, 1],
+      epszzReal: [12, 12, 1],
+      epszzImag: [0, 12, 1],
+      muReal: [1, 1, 1],
+      muImag: [0, 1, 1],
+      radius: [1, 4, 1],
+      
     },
   });
 
@@ -102,21 +113,15 @@ export default function Homepage(props) {
       (key!="epsReal" && key!="epsImag" && key!="muReal" && key!="muImag")
       )
       {
+        if (key=="epsxxReal" || key=="epsxxImag" ||
+        key=="epsxyReal" || key=="epsxyImag" ||
+        key=="epszzReal" || key=="epszzImag"
+        ) {return}
+
         if (key=="NumOfCells") 
         {
           text.push(<div>
-{/* <h2 className={classes.inline}>Number of Cells</h2>
-<input
-                defaultValue={scatValues[typeofScat][key][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat][key][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              /> */}
+
              <button
              onClick={()=>{
               const temp = Object.assign({}, scatValues);
@@ -148,6 +153,9 @@ export default function Homepage(props) {
           </div>)
 
         }
+
+
+
         else 
 {      text.push(
         <div>
@@ -273,7 +281,16 @@ export default function Homepage(props) {
       ...allCells,    
       ...envValues,
       ...lightValues,
-      ...multExpansion
+      ...multExpansion,
+      epsxxReal: scatValues["GYROELECTRICSPHERE"]["epsxxReal"],
+      epsxxImag: scatValues["GYROELECTRICSPHERE"]["epsxxImag"],
+      epsxyReal: scatValues["GYROELECTRICSPHERE"]["epsxyReal"],
+      epsxyImag: scatValues["GYROELECTRICSPHERE"]["epsxyImag"],
+      epszzReal: scatValues["GYROELECTRICSPHERE"]["epszzReal"],
+      epszzImag: scatValues["GYROELECTRICSPHERE"]["epszzImag"],
+      muRealGE: scatValues["GYROELECTRICSPHERE"]["muReal"],
+      muImagGE: scatValues["GYROELECTRICSPHERE"]["muImag"],
+      radiusGE: scatValues["GYROELECTRICSPHERE"]["radius"],
 
     }
   
@@ -340,7 +357,19 @@ export default function Homepage(props) {
             coreRadius: input[24].split(" "),
             NumOfCells: input[25].split(" "),
             ...allCells
-          }
+          },
+          GYROELECTRICSPHERE: {
+            epsxxReal: input[38+coreCells*5].split(" "),
+            epsxxImag: input[39+coreCells*5].split(" "),
+            epsxyReal: input[40+coreCells*5].split(" "),
+            epsxyImag: input[41+coreCells*5].split(" "),
+            epszzReal: input[42+coreCells*5].split(" "),
+            epszzImag: input[43+coreCells*5].split(" "),
+            muReal: input[44+coreCells*5].split(" "),
+            muImag: input[45+coreCells*5].split(" "),
+            radius: input[46+coreCells*5].split(" "),
+            
+          },
         });
       
       setEnvValues({
@@ -1143,6 +1172,7 @@ export default function Homepage(props) {
           <select onChange={(e) => setTypeOfScat(e.target.value)}
           defaultValue={typeofScat}
           >
+
             {ΕίδηΣκεδαστών.map((item) => {
               let name= item;
               if (name=="ELIPSE") {name="SPHEROID"}
@@ -1202,7 +1232,143 @@ defaultValue={typeofMaterial}
           </div>       
 
 
+          {typeofScat=="GYROELECTRICSPHERE" &&
+          <>
+{/*           <div className={classes.tableupomn}> eps=
+            <table>
+              <tbody>
+              <tr>
+                <td>exx</td>
+                <td>exy</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>eyx=-exy</td>
+                <td>eyy=exx</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>ezz</td>
+              </tr>
+               </tbody>
+            </table>
+            </div> */}
 
+            <div
+            className={classes.tableTanustwnCont}>
+<strong>{/* ε */}eps</strong>=
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                  <input
+                defaultValue={scatValues[typeofScat]["epsxxReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsxxReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["epsxxImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsxxImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+                  </td>
+                  <td>
+                  <input
+                defaultValue={scatValues[typeofScat]["epsxyReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsxyReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["epsxyImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsxyImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+                  </td>
+                  <td>
+              0
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+{-1*parseFloat(scatValues[typeofScat]["epsxyReal"][0])}
+
+{parseFloat(scatValues[typeofScat]["epsxyImag"][0])>0 &&
+<>{-1*parseFloat(scatValues[typeofScat]["epsxyImag"][0])}i</>
+}
+{parseFloat(scatValues[typeofScat]["epsxyImag"][0])<0 &&
+<>+{-1*parseFloat(scatValues[typeofScat]["epsxyImag"][0])}i</>
+}
+
+                  </td>
+                  <td>
+                  {parseFloat(scatValues[typeofScat]["epsxxReal"][0])}
+                  {parseFloat(scatValues[typeofScat]["epsxxImag"][0])>0 &&
+<>+{parseFloat(scatValues[typeofScat]["epsxxImag"][0])}i</>
+}
+{parseFloat(scatValues[typeofScat]["epsxxImag"][0])<0 &&
+<>{parseFloat(scatValues[typeofScat]["epsxxImag"][0])}i</>
+}
+                  </td>
+                  <td>
+              0
+                  </td>
+                </tr>
+                <tr>
+<td>0</td>
+<td>0</td>
+<td><input
+                defaultValue={scatValues[typeofScat]["epszzReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epszzReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["epszzImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epszzImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i</td>
+
+                </tr>        
+              </tbody>
+              </table>    
+
+            </div>
+            </>
+            }
 
           {typeofScat && (
             <div>

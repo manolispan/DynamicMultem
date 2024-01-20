@@ -73,6 +73,58 @@
     min-width: 500px;
 }
 
+.tableTanustwnCont {
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+}
+
+.tableTanustwnCont table{
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+}
+
+.tableTanustwnCont td, .tableTanustwnCont th {
+    border: 1px dotted black;
+    
+}
+
+.tableTanustwnCont td {
+    padding: 10px 5px;
+   width: 35px
+}
+
+
+.tableTanustwnCont input {
+   width: 35px; 
+}
+
+.tableupomn  {
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+}
+
+.tableupomn  table{
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+}
+
+.tableupomn td, .tableupomn th {
+    border: 1px dotted black;
+    
+}
+
+.tableupomn td {
+    padding: 10px 5px;
+   width: 25px
+}
+
+
+
+
 .geometry {
     grid-area: geometry;
     max-height: 1000px;
