@@ -6,12 +6,25 @@ import Axios from "axios";
 import LoadingPrompt from "../../components/ui/loadingPrompt/loadingPrompt";
 import ConfirmPrompt from "../../components/ui/confirmprompt/confirmprompt";
 import { useRouter } from "next/router";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import TextField from '@mui/material/TextField';
+
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
 
 
 export default function Homepage(props) {
+  const [saveInput,setSaveInput]=useState(false);
+  const [saveOutput,setSaveOutput]=useState(false);
   const router = useRouter();
+  const [savePrompt,setSavePrompt]=useState(false);
   const [loading,setLoading]= useState(false);
   const [loadingValues,setLoadingValues]= useState(true);
   const [multemEnd,setMultemEnd]=useState(false);
@@ -454,18 +467,113 @@ export default function Homepage(props) {
 
 
   
+  async function SaveFilesHandler() {
+    setLoading(true);
+    const input = {
+      inputfile: saveInput,
+      scs: saveOutput,
+      name: document.getElementById("filename").value
+    }
+    if (saveInput ||
+    saveOutput
+    ) {
+
+      const result = await Axios.post(
+        'http://localhost:3001/savefilessingle',
+        input
+      )
+
+
+
+    }
+
+setSavePrompt(false);
+setLoading(false);
+
+
+
+  }
+
   
   return (<>    
   {loading && <LoadingPrompt/>}
   {loadingValues && <LoadingPrompt/>}
-  {multemEnd && <ConfirmPrompt
+{/*   {multemEnd && <ConfirmPrompt
   text="Success! Multem has ended"
   yestext= "Go to results"
   notext = "Stay here"
   cancel = {()=>setMultemEnd(false)}
   ok = {()=> router.push("/single/results")}
-  />}
+  />} */}
+ <Dialog
+        open={multemEnd}
+        onClose={()=>setMultemEnd(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"The simulation has finished successfully!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          How do you want to proceed? You can save the results either by pressing "save the results" or by 
+          selecting "Go to the graphs" and save after.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setMultemEnd(false)}>Stay Here</Button>
+          <Button onClick={()=>{setMultemEnd(false);setSavePrompt(true)}}>Save the results</Button>
+          <Button onClick={()=> router.push("/single/results")}>Go to the Graphs</Button>
+        </DialogActions>
+      </Dialog>
 
+      <Dialog
+        open={savePrompt}
+        onClose={()=>setSavePrompt(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"What do you want to save?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          Select if you want to save the input file, the output file (SCS) and the name to save it.
+          </DialogContentText>
+
+        </DialogContent>
+
+
+        <DialogActions>
+        <TextField id="filename" label="Enter name to save" variant="outlined"
+        size="small"
+        />
+
+        <FormControlLabel control=
+        {
+          <Checkbox
+          checked={saveInput}
+          onChange={(event) => {
+            setSaveInput(event.target.checked);
+          }}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        } label="Input" />
+
+<FormControlLabel control=
+        {
+          <Checkbox
+          checked={saveOutput}
+          onChange={(event) => {
+            setSaveOutput(event.target.checked);
+          }}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        } label="Output (scs)" />
+
+        </DialogActions>
+        <DialogActions>
+          <Button variant="contained" onClick={()=>{
+            if (document.getElementById("filename").value=="") {alert("Please input a name")}
+            else
+            {setSavePrompt(false); SaveFilesHandler()}}}>Save</Button>
+        </DialogActions>
+      </Dialog>
+  
   <div className={classes.allpage}
   key={loadingValues? "wait" : "done"}
   >
