@@ -166,46 +166,46 @@ export default function BoxesPage(props) {
     color = {scatterer.epsReal[0]}
     />
      <SphereEl  
-    radius={scatterer.radiusCell1[0]/scatterer.coreRadius[0]}
+    radius={scatterer.radiusShell1[0]/scatterer.coreRadius[0]}
     position={0}
     ellipseratio={1}
     opacity={1}
     anglecut= {5}
-    color ={scatterer.epsRealCell1[0]}
+    color ={scatterer.epsRealShell1[0]}
     /> 
 
-{scatterer.NumOfCells[0]>1 &&
+{scatterer.NumOfShells[0]>1 &&
      <SphereEl  
-     radius={scatterer.radiusCell2[0]/scatterer.coreRadius[0]}
+     radius={scatterer.radiusShell2[0]/scatterer.coreRadius[0]}
      position={0}
      ellipseratio={1}
      opacity={1}
      anglecut= {5}
-     color ={scatterer.epsRealCell2[0]}
+     color ={scatterer.epsRealShell2[0]}
      /> 
 } 
 
 
-{scatterer.NumOfCells[0]>2 &&
+{scatterer.NumOfShells[0]>2 &&
      <SphereEl  
-     radius={scatterer.radiusCell3[0]/scatterer.coreRadius[0]}
+     radius={scatterer.radiusShell3[0]/scatterer.coreRadius[0]}
      position={0}
      ellipseratio={1}
      opacity={1}
      anglecut= {5}
-     color ={scatterer.epsRealCell3[0]}
+     color ={scatterer.epsRealShell3[0]}
      /> 
 } 
 
 
-{scatterer.NumOfCells[0]>3 &&
+{scatterer.NumOfShells[0]>3 &&
      <SphereEl  
-     radius={scatterer.radiusCell4[0]/scatterer.coreRadius[0]}
+     radius={scatterer.radiusShell4[0]/scatterer.coreRadius[0]}
      position={0}
      ellipseratio={1}
      opacity={1}
      anglecut= {5}
-     color ={scatterer.epsRealCell4[0]}
+     color ={scatterer.epsRealShell4[0]}
      /> 
 } 
 

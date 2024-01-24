@@ -15,7 +15,7 @@ export default function Homepage(props) {
   const [loading,setLoading]= useState(false);
   const [loadingValues,setLoadingValues]= useState(true);
   const [multemEnd,setMultemEnd]=useState(false);
-  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE","CORESHELL","GYROELECTRICSPHERE"];
+  const ΕίδηΣκεδαστών = ["SPHERE", "CYLINDER", "ELIPSE","CORESHELL","GYROELECTRICSPHERE","GYROMAGNETICSPHERE"];
   const unitsFreq = ["MHz", "GHz", "THz"];
   const unitsLength = ["mm", "microm", "nm"];
   const polarizationChoices = ["P", "S", "L", "R"];
@@ -67,12 +67,12 @@ export default function Homepage(props) {
       muReal: [1, 1, 1],
       muImag: [0, 1, 1],
       coreRadius: [1, 4, 1],
-      NumOfCells: [1,0,1],
-      epsRealCell1: [12, 12, 1],
-      epsImagCell1: [0, 12, 1],
-      muRealCell1: [1, 1, 1],
-      muImagCell1: [0, 1, 1],
-      radiusCell1 : [1, 4, 1],
+      NumOfShells: [1,0,1],
+      epsRealShell1: [12, 12, 1],
+      epsImagShell1: [0, 12, 1],
+      muRealShell1: [1, 1, 1],
+      muImagShell1: [0, 1, 1],
+      radiusShell1 : [1, 4, 1],
     },
     GYROELECTRICSPHERE: {
       epsxxReal: [12, 12, 1],
@@ -83,8 +83,18 @@ export default function Homepage(props) {
       epszzImag: [0, 12, 1],
       muReal: [1, 1, 1],
       muImag: [0, 1, 1],
-      radius: [1, 4, 1],
-      
+      radius: [1, 4, 1],   
+    },
+    GYROMAGNETICSPHERE: {
+      epsReal: [12, 12, 1],
+      epsImag: [0, 12, 1],
+      muxxReal: [12, 12, 1],
+      muxxImag: [0, 12, 1],
+      muxyReal: [12, 12, 1],
+      muxyImag: [0, 12, 1],
+      muzzReal: [12, 12, 1],
+      muzzImag: [0, 12, 1],
+      radius: [1, 4, 1],   
     },
   });
 
@@ -118,10 +128,14 @@ export default function Homepage(props) {
       {
         if (key=="epsxxReal" || key=="epsxxImag" ||
         key=="epsxyReal" || key=="epsxyImag" ||
-        key=="epszzReal" || key=="epszzImag"
+        key=="epszzReal" || key=="epszzImag" ||
+        key=="muxxReal" || key=="muxxImag" ||
+        key=="muxyReal" || key=="muxyImag" ||
+        key=="muzzReal" || key=="muzzImag" 
+
         ) {return}
 
-        if (key=="NumOfCells") 
+        if (key=="NumOfShells") 
         {
           text.push(<div>
 
@@ -132,11 +146,11 @@ export default function Homepage(props) {
               if (previousNo==1) {return}
               let newNo= previousNo-1;
               temp[typeofScat][key][0]= newNo;
-              delete temp[typeofScat]["epsRealCell"+previousNo];
-              delete temp[typeofScat]["epsImagCell"+previousNo];
-              delete temp[typeofScat]["muRealCell"+previousNo];
-              delete temp[typeofScat]["muImagCell"+previousNo]; 
-              delete temp[typeofScat]["radiusCell"+previousNo];
+              delete temp[typeofScat]["epsRealShell"+previousNo];
+              delete temp[typeofScat]["epsImagShell"+previousNo];
+              delete temp[typeofScat]["muRealShell"+previousNo];
+              delete temp[typeofScat]["muImagShell"+previousNo]; 
+              delete temp[typeofScat]["radiusShell"+previousNo];
               setScatValues(temp);
              }}
              >-</button> {scatValues[typeofScat][key][0]} <button
@@ -145,11 +159,11 @@ export default function Homepage(props) {
               let previousNo= parseInt(scatValues[typeofScat][key][0]);
               let newNo= previousNo+1;
               temp[typeofScat][key][0]= newNo;
-              temp[typeofScat]["epsRealCell"+newNo]=temp[typeofScat]["epsRealCell"+previousNo].slice();
-              temp[typeofScat]["epsImagCell"+newNo]=temp[typeofScat]["epsImagCell"+previousNo].slice();
-              temp[typeofScat]["muRealCell"+newNo]=temp[typeofScat]["muRealCell"+previousNo].slice();
-              temp[typeofScat]["muImagCell"+newNo]=temp[typeofScat]["muImagCell"+previousNo].slice(); 
-              temp[typeofScat]["radiusCell"+newNo]=temp[typeofScat]["radiusCell"+previousNo].slice();
+              temp[typeofScat]["epsRealShell"+newNo]=temp[typeofScat]["epsRealShell"+previousNo].slice();
+              temp[typeofScat]["epsImagShell"+newNo]=temp[typeofScat]["epsImagShell"+previousNo].slice();
+              temp[typeofScat]["muRealShell"+newNo]=temp[typeofScat]["muRealShell"+previousNo].slice();
+              temp[typeofScat]["muImagShell"+newNo]=temp[typeofScat]["muImagShell"+previousNo].slice(); 
+              temp[typeofScat]["radiusShell"+newNo]=temp[typeofScat]["radiusShell"+previousNo].slice();
               setScatValues(temp);
              }}
              >+</button> 
@@ -241,18 +255,18 @@ export default function Homepage(props) {
 
   setLoading(true)
     
-  const coreCells= parseInt(scatValues["CORESHELL"]["NumOfCells"][0]);
-  let allCells = {};
-  for (let i=0 ; i<coreCells; i++) {
+  const coreShells= parseInt(scatValues["CORESHELL"]["NumOfShells"][0]);
+  let allShells = {};
+  for (let i=0 ; i<coreShells; i++) {
     const j=i+1
-    const tempCells= {
-      ["epsRealCell"+j] : scatValues["CORESHELL"]["epsRealCell"+j],
-      ["epsImagCell"+j] : scatValues["CORESHELL"]["epsImagCell"+j],
-      ["muRealCell"+j] : scatValues["CORESHELL"]["muRealCell"+j],
-      ["muImagCell"+j] : scatValues["CORESHELL"]["muImagCell"+j],
-      ["radiusCell"+j] : scatValues["CORESHELL"]["radiusCell"+j],
+    const tempShells= {
+      ["epsRealShell"+j] : scatValues["CORESHELL"]["epsRealShell"+j],
+      ["epsImagShell"+j] : scatValues["CORESHELL"]["epsImagShell"+j],
+      ["muRealShell"+j] : scatValues["CORESHELL"]["muRealShell"+j],
+      ["muImagShell"+j] : scatValues["CORESHELL"]["muImagShell"+j],
+      ["radiusShell"+j] : scatValues["CORESHELL"]["radiusShell"+j],
     }
-    allCells={...allCells,...tempCells}
+    allShells={...allShells,...tempShells}
   }
     const input = {
       typeofScat : typeofScat,
@@ -280,8 +294,8 @@ export default function Homepage(props) {
       muRealCS: scatValues["CORESHELL"]["muReal"],
       muImagCS: scatValues["CORESHELL"]["muImag"],
       coreRadiusCS: scatValues["CORESHELL"]["coreRadius"],
-      NumOfCells: scatValues["CORESHELL"]["NumOfCells"], 
-      ...allCells,    
+      NumOfShells: scatValues["CORESHELL"]["NumOfShells"], 
+      ...allShells,    
       ...envValues,
       ...lightValues,
       ...multExpansion,
@@ -294,6 +308,16 @@ export default function Homepage(props) {
       muRealGE: scatValues["GYROELECTRICSPHERE"]["muReal"],
       muImagGE: scatValues["GYROELECTRICSPHERE"]["muImag"],
       radiusGE: scatValues["GYROELECTRICSPHERE"]["radius"],
+
+      epsRealGM: scatValues["GYROMAGNETICSPHERE"]["epsReal"],
+      epsImagGM: scatValues["GYROMAGNETICSPHERE"]["epsImag"],
+      muxxReal: scatValues["GYROMAGNETICSPHERE"]["muxxReal"],
+      muxxImag: scatValues["GYROMAGNETICSPHERE"]["muxxImag"],
+      muxyReal: scatValues["GYROMAGNETICSPHERE"]["muxyReal"],
+      muxyImag: scatValues["GYROMAGNETICSPHERE"]["muxyImag"],
+      muzzReal: scatValues["GYROMAGNETICSPHERE"]["muzzReal"],
+      muzzImag: scatValues["GYROMAGNETICSPHERE"]["muzzImag"],
+      radiusGM: scatValues["GYROMAGNETICSPHERE"]["radius"],
 
     }
   
@@ -313,18 +337,18 @@ export default function Homepage(props) {
     const response = await Axios.get('http://localhost:3001/singleinputdefault');
    
       const input = response.data;
-      const coreCells= parseInt(input[25].split(" ")[0]);
-      let allCells = {};
-      for (let i=0 ; i<coreCells; i++) {
+      const coreShells= parseInt(input[25].split(" ")[0]);
+      let allShells = {};
+      for (let i=0 ; i<coreShells; i++) {
         const j=i+1
-        const tempCells= {
-          ["epsRealCell"+j] : input[25+5*i+1].split(" "),
-          ["epsImagCell"+j] : input[25+5*i+2].split(" "),
-          ["muRealCell"+j] : input[25+5*i+3].split(" "),
-          ["muImagCell"+j] : input[25+5*i+4].split(" "),
-          ["radiusCell"+j] : input[25+5*i+5].split(" "),
+        const tempShells= {
+          ["epsRealShell"+j] : input[25+5*i+1].split(" "),
+          ["epsImagShell"+j] : input[25+5*i+2].split(" "),
+          ["muRealShell"+j] : input[25+5*i+3].split(" "),
+          ["muImagShell"+j] : input[25+5*i+4].split(" "),
+          ["radiusShell"+j] : input[25+5*i+5].split(" "),
         }
-        allCells={...allCells,...tempCells}
+        allShells={...allShells,...tempShells}
       }
       setTypeOfScat(input[1]);
       setLengthUnitsScat(input[2]);
@@ -358,55 +382,67 @@ export default function Homepage(props) {
             muReal: input[22].split(" "),
             muImag: input[23].split(" "),
             coreRadius: input[24].split(" "),
-            NumOfCells: input[25].split(" "),
-            ...allCells
+            NumOfShells: input[25].split(" "),
+            ...allShells
           },
           GYROELECTRICSPHERE: {
-            epsxxReal: input[38+coreCells*5].split(" "),
-            epsxxImag: input[39+coreCells*5].split(" "),
-            epsxyReal: input[40+coreCells*5].split(" "),
-            epsxyImag: input[41+coreCells*5].split(" "),
-            epszzReal: input[42+coreCells*5].split(" "),
-            epszzImag: input[43+coreCells*5].split(" "),
-            muReal: input[44+coreCells*5].split(" "),
-            muImag: input[45+coreCells*5].split(" "),
-            radius: input[46+coreCells*5].split(" "),
-            
+            epsxxReal: input[38+coreShells*5].split(" "),
+            epsxxImag: input[39+coreShells*5].split(" "),
+            epsxyReal: input[40+coreShells*5].split(" "),
+            epsxyImag: input[41+coreShells*5].split(" "),
+            epszzReal: input[42+coreShells*5].split(" "),
+            epszzImag: input[43+coreShells*5].split(" "),
+            muReal: input[44+coreShells*5].split(" "),
+            muImag: input[45+coreShells*5].split(" "),
+            radius: input[46+coreShells*5].split(" "),           
           },
+
+          GYROMAGNETICSPHERE: {
+            epsReal: input[47+coreShells*5].split(" "),
+            epsImag: input[48+coreShells*5].split(" "),
+            muxxReal: input[49+coreShells*5].split(" "),
+            muxxImag: input[50+coreShells*5].split(" "),
+            muxyReal: input[51+coreShells*5].split(" "),
+            muxyImag: input[52+coreShells*5].split(" "),
+            muzzReal: input[53+coreShells*5].split(" "),
+            muzzImag: input[54+coreShells*5].split(" "),
+            radius: input[55+coreShells*5].split(" "), 
+          },
+
         });
       
       setEnvValues({
         //epsEnv: input[20],
-        epsEnv: input[20+6+coreCells*5],
-        muEnv: input[21+6+coreCells*5],
+        epsEnv: input[20+6+coreShells*5],
+        muEnv: input[21+6+coreShells*5],
       });
 
       let a = true;
       let b = false;
-      if (input[22+6+coreCells*5].split(" ")[3]=="false")
+      if (input[22+6+coreShells*5].split(" ")[3]=="false")
       {a= false;
         b=true; }
 
       setLightValues({
         frequency: 
-        [input[22+6+coreCells*5].split(" ")[0],
-        input[22+6+coreCells*5].split(" ")[1],
-        input[22+6+coreCells*5].split(" ")[2],a],
+        [input[22+6+coreShells*5].split(" ")[0],
+        input[22+6+coreShells*5].split(" ")[1],
+        input[22+6+coreShells*5].split(" ")[2],a],
         wavelength: 
-        [input[23+6+coreCells*5].split(" ")[0],
-        input[23+6+coreCells*5].split(" ")[1],
-        input[23+6+coreCells*5].split(" ")[2],b],
-        thetaIn: input[24+6+coreCells*5].split(" "),
-        phiIn: input[25+6+coreCells*5].split(" "),
-        polarization: input[26+6+coreCells*5],
-        unitsOfFreq: input[27+6+coreCells*5],
-        unitsOfWavelength: input[28+6+coreCells*5],
+        [input[23+6+coreShells*5].split(" ")[0],
+        input[23+6+coreShells*5].split(" ")[1],
+        input[23+6+coreShells*5].split(" ")[2],b],
+        thetaIn: input[24+6+coreShells*5].split(" "),
+        phiIn: input[25+6+coreShells*5].split(" "),
+        polarization: input[26+6+coreShells*5],
+        unitsOfFreq: input[27+6+coreShells*5],
+        unitsOfWavelength: input[28+6+coreShells*5],
       });
 
       setMultExpansion({
-        lmax: input[29+6+coreCells*5],
-        ltmax: input[30+6+coreCells*5],
-        Ngauss: input[31+6+coreCells*5]
+        lmax: input[29+6+coreShells*5],
+        ltmax: input[30+6+coreShells*5],
+        Ngauss: input[31+6+coreShells*5]
       });
 
 
@@ -1131,7 +1167,7 @@ export default function Homepage(props) {
           /> <i className="fa fa-question-circle" aria-hidden="true" />
 
 
- {typeofScat != "SPHERE" && 
+ {typeofScat != "SPHERE" && typeofScat != "ELIPSE" && 
            <div>
           <h2 style={{ display: "inline" }}>Ltmax: </h2>
           <input
@@ -1358,6 +1394,144 @@ defaultValue={typeofMaterial}
               onChange={(e) => {
                 const temp = Object.assign({}, scatValues);
                 temp[typeofScat]["epszzImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i</td>
+
+                </tr>        
+              </tbody>
+              </table>    
+
+            </div>
+            </>
+            }
+
+{typeofScat=="GYROMAGNETICSPHERE" &&
+          <>
+{/*           <div className={classes.tableupomn}> eps=
+            <table>
+              <tbody>
+              <tr>
+                <td>exx</td>
+                <td>exy</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>eyx=-exy</td>
+                <td>eyy=exx</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>ezz</td>
+              </tr>
+               </tbody>
+            </table>
+            </div> */}
+
+            <div
+            className={classes.tableTanustwnCont}>
+<strong>{/* ε */}mu</strong>=
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                  <input
+                defaultValue={scatValues[typeofScat]["muxxReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muxxReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["muxxImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muxxImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+                  </td>
+                  <td>
+                  <input
+                defaultValue={scatValues[typeofScat]["muxyReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muxyReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["muxyImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muxyImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+                  </td>
+                  <td>
+              0
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+{-1*parseFloat(scatValues[typeofScat]["muxyReal"][0])}
+
+{parseFloat(scatValues[typeofScat]["muxyImag"][0])>0 &&
+<>{-1*parseFloat(scatValues[typeofScat]["muxyImag"][0])}i</>
+}
+{parseFloat(scatValues[typeofScat]["muxyImag"][0])<0 &&
+<>+{-1*parseFloat(scatValues[typeofScat]["muxyImag"][0])}i</>
+}
+
+                  </td>
+                  <td>
+                  {parseFloat(scatValues[typeofScat]["muxxReal"][0])}
+                  {parseFloat(scatValues[typeofScat]["muxxImag"][0])>0 &&
+<>+{parseFloat(scatValues[typeofScat]["muxxImag"][0])}i</>
+}
+{parseFloat(scatValues[typeofScat]["muxxImag"][0])<0 &&
+<>{parseFloat(scatValues[typeofScat]["muxxImag"][0])}i</>
+}
+                  </td>
+                  <td>
+              0
+                  </td>
+                </tr>
+                <tr>
+<td>0</td>
+<td>0</td>
+<td><input
+                defaultValue={scatValues[typeofScat]["muzzReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muzzReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["muzzImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muzzImag"][0] = e.target.value.replaceAll(
                   ",",
                   "."
                 );
