@@ -1,0 +1,58 @@
+html {
+  box-sizing: border-box;
+  background: #e3e2df;
+  background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893);
+  --red1: #5d001e;
+  --white: #e3e2df;
+  --pink1: #e3afbc;
+  --pink2: #9a1750;
+  --fluo: #ee4c7c;
+  --fluo2:rgb(207, 40, 143);
+  --grey: rgb(187, 190, 197);
+  --blue1: rgb(31, 31, 228);
+  background-size: cover;
+  padding: 0px;
+  margin: 0px;
+
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin:0px;
+    font-family: 'Poppins', sans-serif;
+    padding: 0px;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+
+}
+
+/* width */
+html ::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+html ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+html ::-webkit-scrollbar-thumb {
+  background: var(--fluo);
+  border-radius: 10px;
+}
+
+body input {
+  width: 70px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+}

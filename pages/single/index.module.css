@@ -1,0 +1,237 @@
+.allpage {
+    max-width: 1800px;
+    margin: auto;
+    padding: 0px;
+    padding-top: 70px;
+    /* background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893); */
+    color: white;
+    display: grid;
+    grid-template-areas: "allproperties2 allproperties" "geometry geometry";
+    grid-template-columns: 50% 50%; 
+    grid-template-rows: auto 800px;
+
+}
+
+.inline {
+    display: inline;
+    
+}
+
+
+.allpage h2 {
+    font-size: unset;
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.allpage input{
+    padding: 2px;
+    font-size: 15px;
+    border: 2px solid #061ab073;
+}
+
+.allpage select{
+    padding: 2px;
+    font-size: 15px;
+    border: 2px solid #061ab073;
+    border-radius: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.allproperties {
+    padding-top: 0px;
+    margin-top: 10px;
+    grid-area: allproperties;
+    text-align: center;
+    color: #061BB0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+
+}
+
+.allproperties h1 {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    font-size: 28px;
+    
+}
+
+.allproperties>div {
+    background-color: #EBEFF8;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 50%;
+    min-width: 500px;
+}
+
+.tableTanustwnCont {
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+}
+
+.tableTanustwnCont table{
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+}
+
+.tableTanustwnCont td, .tableTanustwnCont th {
+    border: 1px dotted black;
+    
+}
+
+.tableTanustwnCont td {
+    padding: 10px 5px;
+   width: 35px
+}
+
+
+.tableTanustwnCont input {
+   width: 35px; 
+}
+
+.tableupomn  {
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+}
+
+.tableupomn  table{
+    border-collapse: collapse;
+    margin: auto;
+    width: 100%;
+}
+
+.tableupomn td, .tableupomn th {
+    border: 1px dotted black;
+    
+}
+
+.tableupomn td {
+    padding: 10px 5px;
+   width: 25px
+}
+
+
+
+
+.geometry {
+    grid-area: geometry;
+    max-height: 1000px;
+    padding-top: 0px;
+    
+}
+
+.geometry h1 {
+    text-align: center;
+}
+
+.allproperties img {
+    width: 80px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+
+.use {
+    margin-bottom: 10px;
+}
+
+
+.allproperties2 {
+    padding-top: 0px;
+    margin-top: 10px;
+    grid-area: allproperties2;
+    text-align: center;
+    color: #061BB0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.allproperties2 h1 {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-left: 0px;
+    font-size: 28px;
+    
+}
+
+.allproperties2>div {
+    background-color: #EBEFF8;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 50%;
+    min-width: 500px;
+}
+
+.allproperties2 img {
+    width: 80px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+.materialdiv {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.runMultem {
+    position: fixed;
+    z-index: 1000;
+    bottom: 0px;
+    right: 0px;
+    margin: 40px;
+    z-index: 10;
+   }
+   
+   .runMultem div {
+     padding: 10px;
+     background-color: white;
+     color: #061BB0;
+     border-radius: 10px;
+   }
+   
+   .runMultem div:hover {
+     cursor: pointer;
+   } 
+   
+   .resultlink {
+    color: white;
+    width: 100%;
+    height: 100%;
+
+   }
+
+@media screen and (min-width: 1700px) {
+    .allpage {
+        max-width: 1800px;
+        margin: auto;
+        padding: 0px;
+        padding-top: 70px;
+        /* background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893); */
+        color: white;
+        display: grid;
+        grid-template-areas: "allproperties2 allproperties geometry";
+        grid-template-columns: 30% 30% 40%; 
+        grid-template-rows: minmax(100vh,auto);
+    
+    }
+    
+}
