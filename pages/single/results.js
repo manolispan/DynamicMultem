@@ -13,6 +13,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { TreeView } from '@mui/x-tree-view/TreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+
 
 function Plots(props) {
   const [savePrompt, setSavePrompt] = useState(false);
@@ -239,30 +244,72 @@ setIsLoading(false);
                       ok={LoadOutputHandler}
                     />
                   }
-{/*       {savePrompt &&
-        <ConfirmPrompt
-          text={
-            <div>
-              What do you want to save?
-              <div>
-                <label for="inputfile">Inputfile</label>
-                <input type="checkbox" id="inputfile" />
-              </div>
+<Dialog
+        open={savedFilesPrompt}
+        onClose={()=>setSavedFilesPrompt(false)}
+        aria-describedby="alert-choose-files to load"
+      >
+        <DialogTitle>{"Which file to load?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-choose-files to load description">
+          <TreeView
+        aria-label="file system navigator"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+      >
+        <TreeItem nodeId="1" label="Applications">
+          <TreeItem nodeId="2" label="Calendar" />
+        </TreeItem>
+        <TreeItem nodeId="5" label="Documents">
+          <TreeItem nodeId="10" label="OSS" />
+          <TreeItem nodeId="6" label="MUI">
+            <TreeItem nodeId="8" label="index.js" />
+          </TreeItem>
+        </TreeItem>
+      </TreeView>
+          
+          
+          
+          </DialogContentText>
 
-              <div>
-                <label for="static"> SCS results</label>
-                <input type="checkbox" id="scs" /></div>
-
-              <div>
-                Ονομασία Αρχείων :  <input type="text" id="filename" />
-              </div>
+        </DialogContent>
 
 
-            </div>}
-          cancel={() => setSavePrompt(false)}
-          ok={SaveFilesHandler}
+        <DialogActions>
+        <TextField id="filename" label="Enter name to save" variant="outlined"
+        size="small"
         />
-      } */}
+
+        <FormControlLabel control=
+        {
+          <Checkbox
+          checked={saveInput}
+          onChange={(event) => {
+            setSaveInput(event.target.checked);
+          }}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        } label="Input" />
+
+<FormControlLabel control=
+        {
+          <Checkbox
+          checked={saveOutput}
+          onChange={(event) => {
+            setSaveOutput(event.target.checked);
+          }}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        } label="Output (scs)" />
+
+        </DialogActions>
+        <DialogActions>
+          <Button variant="contained" onClick={()=>{
+            if (document.getElementById("filename").value=="") {alert("Please input a name")}
+            else
+            {setSavePrompt(false); SaveFilesHandler()}}}>Save</Button>
+        </DialogActions>
+      </Dialog>
 
 <Dialog
         open={savePrompt}
