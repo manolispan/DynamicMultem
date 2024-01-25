@@ -14,10 +14,12 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { TreeView } from '@mui/x-tree-view/TreeView';
-import { TreeItem } from '@mui/x-tree-view/TreeItem';
-
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 function Plots(props) {
   const [savePrompt, setSavePrompt] = useState(false);
@@ -46,6 +48,8 @@ function Plots(props) {
   const [numberofPlots, setNumberOfPlots] = useState([0, 1, 2]);
 
   const [isLoading,setIsLoading] = useState(false);
+
+  const [snackBar,setSnackBar]=useState(false);
 
   let idextra = "";
   if (props.idextra) { idextra = props.idextra };
@@ -154,7 +158,7 @@ setIsLoading(false);
       previouslist.push(chosenOutput);
       let previousresults = loadedResults;
       previousresults[chosenOutput] = result.data;
-
+      setSnackBar(true)
     }
 
   }
@@ -165,11 +169,26 @@ setIsLoading(false);
     ssr: false
   })
 
+
+  const action = (
+    <>
+
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={()=>setSnackBar(false)}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </>
+  );
+
   return <div> {loading ? <>PLEASE WAIT</> :
     <>
 
 {isLoading && <LoadingPrompt/>}
-{savedFilesPrompt &&
+{/* {savedFilesPrompt &&
                     <ConfirmPrompt
                     top = "5%"
                       text={<div className={classes.allInputList}>
@@ -243,71 +262,166 @@ setIsLoading(false);
                       yestext="Ok"
                       ok={LoadOutputHandler}
                     />
-                  }
+                  } */}
+
+<Snackbar
+  open={snackBar}
+  autoHideDuration={4000}
+  onClose={()=>setSnackBar(false)}
+  message="Successfully loaded"
+ action = {action}
+
+/>
+
 <Dialog
         open={savedFilesPrompt}
         onClose={()=>setSavedFilesPrompt(false)}
         aria-describedby="alert-choose-files to load"
       >
-        <DialogTitle>{"Which file to load?"}</DialogTitle>
-        <DialogContent>
+        <DialogTitle
+                sx={{
+                  backgroundColor : "lightgray"
+                }}
+        >{"Which file to load?"}</DialogTitle>
+        <DialogContent
+                sx={{
+                  backgroundColor : "lightgray"
+                }}>
+                            <DialogContentText id="alert-dialog-slide-description">
+          First select what type of output you want to load. Sorting is alphabetically.
+          </DialogContentText><br/>
           <DialogContentText id="alert-choose-files to load description">
-          <TreeView
-        aria-label="file system navigator"
-        defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpandIcon={<ChevronRightIcon />}
-      >
-        <TreeItem nodeId="1" label="Applications">
-          <TreeItem nodeId="2" label="Calendar" />
-        </TreeItem>
-        <TreeItem nodeId="5" label="Documents">
-          <TreeItem nodeId="10" label="OSS" />
-          <TreeItem nodeId="6" label="MUI">
-            <TreeItem nodeId="8" label="index.js" />
-          </TreeItem>
-        </TreeItem>
-      </TreeView>
+          <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+         SCS
+        </AccordionSummary>
+        <AccordionDetails>
+         
+        
+                          {
+                          savedResults && savedResults.scs &&
+                          savedResults.scs!="" &&
+                          savedResults.scs.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "savedscs"
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        
           
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+         Periodic Static
+        </AccordionSummary>
+        <AccordionDetails>
+         
+        
+                          {
+                                savedResults && savedResults.static &&
+                                savedResults.static!="" &&                    
+                          savedResults.static.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "savedstatic"
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        
           
+        </AccordionDetails>
+      </Accordion>     
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+         Periodic Dynamic
+        </AccordionSummary>
+        <AccordionDetails>
+         
+        
+                          {
+                          savedResults && savedResults.dyn &&
+                          savedResults.dyn!="" &&                          
+                          savedResults.dyn.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "saveddyn"
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        
           
+        </AccordionDetails>
+      </Accordion> 
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+         Periodic Adiabatic
+        </AccordionSummary>
+        <AccordionDetails>
+         
+        
+                          {
+                          savedResults && savedResults.adiab &&
+                          savedResults.adiab!="" &&
+                          savedResults.adiab.map((name) =>
+                            <div
+                              key={name}
+                              id={name}
+                              onClick={(e) => {
+                                setChosenOutput(e.target.id);
+                                outputTypeRef.current = "savedadiab"
+                              }}
+                              className={chosenOutput == name ? classes.inputlistchosen : null}
+                            >{name}</div>
+                          )}
+                        
+          
+        </AccordionDetails>
+      </Accordion>       
           </DialogContentText>
 
         </DialogContent>
 
+        <DialogActions
+                sx={{
+                  backgroundColor : "lightgray"
+                }}
+        >
+          
+          <Button variant="contained" 
+          onClick={LoadOutputHandler}>Load file</Button>
 
-        <DialogActions>
-        <TextField id="filename" label="Enter name to save" variant="outlined"
-        size="small"
-        />
-
-        <FormControlLabel control=
-        {
-          <Checkbox
-          checked={saveInput}
-          onChange={(event) => {
-            setSaveInput(event.target.checked);
-          }}
-          inputProps={{ 'aria-label': 'controlled' }}
-        />
-        } label="Input" />
-
-<FormControlLabel control=
-        {
-          <Checkbox
-          checked={saveOutput}
-          onChange={(event) => {
-            setSaveOutput(event.target.checked);
-          }}
-          inputProps={{ 'aria-label': 'controlled' }}
-        />
-        } label="Output (scs)" />
-
-        </DialogActions>
-        <DialogActions>
-          <Button variant="contained" onClick={()=>{
-            if (document.getElementById("filename").value=="") {alert("Please input a name")}
-            else
-            {setSavePrompt(false); SaveFilesHandler()}}}>Save</Button>
+<Button variant="contained" 
+          onClick={() => setSavedFilesPrompt(false)}>Close</Button>
         </DialogActions>
       </Dialog>
 
