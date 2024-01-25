@@ -6,8 +6,9 @@ function LoadingPrompt(props) {
 
     return (       <>    <div className={classes.backdrop}></div>
         <div className={classes.promptpage}>
-<div className={classes.text
-}>Παρακαλώ Περιμένετε..</div>
+{/* <div className={classes.text
+}>Loading...</div>  */}
+
         </div>
 </> 
     )

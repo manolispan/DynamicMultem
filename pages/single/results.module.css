@@ -5,6 +5,13 @@
     padding-top: 80px;
 }
 
+/* .plotdata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+} */
+
 .alldata div {
     margin: 5px;
     background-color: rgb(196, 197, 202);
@@ -29,26 +36,27 @@
 
 .savePrompt {
     position: fixed;
-    top: 50px;
-    right: 50px;
+    bottom: 60px;
+    right: 60px;
 }
 
-.savePrompt div {
-    padding: 5px 10px;
-    background-color: rgba(0, 0, 255, 0.849);
-    color : white;
-    border-radius: 10px;
-    transition: 200ms;
+.savePrompt button {
+    background-color: white;
+    color: var(--blue1);
 }
 
-.savePrompt div:hover {
-    background-color: rgba(3, 3, 90, 0.849);
+
+.savePrompt button:hover {
+    background-color: white;
     cursor: pointer;
 }
 
 .savedfiles {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
 
 .savedfilesprompt {
@@ -98,4 +106,27 @@
     background-color: rgb(7, 7, 207) !important;
     color: white !important;
   
+  }
+
+  .alldata select {
+    font-size: 14px;
+    font-weight: normal;
+    max-width: 100%;
+    padding: 5px 14px 5px 5px;
+    border: none;
+    background-color: #E6E6E6;
+    margin-left: 10px;
+
+  }
+  .alldata select:active, .alldata select:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+
+  .alldata select:hover {
+    cursor: pointer;
+  }
+  .materialButton {
+    margin-left: 10px;
   }

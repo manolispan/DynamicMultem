@@ -4,11 +4,20 @@ import Axios from "axios";
 import classes from "./results.module.css";
 import ConfirmPrompt from "../../components/ui/confirmprompt/confirmprompt";
 import LoadingPrompt from '../../components/ui/loadingPrompt/loadingPrompt';
-
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 function Plots(props) {
   const [savePrompt, setSavePrompt] = useState(false);
-
+  const [saveInput,setSaveInput]=useState(false);
+  const [saveOutput,setSaveOutput]=useState(false);
   const [width, setWidth] = useState(800);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -106,12 +115,12 @@ function Plots(props) {
   async function SaveFilesHandler() {
     setIsLoading(true);
     const input = {
-      inputfile: document.getElementById("inputfile").checked,
-      scs: document.getElementById("scs").checked,
+      inputfile: saveInput,
+      scs: saveOutput,
       name: document.getElementById("filename").value
     }
-    if (document.getElementById("inputfile").checked ||
-    document.getElementById("scs").checked
+    if (saveInput ||
+    saveOutput
     ) {
 
       const result = await Axios.post(
@@ -230,7 +239,7 @@ setIsLoading(false);
                       ok={LoadOutputHandler}
                     />
                   }
-      {savePrompt &&
+{/*       {savePrompt &&
         <ConfirmPrompt
           text={
             <div>
@@ -253,7 +262,57 @@ setIsLoading(false);
           cancel={() => setSavePrompt(false)}
           ok={SaveFilesHandler}
         />
-      }
+      } */}
+
+<Dialog
+        open={savePrompt}
+        onClose={()=>setSavePrompt(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"What do you want to save?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          Select if you want to save the input file, the output file (SCS) and the name to save it.
+          </DialogContentText>
+
+        </DialogContent>
+
+
+        <DialogActions>
+        <TextField id="filename" label="Enter name to save" variant="outlined"
+        size="small"
+        />
+
+        <FormControlLabel control=
+        {
+          <Checkbox
+          checked={saveInput}
+          onChange={(event) => {
+            setSaveInput(event.target.checked);
+          }}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        } label="Input" />
+
+<FormControlLabel control=
+        {
+          <Checkbox
+          checked={saveOutput}
+          onChange={(event) => {
+            setSaveOutput(event.target.checked);
+          }}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        } label="Output (scs)" />
+
+        </DialogActions>
+        <DialogActions>
+          <Button variant="contained" onClick={()=>{
+            if (document.getElementById("filename").value=="") {alert("Please input a name")}
+            else
+            {setSavePrompt(false); SaveFilesHandler()}}}>Save</Button>
+        </DialogActions>
+      </Dialog>
 
       <div className={classes.alldata}>
 
@@ -288,10 +347,15 @@ setIsLoading(false);
 
                   </select></div>
 
-                <div style={{ position: "relative" }}><button onClick={() => setSavedFilesPrompt(true)}>Saved Files</button>
-
-
-                </div>
+         
+<div className={classes.materialButton}>
+<Button variant="contained"
+size="small"
+onClick={() => setSavedFilesPrompt(true)}>
+  Load file
+</Button>
+</div>
+              
 
               </div>
 
@@ -364,27 +428,31 @@ setIsLoading(false);
 
 
                 {/* FIX THE OPTIONS OF SELECT DO NOT CHANGE if u have a different file! */}
-                <div>
-                  <button
-                    onClick={() => {
-                      let temp = numberofPlots.slice(0);
-                      temp.pop();
-                      setNumberOfPlots(temp);
-                      let temp2 = plotData.slice(0);
-                      temp2.splice(number, 1);
-                      setPlotData(temp2);
-                      /*  for (let i=number ; i<numberofPlots.length-1 ; i++)
-                       {let j=i+1;
-                         document.getElementById("file"+i+idextra).value= document.getElementById("file"+j+idextra).value;
-                         document.getElementById("xaxis"+i+idextra).value= document.getElementById("xaxis"+j+idextra).value;
-                         document.getElementById("yaxis"+i+idextra).value= document.getElementById("yaxis"+j+idextra).value;
-                         document.getElementById("color"+i+idextra).value= document.getElementById("color"+j+idextra).value;
-                       }
-              */
-                    }}
-                  >Remove Graph</button>
-                </div>
 
+<div>
+  <Button
+  size="small"
+  color="error"
+                      onClick={() => {
+                        let temp = numberofPlots.slice(0);
+                        temp.pop();
+                        setNumberOfPlots(temp);
+                        let temp2 = plotData.slice(0);
+                        temp2.splice(number, 1);
+                        setPlotData(temp2);
+                        /*  for (let i=number ; i<numberofPlots.length-1 ; i++)
+                         {let j=i+1;
+                           document.getElementById("file"+i+idextra).value= document.getElementById("file"+j+idextra).value;
+                           document.getElementById("xaxis"+i+idextra).value= document.getElementById("xaxis"+j+idextra).value;
+                           document.getElementById("yaxis"+i+idextra).value= document.getElementById("yaxis"+j+idextra).value;
+                           document.getElementById("color"+i+idextra).value= document.getElementById("color"+j+idextra).value;
+                         }
+                */
+                      }}
+  >
+Remove Graph
+  </Button>
+  </div>
 
 
 
@@ -410,15 +478,22 @@ setIsLoading(false);
       </div>
 
       {idextra==="" &&       <div className={classes.savePrompt}>
-        <div onClick={() => setSavePrompt(true)}>Save Input-Results</div>
+        <Button
+        variant="contained"
+        
+        onClick={() => setSavePrompt(true)}>
+          Save Input-Results
+        </Button>
+       
 
       </div>}
 
-
+      <div className={classes.plotdata}>
       <Plot
         data={plotData}
         layout={{ width: width, height: 600, title: 'Best Plots Here' }}
         config={{ scrollZoom: true, editable: true }} />
+        </div>
     </>}
 
 {/*     <Plot

@@ -1,4 +1,5 @@
 .allpage {
+    z-index: 1;
     max-width: 1800px;
     margin: auto;
     padding: 0px;
@@ -194,7 +195,6 @@
 
 .runMultem {
     position: fixed;
-    z-index: 1000;
     bottom: 0px;
     right: 0px;
     margin: 40px;
