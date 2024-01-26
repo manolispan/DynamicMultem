@@ -184,7 +184,9 @@ setIsLoading(false);
     </>
   );
 
-  return <div> {loading ? <>PLEASE WAIT</> :
+  return <div
+  className={classes.allpage}
+  > {loading ? <>PLEASE WAIT</> :
     <>
 
 {isLoading && <LoadingPrompt/>}
@@ -652,7 +654,7 @@ Remove Graph
       <div className={classes.plotdata}>
       <Plot
         data={plotData}
-        layout={{ width: width, height: 600, title: 'Best Plots Here' }}
+        layout={{ width: width, height: 600, title: 'Resuls'}}
         config={{ scrollZoom: true, editable: true }} />
         </div>
     </>}

@@ -150,8 +150,8 @@ export default function Homepage(props) {
 
         if (key=="NumOfShells") 
         {
-          text.push(<div>
-
+          text.push(<div> 
+       <h2>{key} </h2>     
              <button
              onClick={()=>{
               const temp = Object.assign({}, scatValues);
@@ -189,6 +189,14 @@ export default function Homepage(props) {
         else 
 {      text.push(
         <div>
+          {typeofScat=="CORESHELL" && key=="epsReal" &&
+           <h2>Core Info</h2> 
+          }
+
+{typeofScat=="CORESHELL" && key.includes("epsRealShell") &&
+           <h2>Shell {key.split("ll")[1]} Info</h2> 
+          }
+
           <h2 className={classes.inline}>{key} {key=="radius" || key=="height" ?
           <>
           ({lengthUnitsScat!="microm" ? <>{lengthUnitsScat}</>:<>μm</>})</>:null}:</h2>
@@ -514,7 +522,7 @@ setLoading(false);
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
           How do you want to proceed? You can save the results either by pressing "save the results" or by 
-          selecting "Go to the graphs" and save after.
+          selecting "Go to the graphs" and save later.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

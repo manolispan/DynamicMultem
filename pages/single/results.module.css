@@ -1,8 +1,20 @@
+.allpage {
+    display: flex;
+    flex-direction: row;
+    padding-top: 100px;
+    gap: 10px;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center
+
+}
+
 .alldata {
     display: flex;
     justify-content: left;
     align-items: flex-start;
-    padding-top: 80px;
+    
+    flex-direction: column;
 }
 
 /* .plotdata {
