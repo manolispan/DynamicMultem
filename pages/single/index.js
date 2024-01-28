@@ -272,6 +272,729 @@ export default function Homepage(props) {
     return <>{text}</>;
   }
 
+
+function SphereCylindChoices () {
+  return <div>
+
+    <div>
+    <h2 className={classes.inline}>Eps=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["epsReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["epsImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+            <div>
+    <h2 className={classes.inline}>Mu=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["muReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["muImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+
+            <div>
+    <h2 className={classes.inline}>Radius
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["radius"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["radius"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+
+{typeofScat=="CYLINDER" && 
+            <div>
+    <h2 className={classes.inline}>Height
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["height"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["height"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+}
+
+
+  </div>
+}
+
+function SpheroidChoices () {
+  return <div>
+
+    <div>
+    <h2 className={classes.inline}>Eps=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["epsReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["epsImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+            <div>
+    <h2 className={classes.inline}>Mu=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["muReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["muImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+
+            <div>
+    <h2 className={classes.inline}>Radius1
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["radius1"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["radius1"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+
+
+            <div>
+    <h2 className={classes.inline}>Radius2
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["radius2"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["radius2"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+
+
+
+  </div>
+}
+
+function CoreShellChoices(items) {
+  let text = [];
+
+  for (let i=0;i<scatValues[typeofScat]["NumOfShells"][0]; i++) {
+    const j=i+1
+    text.push(
+      <div>
+        <h2>Shell {j}</h2>
+        <div>
+    <h2 className={classes.inline}>Eps=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["epsRealShell"+j][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsRealShell"+j][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["epsImagShell"+j][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsImagShell"+j][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+            <div>
+    <h2 className={classes.inline}>Mu=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["muRealShell"+j][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muRealShell"+j][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["muImagShell"+j][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muImagShell"+j][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+
+            <div>
+    <h2 className={classes.inline}>Radius
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["radiusShell"+j][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["radiusShell"+j][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>  
+      </div>
+    )
+  }
+
+
+  return <div>
+
+<div>
+<h2>Core Info</h2> 
+    <h2 className={classes.inline}>Eps=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["epsReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["epsImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+            <div>
+    <h2 className={classes.inline}>Mu=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["muReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["muImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+
+            <div>
+    <h2 className={classes.inline}>Radius
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["coreRadius"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["coreRadius"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+
+
+
+
+<div>
+<h2 className={classes.inline}>Num. of Shells</h2>= <button
+           onClick={()=>{
+            const temp = Object.assign({}, scatValues);
+            let previousNo= parseInt(scatValues[typeofScat]["NumOfShells"][0]);
+            if (previousNo==1) {return}
+            let newNo= previousNo-1;
+            temp[typeofScat]["NumOfShells"][0]= newNo;
+            delete temp[typeofScat]["epsRealShell"+previousNo];
+            delete temp[typeofScat]["epsImagShell"+previousNo];
+            delete temp[typeofScat]["muRealShell"+previousNo];
+            delete temp[typeofScat]["muImagShell"+previousNo]; 
+            delete temp[typeofScat]["radiusShell"+previousNo];
+            setScatValues(temp);
+           }}
+           >-</button> {scatValues[typeofScat]["NumOfShells"][0]} <button
+           onClick={()=>{
+            const temp = Object.assign({}, scatValues);
+            let previousNo= parseInt(scatValues[typeofScat]["NumOfShells"][0]);
+            let newNo= previousNo+1;
+            temp[typeofScat]["NumOfShells"][0]= newNo;
+            temp[typeofScat]["epsRealShell"+newNo]=temp[typeofScat]["epsRealShell"+previousNo].slice();
+            temp[typeofScat]["epsImagShell"+newNo]=temp[typeofScat]["epsImagShell"+previousNo].slice();
+            temp[typeofScat]["muRealShell"+newNo]=temp[typeofScat]["muRealShell"+previousNo].slice();
+            temp[typeofScat]["muImagShell"+newNo]=temp[typeofScat]["muImagShell"+previousNo].slice(); 
+            temp[typeofScat]["radiusShell"+newNo]=temp[typeofScat]["radiusShell"+previousNo].slice();
+            setScatValues(temp);
+           }}
+           >+</button> 
+ </div>   
+
+{text}
+
+  </div>;
+}
+
+function GEChoices () {
+  return <div>
+  {/*           <div className={classes.tableupomn}> eps=
+              <table>
+                <tbody>
+                <tr>
+                  <td>exx</td>
+                  <td>exy</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>eyx=-exy</td>
+                  <td>eyy=exx</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>ezz</td>
+                </tr>
+                 </tbody>
+              </table>
+              </div> */}
+  
+              <div
+              className={classes.tableTanustwnCont}>
+  <strong>{/* ε */}eps</strong>=
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                    <input
+                  defaultValue={scatValues[typeofScat]["epsxxReal"][0]}
+                  onChange={(e) => {
+                    const temp = Object.assign({}, scatValues);
+                    temp[typeofScat]["epsxxReal"][0] = e.target.value.replaceAll(
+                      ",",
+                      "."
+                    );
+                    setScatValues(temp);
+                  }}
+                />+<input
+                defaultValue={scatValues[typeofScat]["epsxxImag"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsxxImag"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />i
+                    </td>
+                    <td>
+                    <input
+                  defaultValue={scatValues[typeofScat]["epsxyReal"][0]}
+                  onChange={(e) => {
+                    const temp = Object.assign({}, scatValues);
+                    temp[typeofScat]["epsxyReal"][0] = e.target.value.replaceAll(
+                      ",",
+                      "."
+                    );
+                    setScatValues(temp);
+                  }}
+                />+<input
+                defaultValue={scatValues[typeofScat]["epsxyImag"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsxyImag"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />i
+                    </td>
+                    <td>
+                0
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+  {-1*parseFloat(scatValues[typeofScat]["epsxyReal"][0])}
+  
+  {parseFloat(scatValues[typeofScat]["epsxyImag"][0])>0 &&
+  <>{-1*parseFloat(scatValues[typeofScat]["epsxyImag"][0])}i</>
+  }
+  {parseFloat(scatValues[typeofScat]["epsxyImag"][0])<0 &&
+  <>+{-1*parseFloat(scatValues[typeofScat]["epsxyImag"][0])}i</>
+  }
+  
+                    </td>
+                    <td>
+                    {parseFloat(scatValues[typeofScat]["epsxxReal"][0])}
+                    {parseFloat(scatValues[typeofScat]["epsxxImag"][0])>0 &&
+  <>+{parseFloat(scatValues[typeofScat]["epsxxImag"][0])}i</>
+  }
+  {parseFloat(scatValues[typeofScat]["epsxxImag"][0])<0 &&
+  <>{parseFloat(scatValues[typeofScat]["epsxxImag"][0])}i</>
+  }
+                    </td>
+                    <td>
+                0
+                    </td>
+                  </tr>
+                  <tr>
+  <td>0</td>
+  <td>0</td>
+  <td><input
+                  defaultValue={scatValues[typeofScat]["epszzReal"][0]}
+                  onChange={(e) => {
+                    const temp = Object.assign({}, scatValues);
+                    temp[typeofScat]["epszzReal"][0] = e.target.value.replaceAll(
+                      ",",
+                      "."
+                    );
+                    setScatValues(temp);
+                  }}
+                />+<input
+                defaultValue={scatValues[typeofScat]["epszzImag"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epszzImag"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />i</td>
+  
+                  </tr>        
+                </tbody>
+                </table>    
+  
+              </div>
+
+              <div>
+    <h2 className={classes.inline}>Mu=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["muReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["muImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+
+            <div>
+    <h2 className={classes.inline}>Radius
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["radius"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["radius"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+
+              </div>
+}
+
+
+function GMChoices () {
+  return <div>
+    <div>
+    <h2 className={classes.inline}>Eps=</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["epsReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["epsReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              /> + <input
+              defaultValue={scatValues[typeofScat]["epsImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["epsImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+            </div>
+  
+
+<div
+            className={classes.tableTanustwnCont}>
+<strong>{/* ε */}mu</strong>=
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                  <input
+                defaultValue={scatValues[typeofScat]["muxxReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muxxReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["muxxImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muxxImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+                  </td>
+                  <td>
+                  <input
+                defaultValue={scatValues[typeofScat]["muxyReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muxyReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["muxyImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muxyImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i
+                  </td>
+                  <td>
+              0
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+{-1*parseFloat(scatValues[typeofScat]["muxyReal"][0])}
+
+{parseFloat(scatValues[typeofScat]["muxyImag"][0])>0 &&
+<>{-1*parseFloat(scatValues[typeofScat]["muxyImag"][0])}i</>
+}
+{parseFloat(scatValues[typeofScat]["muxyImag"][0])<0 &&
+<>+{-1*parseFloat(scatValues[typeofScat]["muxyImag"][0])}i</>
+}
+
+                  </td>
+                  <td>
+                  {parseFloat(scatValues[typeofScat]["muxxReal"][0])}
+                  {parseFloat(scatValues[typeofScat]["muxxImag"][0])>0 &&
+<>+{parseFloat(scatValues[typeofScat]["muxxImag"][0])}i</>
+}
+{parseFloat(scatValues[typeofScat]["muxxImag"][0])<0 &&
+<>{parseFloat(scatValues[typeofScat]["muxxImag"][0])}i</>
+}
+                  </td>
+                  <td>
+              0
+                  </td>
+                </tr>
+                <tr>
+<td>0</td>
+<td>0</td>
+<td><input
+                defaultValue={scatValues[typeofScat]["muzzReal"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["muzzReal"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />+<input
+              defaultValue={scatValues[typeofScat]["muzzImag"][0]}
+              onChange={(e) => {
+                const temp = Object.assign({}, scatValues);
+                temp[typeofScat]["muzzImag"][0] = e.target.value.replaceAll(
+                  ",",
+                  "."
+                );
+                setScatValues(temp);
+              }}
+            />i</td>
+
+                </tr>        
+              </tbody>
+              </table>    
+
+            </div>
+
+            <div>
+    <h2 className={classes.inline}>Radius
+    ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
+    =</h2>
+    <input
+                defaultValue={scatValues[typeofScat]["radius"][0]}
+                onChange={(e) => {
+                  const temp = Object.assign({}, scatValues);
+                  temp[typeofScat]["radius"][0] = e.target.value.replaceAll(
+                    ",",
+                    "."
+                  );
+                  setScatValues(temp);
+                }}
+              />
+            </div>
+
+              </div>
+}
+
+
+
   async function RunMultemHandler() {
 
   setLoading(true)
@@ -506,13 +1229,6 @@ setLoading(false);
   return (<>    
   {loading && <LoadingPrompt/>}
   {loadingValues && <LoadingPrompt/>}
-{/*   {multemEnd && <ConfirmPrompt
-  text="Success! Multem has ended"
-  yestext= "Go to results"
-  notext = "Stay here"
-  cancel = {()=>setMultemEnd(false)}
-  ok = {()=> router.push("/single/results")}
-  />} */}
  <Dialog
         open={multemEnd}
         onClose={()=>setMultemEnd(false)}
@@ -1246,7 +1962,7 @@ setLoading(false);
         </div>
 
         <div id="envperties">
-          <h1>Enviroment Constants</h1>
+          <h1>Environment Constants</h1>
           <h2 style={{ display: "inline" }}>epsEnv:</h2>{" "}
           <input
             defaultValue={envValues.epsEnv}
@@ -1388,286 +2104,32 @@ defaultValue={typeofMaterial}
 
 
           {typeofScat=="GYROELECTRICSPHERE" &&
-          <>
-{/*           <div className={classes.tableupomn}> eps=
-            <table>
-              <tbody>
-              <tr>
-                <td>exx</td>
-                <td>exy</td>
-                <td>0</td>
-              </tr>
-              <tr>
-                <td>eyx=-exy</td>
-                <td>eyy=exx</td>
-                <td>0</td>
-              </tr>
-              <tr>
-                <td>0</td>
-                <td>0</td>
-                <td>ezz</td>
-              </tr>
-               </tbody>
-            </table>
-            </div> */}
-
-            <div
-            className={classes.tableTanustwnCont}>
-<strong>{/* ε */}eps</strong>=
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                  <input
-                defaultValue={scatValues[typeofScat]["epsxxReal"][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat]["epsxxReal"][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />+<input
-              defaultValue={scatValues[typeofScat]["epsxxImag"][0]}
-              onChange={(e) => {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat]["epsxxImag"][0] = e.target.value.replaceAll(
-                  ",",
-                  "."
-                );
-                setScatValues(temp);
-              }}
-            />i
-                  </td>
-                  <td>
-                  <input
-                defaultValue={scatValues[typeofScat]["epsxyReal"][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat]["epsxyReal"][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />+<input
-              defaultValue={scatValues[typeofScat]["epsxyImag"][0]}
-              onChange={(e) => {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat]["epsxyImag"][0] = e.target.value.replaceAll(
-                  ",",
-                  "."
-                );
-                setScatValues(temp);
-              }}
-            />i
-                  </td>
-                  <td>
-              0
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-{-1*parseFloat(scatValues[typeofScat]["epsxyReal"][0])}
-
-{parseFloat(scatValues[typeofScat]["epsxyImag"][0])>0 &&
-<>{-1*parseFloat(scatValues[typeofScat]["epsxyImag"][0])}i</>
-}
-{parseFloat(scatValues[typeofScat]["epsxyImag"][0])<0 &&
-<>+{-1*parseFloat(scatValues[typeofScat]["epsxyImag"][0])}i</>
-}
-
-                  </td>
-                  <td>
-                  {parseFloat(scatValues[typeofScat]["epsxxReal"][0])}
-                  {parseFloat(scatValues[typeofScat]["epsxxImag"][0])>0 &&
-<>+{parseFloat(scatValues[typeofScat]["epsxxImag"][0])}i</>
-}
-{parseFloat(scatValues[typeofScat]["epsxxImag"][0])<0 &&
-<>{parseFloat(scatValues[typeofScat]["epsxxImag"][0])}i</>
-}
-                  </td>
-                  <td>
-              0
-                  </td>
-                </tr>
-                <tr>
-<td>0</td>
-<td>0</td>
-<td><input
-                defaultValue={scatValues[typeofScat]["epszzReal"][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat]["epszzReal"][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />+<input
-              defaultValue={scatValues[typeofScat]["epszzImag"][0]}
-              onChange={(e) => {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat]["epszzImag"][0] = e.target.value.replaceAll(
-                  ",",
-                  "."
-                );
-                setScatValues(temp);
-              }}
-            />i</td>
-
-                </tr>        
-              </tbody>
-              </table>    
-
-            </div>
-            </>
+          <GEChoices/>
             }
 
 {typeofScat=="GYROMAGNETICSPHERE" &&
-          <>
-{/*           <div className={classes.tableupomn}> eps=
-            <table>
-              <tbody>
-              <tr>
-                <td>exx</td>
-                <td>exy</td>
-                <td>0</td>
-              </tr>
-              <tr>
-                <td>eyx=-exy</td>
-                <td>eyy=exx</td>
-                <td>0</td>
-              </tr>
-              <tr>
-                <td>0</td>
-                <td>0</td>
-                <td>ezz</td>
-              </tr>
-               </tbody>
-            </table>
-            </div> */}
-
-            <div
-            className={classes.tableTanustwnCont}>
-<strong>{/* ε */}mu</strong>=
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                  <input
-                defaultValue={scatValues[typeofScat]["muxxReal"][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat]["muxxReal"][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />+<input
-              defaultValue={scatValues[typeofScat]["muxxImag"][0]}
-              onChange={(e) => {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat]["muxxImag"][0] = e.target.value.replaceAll(
-                  ",",
-                  "."
-                );
-                setScatValues(temp);
-              }}
-            />i
-                  </td>
-                  <td>
-                  <input
-                defaultValue={scatValues[typeofScat]["muxyReal"][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat]["muxyReal"][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />+<input
-              defaultValue={scatValues[typeofScat]["muxyImag"][0]}
-              onChange={(e) => {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat]["muxyImag"][0] = e.target.value.replaceAll(
-                  ",",
-                  "."
-                );
-                setScatValues(temp);
-              }}
-            />i
-                  </td>
-                  <td>
-              0
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-{-1*parseFloat(scatValues[typeofScat]["muxyReal"][0])}
-
-{parseFloat(scatValues[typeofScat]["muxyImag"][0])>0 &&
-<>{-1*parseFloat(scatValues[typeofScat]["muxyImag"][0])}i</>
-}
-{parseFloat(scatValues[typeofScat]["muxyImag"][0])<0 &&
-<>+{-1*parseFloat(scatValues[typeofScat]["muxyImag"][0])}i</>
-}
-
-                  </td>
-                  <td>
-                  {parseFloat(scatValues[typeofScat]["muxxReal"][0])}
-                  {parseFloat(scatValues[typeofScat]["muxxImag"][0])>0 &&
-<>+{parseFloat(scatValues[typeofScat]["muxxImag"][0])}i</>
-}
-{parseFloat(scatValues[typeofScat]["muxxImag"][0])<0 &&
-<>{parseFloat(scatValues[typeofScat]["muxxImag"][0])}i</>
-}
-                  </td>
-                  <td>
-              0
-                  </td>
-                </tr>
-                <tr>
-<td>0</td>
-<td>0</td>
-<td><input
-                defaultValue={scatValues[typeofScat]["muzzReal"][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat]["muzzReal"][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />+<input
-              defaultValue={scatValues[typeofScat]["muzzImag"][0]}
-              onChange={(e) => {
-                const temp = Object.assign({}, scatValues);
-                temp[typeofScat]["muzzImag"][0] = e.target.value.replaceAll(
-                  ",",
-                  "."
-                );
-                setScatValues(temp);
-              }}
-            />i</td>
-
-                </tr>        
-              </tbody>
-              </table>    
-
-            </div>
-            </>
+  <GMChoices/>
             }
 
-          {typeofScat && (
+{/*           {typeofScat && (
             <div>
               <div key={typeofScat}>{ScatChoices(scatValues[typeofScat])}</div>
             </div>
-          )}
+          )} */}
+
+
+{(typeofScat=="SPHERE" || typeofScat=="CYLINDER") && <div key={typeofScat}>
+          <SphereCylindChoices/>
+  </div>}
+
+
+  {typeofScat=="ELIPSE" && <div key={typeofScat}>
+          <SpheroidChoices/>
+  </div>}
+
+  {typeofScat=="CORESHELL" && <div key={typeofScat}>
+          <CoreShellChoices/>
+  </div>}
         </div>
       </div>
 
