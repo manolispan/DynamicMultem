@@ -35,6 +35,8 @@ export default function Homepage(props) {
   const [typeofScat, setTypeOfScat] = useState("SPHERE");
   const [typeofMaterial,setTypeofMaterial]=useState("userdefined");
   const [lengthUnitsScat,setLengthUnitsScat]=useState("nm");
+ 
+
   const [sweeps,setSweeps]= useState({
     frequency : true,
     wavelength : true,
@@ -52,6 +54,7 @@ export default function Homepage(props) {
   })
   const [scatValues, setScatValues] = useState({
     SPHERE: {
+      typeofMaterial : typeofMaterial,
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
@@ -59,6 +62,7 @@ export default function Homepage(props) {
       radius: [1, 4, 1],
     },
     CYLINDER: {
+      typeofMaterial : typeofMaterial,
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
@@ -67,6 +71,7 @@ export default function Homepage(props) {
       height: [1, 4, 1],
     },
     ELIPSE: {
+      typeofMaterial : typeofMaterial,
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
@@ -75,12 +80,14 @@ export default function Homepage(props) {
       radius2: [1, 4, 1],
     },
     CORESHELL: {
+      typeofMaterial : "User Defined",
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
       muImag: [0, 1, 1],
       coreRadius: [1, 4, 1],
       NumOfShells: [1,0,1],
+      typeofMaterialShell1 : "User Defined",
       epsRealShell1: [12, 12, 1],
       epsImagShell1: [0, 12, 1],
       muRealShell1: [1, 1, 1],
@@ -276,7 +283,11 @@ export default function Homepage(props) {
 function SphereCylindChoices () {
   return <div>
 
-    <div>
+<MaterialChoice/> 
+
+  {scatValues[typeofScat]["typeofMaterial"]=="userdefined" &&
+  <>
+      <div>
     <h2 className={classes.inline}>Eps=</h2>
     <input
                 defaultValue={scatValues[typeofScat]["epsReal"][0]}
@@ -325,6 +336,11 @@ function SphereCylindChoices () {
               }}
             />i
             </div>
+
+  
+  </>
+  }
+
 
 
             <div>
@@ -370,6 +386,10 @@ function SphereCylindChoices () {
 function SpheroidChoices () {
   return <div>
 
+<MaterialChoice/> 
+
+{scatValues[typeofScat]["typeofMaterial"]=="userdefined" &&
+  <>
     <div>
     <h2 className={classes.inline}>Eps=</h2>
     <input
@@ -418,7 +438,10 @@ function SpheroidChoices () {
                 setScatValues(temp);
               }}
             />i
-            </div>
+            </div>  
+  </>}
+
+
 
 
             <div>
@@ -469,7 +492,11 @@ function CoreShellChoices(items) {
     text.push(
       <div>
         <h2>Shell {j}</h2>
-        <div>
+        
+        <MaterialChoice type={"typeofMaterialShell"+j}/> 
+        {scatValues[typeofScat]["typeofMaterialShell"+j]=="userdefined" &&
+  <>
+  <div>
     <h2 className={classes.inline}>Eps=</h2>
     <input
                 defaultValue={scatValues[typeofScat]["epsRealShell"+j][0]}
@@ -518,6 +545,8 @@ function CoreShellChoices(items) {
               }}
             />i
             </div>
+  </>}
+
 
 
             <div>
@@ -543,9 +572,13 @@ function CoreShellChoices(items) {
 
   return <div>
 
-<div>
+
 <h2>Core Info</h2> 
-    <h2 className={classes.inline}>Eps=</h2>
+
+<MaterialChoice/> 
+{scatValues[typeofScat]["typeofMaterial"]=="userdefined" &&
+  <><div>
+      <h2 className={classes.inline}>Eps=</h2>
     <input
                 defaultValue={scatValues[typeofScat]["epsReal"][0]}
                 onChange={(e) => {
@@ -567,8 +600,7 @@ function CoreShellChoices(items) {
                 setScatValues(temp);
               }}
             />i
-            </div>
-
+  </div>
             <div>
     <h2 className={classes.inline}>Mu=</h2>
     <input
@@ -593,6 +625,10 @@ function CoreShellChoices(items) {
               }}
             />i
             </div>
+  </>}
+
+            
+
 
 
             <div>
@@ -623,6 +659,7 @@ function CoreShellChoices(items) {
             if (previousNo==1) {return}
             let newNo= previousNo-1;
             temp[typeofScat]["NumOfShells"][0]= newNo;
+            delete temp[typeofScat]["typeofMaterialShell"+previousNo];
             delete temp[typeofScat]["epsRealShell"+previousNo];
             delete temp[typeofScat]["epsImagShell"+previousNo];
             delete temp[typeofScat]["muRealShell"+previousNo];
@@ -636,6 +673,7 @@ function CoreShellChoices(items) {
             let previousNo= parseInt(scatValues[typeofScat]["NumOfShells"][0]);
             let newNo= previousNo+1;
             temp[typeofScat]["NumOfShells"][0]= newNo;
+            temp[typeofScat]["typeofMaterialShell"+newNo]=temp[typeofScat]["typeofMaterialShell"+previousNo].slice();
             temp[typeofScat]["epsRealShell"+newNo]=temp[typeofScat]["epsRealShell"+previousNo].slice();
             temp[typeofScat]["epsImagShell"+newNo]=temp[typeofScat]["epsImagShell"+previousNo].slice();
             temp[typeofScat]["muRealShell"+newNo]=temp[typeofScat]["muRealShell"+previousNo].slice();
@@ -993,7 +1031,28 @@ function GMChoices () {
               </div>
 }
 
+function MaterialChoice (props) {
+  let property = "typeofMaterial";
+  if (props.type && props.type !="") {property=props.type }
 
+  return <div className={classes.materialdiv}>
+    <h2 className={classes.inline}>Material: </h2>
+<select
+        onChange={(e) => {
+          const temp = Object.assign({}, scatValues);
+          temp[typeofScat][property] = e.target.value.toString();
+          setScatValues(temp);
+        }}
+defaultValue={scatValues[typeofScat][property]}
+>
+   <option value="userdefined">User Defined</option>
+   <option value="Si(Aspnes).txt">Si (Aspnes)</option>
+          </select>
+
+         
+          
+          </div>  
+}
 
   async function RunMultemHandler() {
 
@@ -1004,6 +1063,7 @@ function GMChoices () {
   for (let i=0 ; i<coreShells; i++) {
     const j=i+1
     const tempShells= {
+      ["typeofMaterialShell"+j] : scatValues["CORESHELL"]["typeofMaterialShell"+j],
       ["epsRealShell"+j] : scatValues["CORESHELL"]["epsRealShell"+j],
       ["epsImagShell"+j] : scatValues["CORESHELL"]["epsImagShell"+j],
       ["muRealShell"+j] : scatValues["CORESHELL"]["muRealShell"+j],
@@ -1016,23 +1076,27 @@ function GMChoices () {
       typeofScat : typeofScat,
       lengthUnitsScat : lengthUnitsScat,
       //...scatValues[typeofScat],
+      typeofMaterial : scatValues["SPHERE"]["typeofMaterial"],
       epsReal: scatValues["SPHERE"]["epsReal"],
       epsImag: scatValues["SPHERE"]["epsImag"],
       muReal: scatValues["SPHERE"]["muReal"],
       muImag: scatValues["SPHERE"]["muImag"],
       radius: scatValues["SPHERE"]["radius"],
+      typeofMaterialC : scatValues["CYLINDER"]["typeofMaterial"],
       epsRealC: scatValues["CYLINDER"]["epsReal"],
       epsImagC: scatValues["CYLINDER"]["epsImag"],
       muRealC: scatValues["CYLINDER"]["muReal"],
       muImagC: scatValues["CYLINDER"]["muImag"],
       radiusC: scatValues["CYLINDER"]["radius"],
       heightC: scatValues["CYLINDER"]["height"],
+      typeofMaterialE : scatValues["ELIPSE"]["typeofMaterial"],
       epsRealE: scatValues["ELIPSE"]["epsReal"],
       epsImagE: scatValues["ELIPSE"]["epsImag"],
       muRealE: scatValues["ELIPSE"]["muReal"],
       muImagE: scatValues["ELIPSE"]["muImag"],
       radius1E: scatValues["ELIPSE"]["radius1"],
       radius2E: scatValues["ELIPSE"]["radius2"],
+      typeofMaterialCS : scatValues["CORESHELL"]["typeofMaterial"],
       epsRealCS: scatValues["CORESHELL"]["epsReal"],
       epsImagCS: scatValues["CORESHELL"]["epsImag"],
       muRealCS: scatValues["CORESHELL"]["muReal"],
@@ -1081,16 +1145,17 @@ function GMChoices () {
     const response = await Axios.get('http://localhost:3001/singleinputdefault');
    
       const input = response.data;
-      const coreShells= parseInt(input[25].split(" ")[0]);
+      const coreShells= parseInt(input[29].split(" ")[0]);
       let allShells = {};
       for (let i=0 ; i<coreShells; i++) {
         const j=i+1
         const tempShells= {
-          ["epsRealShell"+j] : input[25+5*i+1].split(" "),
-          ["epsImagShell"+j] : input[25+5*i+2].split(" "),
-          ["muRealShell"+j] : input[25+5*i+3].split(" "),
-          ["muImagShell"+j] : input[25+5*i+4].split(" "),
-          ["radiusShell"+j] : input[25+5*i+5].split(" "),
+          ["typeofMaterialShell"+j] : input[29+6*i+1].split(" "),
+          ["epsRealShell"+j] : input[29+6*i+2].split(" "),
+          ["epsImagShell"+j] : input[29+6*i+3].split(" "),
+          ["muRealShell"+j] : input[29+6*i+4].split(" "),
+          ["muImagShell"+j] : input[29+6*i+5].split(" "),
+          ["radiusShell"+j] : input[29+6*i+6].split(" "),
         }
         allShells={...allShells,...tempShells}
       }
@@ -1098,95 +1163,99 @@ function GMChoices () {
       setLengthUnitsScat(input[2]);
         setScatValues({
           SPHERE: {
-            epsReal: input[3].split(" "),
-            epsImag: input[4].split(" "),
-            muReal: input[5].split(" "),
-            muImag: input[6].split(" "),
-            radius: input[7].split(" "),
+            typeofMaterial : input[3].toString(),
+            epsReal: input[4].split(" "),
+            epsImag: input[5].split(" "),
+            muReal: input[6].split(" "),
+            muImag: input[7].split(" "),
+            radius: input[8].split(" "),
           },
           CYLINDER: {
-            epsReal: input[8].split(" "),
-            epsImag: input[9].split(" "),
-            muReal: input[10].split(" "),
-            muImag: input[11].split(" "),
-            radius: input[12].split(" "),
-            height: input[13].split(" "),
+            typeofMaterial : input[9].toString(),
+            epsReal: input[10].split(" "),
+            epsImag: input[11].split(" "),
+            muReal: input[12].split(" "),
+            muImag: input[13].split(" "),
+            radius: input[14].split(" "),
+            height: input[15].split(" "),
           },
           ELIPSE: {
-            epsReal: input[14].split(" "),
-            epsImag: input[15].split(" "),
-            muReal: input[16].split(" "),
-            muImag: input[17].split(" "),
-            radius1: input[18].split(" "),
-            radius2: input[19].split(" "),
+            typeofMaterial : input[16].toString(),
+            epsReal: input[17].split(" "),
+            epsImag: input[18].split(" "),
+            muReal: input[19].split(" "),
+            muImag: input[20].split(" "),
+            radius1: input[21].split(" "),
+            radius2: input[22].split(" "),
           },
           CORESHELL: {
-            epsReal: input[20].split(" "),
-            epsImag: input[21].split(" "),
-            muReal: input[22].split(" "),
-            muImag: input[23].split(" "),
-            coreRadius: input[24].split(" "),
-            NumOfShells: input[25].split(" "),
+            typeofMaterial : input[23].split(" "),
+            epsReal: input[24].split(" "),
+            epsImag: input[25].split(" "),
+            muReal: input[26].split(" "),
+            muImag: input[27].split(" "),
+            coreRadius: input[28].split(" "),
+            NumOfShells: input[29].split(" "),
             ...allShells
           },
           GYROELECTRICSPHERE: {
-            epsxxReal: input[38+coreShells*5].split(" "),
-            epsxxImag: input[39+coreShells*5].split(" "),
-            epsxyReal: input[40+coreShells*5].split(" "),
-            epsxyImag: input[41+coreShells*5].split(" "),
-            epszzReal: input[42+coreShells*5].split(" "),
-            epszzImag: input[43+coreShells*5].split(" "),
-            muReal: input[44+coreShells*5].split(" "),
-            muImag: input[45+coreShells*5].split(" "),
-            radius: input[46+coreShells*5].split(" "),           
+            epsxxReal: input[42+coreShells*6].split(" "),
+            epsxxImag: input[43+coreShells*6].split(" "),
+            epsxyReal: input[44+coreShells*6].split(" "),
+            epsxyImag: input[45+coreShells*6].split(" "),
+            epszzReal: input[46+coreShells*6].split(" "),
+            epszzImag: input[47+coreShells*6].split(" "),
+            muReal: input[48+coreShells*6].split(" "),
+            muImag: input[49+coreShells*6].split(" "),
+            radius: input[50+coreShells*6].split(" "),           
           },
 
           GYROMAGNETICSPHERE: {
-            epsReal: input[47+coreShells*5].split(" "),
-            epsImag: input[48+coreShells*5].split(" "),
-            muxxReal: input[49+coreShells*5].split(" "),
-            muxxImag: input[50+coreShells*5].split(" "),
-            muxyReal: input[51+coreShells*5].split(" "),
-            muxyImag: input[52+coreShells*5].split(" "),
-            muzzReal: input[53+coreShells*5].split(" "),
-            muzzImag: input[54+coreShells*5].split(" "),
-            radius: input[55+coreShells*5].split(" "), 
+            epsReal: input[51+coreShells*6].split(" "),
+            epsImag: input[52+coreShells*6].split(" "),
+            muxxReal: input[53+coreShells*6].split(" "),
+            muxxImag: input[54+coreShells*6].split(" "),
+            muxyReal: input[55+coreShells*6].split(" "),
+            muxyImag: input[56+coreShells*6].split(" "),
+            muzzReal: input[57+coreShells*6].split(" "),
+            muzzImag: input[58+coreShells*6].split(" "),
+            radius: input[59+coreShells*6].split(" "), 
           },
 
         });
       
       setEnvValues({
         //epsEnv: input[20],
-        epsEnv: input[20+6+coreShells*5],
-        muEnv: input[21+6+coreShells*5],
+        epsEnv: input[22+8+coreShells*6],
+        muEnv: input[23+8+coreShells*6]
       });
 
       let a = true;
       let b = false;
-      if (input[22+6+coreShells*5].split(" ")[3]=="false")
+      if (input[24+8+coreShells*6].split(" ")[3]=="false")
       {a= false;
         b=true; }
 
       setLightValues({
         frequency: 
-        [input[22+6+coreShells*5].split(" ")[0],
-        input[22+6+coreShells*5].split(" ")[1],
-        input[22+6+coreShells*5].split(" ")[2],a],
+        [input[24+8+coreShells*6].split(" ")[0],
+        input[24+8+coreShells*6].split(" ")[1],
+        input[24+8+coreShells*6].split(" ")[2],a],
         wavelength: 
-        [input[23+6+coreShells*5].split(" ")[0],
-        input[23+6+coreShells*5].split(" ")[1],
-        input[23+6+coreShells*5].split(" ")[2],b],
-        thetaIn: input[24+6+coreShells*5].split(" "),
-        phiIn: input[25+6+coreShells*5].split(" "),
-        polarization: input[26+6+coreShells*5],
-        unitsOfFreq: input[27+6+coreShells*5],
-        unitsOfWavelength: input[28+6+coreShells*5],
+        [input[25+8+coreShells*6].split(" ")[0],
+        input[25+8+coreShells*6].split(" ")[1],
+        input[25+8+coreShells*6].split(" ")[2],b],
+        thetaIn: input[26+8+coreShells*6].split(" "),
+        phiIn: input[27+8+coreShells*6].split(" "),
+        polarization: input[28+8+coreShells*6],
+        unitsOfFreq: input[29+8+coreShells*6],
+        unitsOfWavelength: input[30+8+coreShells*6],
       });
 
       setMultExpansion({
-        lmax: input[29+6+coreShells*5],
-        ltmax: input[30+6+coreShells*5],
-        Ngauss: input[31+6+coreShells*5]
+        lmax: input[31+8+coreShells*6],
+        ltmax: input[32+8+coreShells*6],
+        Ngauss: input[33+8+coreShells*6]
       });
 
 
@@ -1225,7 +1294,7 @@ setLoading(false);
 
   }
 
-  
+
   return (<>    
   {loading && <LoadingPrompt/>}
   {loadingValues && <LoadingPrompt/>}
@@ -1762,85 +1831,7 @@ setLoading(false);
                     }}
                   />
                 )}{" "}
-{/*                 <h2 className={classes.inline}>
-                  <label htmlFor={"sweep" + "thetaIn"}>
-                    sweep:
-                  </label>
-                </h2>
-                <input
-                  type="checkbox"
-                  checked={lightValues.thetaIn[2]!= 0 &&  lightValues.thetaIn[2]!= 1? true : false}
-                  id={"sweep" + "thetaIn"}
-                  onChange={(e) => {
-                    if (!e.target.checked) {
-                      setLightValues({
-                        ...lightValues,
-                        thetaIn: [
-                          lightValues.thetaIn[0],
-                          lightValues.thetaIn[1],
-                          0
-                        ],
-                      });
-                    } else {
-                      setLightValues({
-                        ...lightValues,
-                        thetaIn: [
-                          lightValues.thetaIn[0],
-                          lightValues.thetaIn[1],
-                          2
-                        ],
-                      });
-                    }
-                  }}
-                /> */}
 
-
-{/* {lightValues.thetaIn[2] != 0 && lightValues.thetaIn[2] != 1 && (
-                  <div>
-                    start:{" "}
-                    <input
-                      defaultValue={lightValues.thetaIn[0]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          thetaIn: [
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.thetaIn[1],
-                            lightValues.thetaIn[2]
-                          ],
-                        });
-                      }}
-                    />
-                    end:{" "}
-                    <input
-                      defaultValue={lightValues.thetaIn[1]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          thetaIn: [
-                            lightValues.thetaIn[0],
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.thetaIn[2]
-                          ],
-                        });
-                      }}
-                    />
-                    points:{" "}
-                    <input
-                      defaultValue={lightValues.thetaIn[2]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          thetaIn: [
-                            lightValues.thetaIn[0],
-                            lightValues.thetaIn[1],
-                            e.target.value.replaceAll(",", ".")
-                          ],
-                        });
-                      }}
-                    />
-                  </div>
-                )} */}
 
 <div>
 <h2 className={classes.inline}>
@@ -1861,86 +1852,8 @@ setLoading(false);
                     }}
                   />
                 )}{" "}
-{/*                 <h2 className={classes.inline}>
-                  <label htmlFor={"sweep" + "phiIn"}>
-                    sweep:
-                  </label>
-                </h2>
-                <input
-                  type="checkbox"
-                  checked={lightValues.phiIn[2]!= 0 &&  lightValues.phiIn[2]!= 1? true : false}
-                  id={"sweep" + "phiIn"}
-                  onChange={(e) => {
-                    if (!e.target.checked) {
-                      setLightValues({
-                        ...lightValues,
-                        phiIn: [
-                          lightValues.phiIn[0],
-                          lightValues.phiIn[1],
-                          0
-                        ],
-                      });
-                    } else {
-                      setLightValues({
-                        ...lightValues,
-                        phiIn: [
-                          lightValues.phiIn[0],
-                          lightValues.phiIn[1],
-                          2
-                        ],
-                      });
-                    }
-                  }}
-                /> */}
-</div>
-{/* 
-{lightValues.phiIn[2] != 0 && lightValues.phiIn[2] != 1 && (
-                  <div>
-                    start:{" "}
-                    <input
-                      defaultValue={lightValues.phiIn[0]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          phiIn: [
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.phiIn[1],
-                            lightValues.phiIn[2]
-                          ],
-                        });
-                      }}
-                    />
-                    end:{" "}
-                    <input
-                      defaultValue={lightValues.phiIn[1]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          phiIn: [
-                            lightValues.phiIn[0],
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.phiIn[2]
-                          ],
-                        });
-                      }}
-                    />
-                    points:{" "}
-                    <input
-                      defaultValue={lightValues.phiIn[2]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          phiIn: [
-                            lightValues.phiIn[0],
-                            lightValues.phiIn[1],
-                            e.target.value.replaceAll(",", ".")
-                          ],
-                        });
-                      }}
-                    />
-                  </div>
-                )} */}
 
+</div>
 
               <div>
                 <h2>polarization:</h2>{" "}
@@ -2082,25 +1995,7 @@ setLoading(false);
           )}
 
 
-   <div className={classes.materialdiv}>
-    <h2 className={classes.inline}>Material: </h2>
-<select
-onChange={(e)=>setTypeofMaterial(e.target.value)}
-defaultValue={typeofMaterial}
->
-   <option value="loadmaterial">Load Material</option>
-   <option value="userdefined">User Defined</option>
-          </select>
-
-    {typeofMaterial=="loadmaterial" && 
-    <select>
-   <option>Si (Aspnes)</option>
-   <option>Au</option>
-   <option>SiO2</option>
-   <option>+ Add  new</option>
-          </select>  }            
-          
-          </div>       
+     
 
 
           {typeofScat=="GYROELECTRICSPHERE" &&
