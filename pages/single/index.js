@@ -15,6 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
+import {materials} from "../../variables/materials";
 
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
@@ -1031,9 +1032,75 @@ function GMChoices () {
               </div>
 }
 
+function RangeOfFreqsMaterials (props) {
+let start = parseFloat(props.start);
+let end = parseFloat(props.end);
+let units = "MHz";
+
+if (lightValues.frequency[3]==true) {
+  units = lightValues.unitsOfFreq;
+  if (lightValues.unitsOfFreq=="MHz") 
+  {
+    start = start / (4.1357e-9)
+    end = end / (4.1357e-9)
+  }
+  else if (lightValues.unitsOfFreq=="GHz") 
+  {
+    start = start / (4.1357e-6)
+    end = end / (4.1357e-6)
+  }
+  else if (lightValues.unitsOfFreq=="THz") 
+  {
+    start = start / (4.1357e-3)
+    end = end / (4.1357e-3)
+  }
+}
+
+else if (lightValues.frequency[3]==false) 
+
+{units = lightValues.unitsOfWavelength; 
+if (units=="microm") {units= "μm"}
+  if (lightValues.unitsOfWavelength=="mm") 
+  {
+    start = 1.2398e-3/start
+    end = 1.2398e-3/end
+  }
+  else if (lightValues.unitsOfWavelength=="microm") 
+  {
+    start = 1.2398/start
+    end = 1.2398/end
+  }
+  else if (lightValues.unitsOfWavelength=="nm") 
+  {
+    start = 1239.8/start
+    end = 1239.8/end
+  }
+}
+
+return <div key={lightValues.unitsOfWavelength+"-"+lightValues.unitsOfWavelength+"-"+start+ end}>
+  Minimum freq : {start}  {units}<br/>
+  Max freq : {end} {units}
+</div>
+
+}
+
+
 function MaterialChoice (props) {
+  function findIndex (array, filenameToFind) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].filename === filenameToFind) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   let property = "typeofMaterial";
   if (props.type && props.type !="") {property=props.type }
+
+const activeIndex = findIndex(materials,scatValues[typeofScat][property])
+
+
 
   return <div className={classes.materialdiv}>
     <h2 className={classes.inline}>Material: </h2>
@@ -1042,14 +1109,25 @@ function MaterialChoice (props) {
           const temp = Object.assign({}, scatValues);
           temp[typeofScat][property] = e.target.value.toString();
           setScatValues(temp);
+          
         }}
 defaultValue={scatValues[typeofScat][property]}
 >
    <option value="userdefined">User Defined</option>
-   <option value="Si(Aspnes).txt">Si (Aspnes)</option>
+
+  {materials.map((choice)=>{
+    return <option value={choice.filename} id={choice.filename}>
+      {choice.optionName} 
+    </option>
+  })}
           </select>
 
-         
+          {scatValues[typeofScat][property] && scatValues[typeofScat][property]!="userdefined" &&
+
+   <RangeOfFreqsMaterials
+   start = {materials[activeIndex].rangeStart}
+   end = {materials[activeIndex].rangeEnd}
+   />}
           
           </div>  
 }

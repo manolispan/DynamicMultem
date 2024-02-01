@@ -1,14 +1,26 @@
-const Silicon = {
-    filename : "Si (Aspnes)" ,
-    rangeStart : 100 ,
-    rangeEnd : 300,
+const SiliconAspnes = {
+    filename : "Si(Aspnes).txt" ,
+    optionName: "Si (Aspnes)",
+    rangeStart : 0.375 ,
+    rangeEnd : 6.75,
+    numb : 0
 }
 
-const Glass = {
-    filename : "SiO2" ,
-    rangeStart : 100 ,
-    rangeEnd : 300,
+const AgJohnChristy = {
+    filename : "Ag(john_christy).txt" ,
+    optionName: "Ag (Johnson and Christy)",
+    rangeStart : 0.64 ,
+    rangeEnd : 6.6,
+    numb : 1
 }
 
-export default materials =
-[Silicon,Glass]
+const AuJohnChristy = {
+    filename : "john_christy_au.txt" ,
+    optionName: "Au (Johnson and Christy)",
+    rangeStart : 0.64 ,
+    rangeEnd : 6.6,
+    numb : 2
+}
+
+export const materials =
+[SiliconAspnes,AgJohnChristy,AuJohnChristy]
