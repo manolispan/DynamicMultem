@@ -81,14 +81,14 @@ export default function Homepage(props) {
       radius2: [1, 4, 1],
     },
     CORESHELL: {
-      typeofMaterial : "User Defined",
+      typeofMaterial : typeofMaterial,
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muReal: [1, 1, 1],
       muImag: [0, 1, 1],
       coreRadius: [1, 4, 1],
       NumOfShells: [1,0,1],
-      typeofMaterialShell1 : "User Defined",
+      typeofMaterialShell1 : typeofMaterial,
       epsRealShell1: [12, 12, 1],
       epsImagShell1: [0, 12, 1],
       muRealShell1: [1, 1, 1],
@@ -1078,8 +1078,14 @@ if (units=="microm") {units= "μm"}
 }
 
 return <div key={lightValues.unitsOfWavelength+"-"+lightValues.unitsOfWavelength+"-"+start+ end}>
-  Minimum freq : {start}  {units}<br/>
-  Max freq : {end} {units}
+  
+  {lightValues.frequency[3]==false ? <>
+  Wavelength Range: {end.toExponential(2)} to {start.toExponential(2)} {units}</> :
+  <>Frequency Range: {start.toExponential(2)} to {end.toExponential(2)} {units}</>
+  }
+  
+  
+  
 </div>
 
 }
@@ -1228,7 +1234,7 @@ defaultValue={scatValues[typeofScat][property]}
       for (let i=0 ; i<coreShells; i++) {
         const j=i+1
         const tempShells= {
-          ["typeofMaterialShell"+j] : input[29+6*i+1].split(" "),
+          ["typeofMaterialShell"+j] : input[29+6*i+1].toString(),
           ["epsRealShell"+j] : input[29+6*i+2].split(" "),
           ["epsImagShell"+j] : input[29+6*i+3].split(" "),
           ["muRealShell"+j] : input[29+6*i+4].split(" "),
@@ -1267,7 +1273,7 @@ defaultValue={scatValues[typeofScat][property]}
             radius2: input[22].split(" "),
           },
           CORESHELL: {
-            typeofMaterial : input[23].split(" "),
+            typeofMaterial : input[23].toString(),
             epsReal: input[24].split(" "),
             epsImag: input[25].split(" "),
             muReal: input[26].split(" "),

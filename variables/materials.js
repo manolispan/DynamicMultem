@@ -3,7 +3,6 @@ const SiliconAspnes = {
     optionName: "Si (Aspnes)",
     rangeStart : 0.375 ,
     rangeEnd : 6.75,
-    numb : 0
 }
 
 const AgJohnChristy = {
@@ -11,7 +10,6 @@ const AgJohnChristy = {
     optionName: "Ag (Johnson and Christy)",
     rangeStart : 0.64 ,
     rangeEnd : 6.6,
-    numb : 1
 }
 
 const AuJohnChristy = {
@@ -19,8 +17,30 @@ const AuJohnChristy = {
     optionName: "Au (Johnson and Christy)",
     rangeStart : 0.64 ,
     rangeEnd : 6.6,
-    numb : 2
+}
+
+const PalikAl = {
+    filename : "palik_al.txt" ,
+    optionName: "Al (Palik)",
+    rangeStart : 0.4 ,
+    rangeEnd : 5.0,
+}
+
+const PalikAu = {
+    filename : "PALIK_AU.DAT" ,
+    optionName: "Au (Palik)",
+    rangeStart : 0.125 ,
+    rangeEnd : 14.09,
+}
+
+
+const PalikCu = {
+    filename : "palik_cu.txt" ,
+    optionName: "Cu (Palik)",
+    rangeStart : 0.13 ,
+    rangeEnd : 5.0,
 }
 
 export const materials =
-[SiliconAspnes,AgJohnChristy,AuJohnChristy]
+[SiliconAspnes,AgJohnChristy,AuJohnChristy,PalikAl,PalikAu,
+PalikCu]
