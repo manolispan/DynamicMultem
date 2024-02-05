@@ -871,7 +871,6 @@ function GEChoices () {
               </div>
 }
 
-
 function GMChoices () {
   return <div>
     <div>
@@ -1562,112 +1561,7 @@ setLoading(false);
           </div>
 
           <div key={lightValues.frequency[3] === true ? "freq" : "wave"}>
-{/*             {lightValues.frequency[3] == true && (
-              <>
-                <h2 className={classes.inline}>
-                  {Object.keys(lightValues)[0]} ({lightValues.unitsOfFreq}):
-                </h2>{" "}
-                {(lightValues.frequency[2] == 0 || lightValues.frequency[2] == 1) && (
-                  <input
-                    defaultValue={lightValues.frequency[0]}
-                    onChange={(e) => {
-                      setLightValues({
-                        ...lightValues,
-                        frequency: [
-                          e.target.value.replaceAll(",", "."),
-                          lightValues.frequency[1],
-                          lightValues.frequency[2],
-                          lightValues.frequency[3],
-                        ],
-                      });
-                    }}
-                  />
-                )}{" "}
-                <h2 className={classes.inline}>
-                  <label htmlFor={"sweep" + Object.keys(lightValues)[0]}>
-                    sweep:
-                  </label>
-                </h2>
-                <input
-                  type="checkbox"
-                  checked={lightValues.frequency[2]!= 0 &&  lightValues.frequency[2]!= 1? true : false}
-                  id={"sweep" + Object.keys(lightValues)[0]}
-                  onChange={(e) => {
-                    if (!e.target.checked) {
-                      setLightValues({
-                        ...lightValues,
-                        frequency: [
-                          lightValues.frequency[0],
-                          lightValues.frequency[1],
-                          0,
-                          lightValues.frequency[3],
-                        ],
-                      });
-                    } else {
-                      setLightValues({
-                        ...lightValues,
-                        frequency: [
-                          lightValues.frequency[0],
-                          lightValues.frequency[1],
-                          2,
-                          lightValues.frequency[3],
-                        ],
-                      });
-                    }
-                  }}
-                />
-                {lightValues.frequency[2] != 0 && lightValues.frequency[2] != 1 && (
-                  <div>
-                    start:{" "}
-                    <input
-                      defaultValue={lightValues.frequency[0]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          frequency: [
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.frequency[1],
-                            lightValues.frequency[2],
-                            lightValues.frequency[3],
-                          ],
-                        });
-                      }}
-                    />
-                    end:{" "}
-                    <input
-                      defaultValue={lightValues.frequency[1]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          frequency: [
-                            lightValues.frequency[0],
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.frequency[2],
-                            lightValues.frequency[3],
-                          ],
-                        });
-                      }}
-                    />
-                    points:{" "}
-                    <input
-                      defaultValue={lightValues.frequency[2]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          frequency: [
-                            lightValues.frequency[0],
-                            lightValues.frequency[1],
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.frequency[3],
-                          ],
-                        });
-                      }}
-                    />
-                  </div>
-                )}
-              </>
-            )}
- */}
+
 
 {lightValues.frequency[3] == true && (
               <>
@@ -1726,112 +1620,6 @@ setLoading(false);
             )}
 
 
-
-{/* {lightValues.wavelength[3] == true && (
-              <>
-                <h2 className={classes.inline}>
-                  {Object.keys(lightValues)[1]}  ({lightValues.unitsOfWavelength}):
-                </h2>{" "}
-                {(lightValues.wavelength[2] == 0 || lightValues.wavelength[2] == 1) && (
-                  <input
-                    defaultValue={lightValues.wavelength[0]}
-                    onChange={(e) => {
-                      setLightValues({
-                        ...lightValues,
-                        wavelength: [
-                          e.target.value.replaceAll(",", "."),
-                          lightValues.wavelength[1],
-                          lightValues.wavelength[2],
-                          lightValues.wavelength[3],
-                        ],
-                      });
-                    }}
-                  />
-                )}{" "}
-                <h2 className={classes.inline}>
-                  <label htmlFor={"sweep" + Object.keys(lightValues)[1]}>
-                    sweep:
-                  </label>
-                </h2>
-                <input
-                  type="checkbox"
-                  checked={lightValues.wavelength[2]!= 0 &&  lightValues.wavelength[2]!= 1? true : false}
-                  id={"sweep" + Object.keys(lightValues)[1]}
-                  onChange={(e) => {
-                    if (!e.target.checked) {
-                      setLightValues({
-                        ...lightValues,
-                        wavelength: [
-                          lightValues.wavelength[0],
-                          lightValues.wavelength[1],
-                          0,
-                          lightValues.wavelength[3],
-                        ],
-                      });
-                    } else {
-                      setLightValues({
-                        ...lightValues,
-                        wavelength: [
-                          lightValues.wavelength[0],
-                          lightValues.wavelength[1],
-                          2,
-                          lightValues.wavelength[3],
-                        ],
-                      });
-                    }
-                  }}
-                />
-                {lightValues.wavelength[2] != 0 && lightValues.wavelength[2] != 1 && (
-                  <div>
-                    start:{" "}
-                    <input
-                      defaultValue={lightValues.wavelength[0]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          wavelength: [
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.wavelength[1],
-                            lightValues.wavelength[2],
-                            lightValues.wavelength[3],
-                          ],
-                        });
-                      }}
-                    />
-                    end:{" "}
-                    <input
-                      defaultValue={lightValues.wavelength[1]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          wavelength: [
-                            lightValues.wavelength[0],
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.wavelength[2],
-                            lightValues.wavelength[3],
-                          ],
-                        });
-                      }}
-                    />
-                    points:{" "}
-                    <input
-                      defaultValue={lightValues.wavelength[2]}
-                      onChange={(e) => {
-                        setLightValues({
-                          ...lightValues,
-                          wavelength: [
-                            lightValues.wavelength[0],
-                            lightValues.wavelength[1],
-                            e.target.value.replaceAll(",", "."),
-                            lightValues.wavelength[3],
-                          ],
-                        });
-                      }}
-                    />
-                  </div>
-                )}
-              </>
-            )} */}
 
 {lightValues.wavelength[3] == true && (
               <>
@@ -2098,11 +1886,11 @@ setLoading(false);
 
 
 {(typeofScat=="SPHERE" || typeofScat=="CYLINDER") && <div key={typeofScat}>
-          <SphereCylindChoices/>
+           {SphereCylindChoices ()}
   </div>}
 
 
-  {typeofScat=="ELIPSE" && <div key={typeofScat}>
+  {typeofScat=="ELIPSE" && <div key={typeofScat}> 
           <SpheroidChoices/>
   </div>}
 
