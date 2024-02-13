@@ -16,6 +16,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import {materials} from "../../variables/materials";
+import { FlashAuto } from "@mui/icons-material";
 
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
@@ -36,6 +37,7 @@ export default function Homepage(props) {
   const [typeofScat, setTypeOfScat] = useState("SPHERE");
   const [typeofMaterial,setTypeofMaterial]=useState("userdefined");
   const [lengthUnitsScat,setLengthUnitsScat]=useState("nm");
+  const [issues,setIssues]=useState(false);
  
 
   const [sweeps,setSweeps]= useState({
@@ -96,6 +98,7 @@ export default function Homepage(props) {
       radiusShell1 : [1, 4, 1],
     },
     GYROELECTRICSPHERE: {
+      typeofMaterial : typeofMaterial,
       epsxxReal: [12, 12, 1],
       epsxxImag: [0, 12, 1],
       epsxyReal: [12, 12, 1],
@@ -107,6 +110,7 @@ export default function Homepage(props) {
       radius: [1, 4, 1],   
     },
     GYROMAGNETICSPHERE: {
+      typeofMaterial : typeofMaterial,
       epsReal: [12, 12, 1],
       epsImag: [0, 12, 1],
       muxxReal: [12, 12, 1],
@@ -139,6 +143,16 @@ export default function Homepage(props) {
     ltmax: 6,
     Ngauss :256
   });
+
+  function findIndex (array, filenameToFind) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].filename === filenameToFind) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
 
   function ScatChoices(items) {
     let text = [];
@@ -485,7 +499,7 @@ function SpheroidChoices () {
   </div>
 }
 
-function CoreShellChoices(items) {
+function CoreShellChoices() {
   let text = [];
 
   for (let i=0;i<scatValues[typeofScat]["NumOfShells"][0]; i++) {
@@ -692,6 +706,9 @@ function CoreShellChoices(items) {
 
 function GEChoices () {
   return <div>
+    <MaterialChoice/> 
+
+
   {/*           <div className={classes.tableupomn}> eps=
               <table>
                 <tbody>
@@ -713,8 +730,9 @@ function GEChoices () {
                  </tbody>
               </table>
               </div> */}
+  {scatValues[typeofScat]["typeofMaterial"]=="userdefined" && <>
   
-              <div
+                <div
               className={classes.tableTanustwnCont}>
   <strong>{/* ε */}eps</strong>=
               <table>
@@ -851,6 +869,8 @@ function GEChoices () {
             />i
             </div>
 
+  </>}
+
             <div>
     <h2 className={classes.inline}>Radius
     ({lengthUnitsScat=="microm" ? <>μm</>:<>{lengthUnitsScat}</>})
@@ -873,7 +893,11 @@ function GEChoices () {
 
 function GMChoices () {
   return <div>
-    <div>
+     <MaterialChoice/> 
+
+     {scatValues[typeofScat]["typeofMaterial"]=="userdefined" && <>
+     
+         <div>
     <h2 className={classes.inline}>Eps=</h2>
     <input
                 defaultValue={scatValues[typeofScat]["epsReal"][0]}
@@ -1010,6 +1034,8 @@ function GMChoices () {
               </table>    
 
             </div>
+     </>}
+
 
             <div>
     <h2 className={classes.inline}>Radius
@@ -1091,14 +1117,6 @@ return <div key={lightValues.unitsOfWavelength+"-"+lightValues.unitsOfWavelength
 
 
 function MaterialChoice (props) {
-  function findIndex (array, filenameToFind) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].filename === filenameToFind) {
-        return i;
-      }
-    }
-    return -1;
-  }
 
   let property = "typeofMaterial";
   if (props.type && props.type !="") {property=props.type }
@@ -1137,9 +1155,88 @@ defaultValue={scatValues[typeofScat][property]}
           </div>  
 }
 
+function CriticalErrors() {
+  let activeIndex;
+  let start;
+  let end;
+  let warnings="";
+  let units;
+  if (typeofScat!="CORESHELL" && scatValues[typeofScat]["typeofMaterial"]!="userdefined")
+{  activeIndex = findIndex(materials,scatValues[typeofScat]["typeofMaterial"])
+  start=parseFloat(materials[activeIndex].rangeStart);
+  end=parseFloat(materials[activeIndex].rangeEnd);
+
+  if (lightValues.frequency[3]==true) {
+    units = lightValues.unitsOfFreq;
+    if (lightValues.unitsOfFreq=="MHz") 
+    {
+      start = start / (4.1357e-9)
+      end = end / (4.1357e-9)
+    }
+    else if (lightValues.unitsOfFreq=="GHz") 
+    {
+      start = start / (4.1357e-6)
+      end = end / (4.1357e-6)
+    }
+    else if (lightValues.unitsOfFreq=="THz") 
+    {
+      start = start / (4.1357e-3)
+      end = end / (4.1357e-3)
+    }
+
+    if (start>parseFloat(lightValues.frequency[0]) || 
+    end<parseFloat(lightValues.frequency[1])
+    ) {
+      warnings = "You have selected a frequency range outside of the material you used. Please change material or the selected frequencies."
+    }
+  }
+  
+  else if (lightValues.frequency[3]==false) 
+  
+  {units = lightValues.unitsOfWavelength; 
+  if (units=="microm") {units= "μm"}
+    if (lightValues.unitsOfWavelength=="mm") 
+    {
+      start = 1.2398e-3/start
+      end = 1.2398e-3/end
+    }
+    else if (lightValues.unitsOfWavelength=="microm") 
+    {
+      start = 1.2398/start
+      end = 1.2398/end
+    }
+    else if (lightValues.unitsOfWavelength=="nm") 
+    {
+      start = 1239.8/start
+      end = 1239.8/end
+    }
+
+    if (start<parseFloat(lightValues.wavelength[1]) || 
+    end>parseFloat(lightValues.wavelength[0])
+    ) {
+      warnings="You have selected a wavelength range outside of the material you used. Please change material or the selected wavelengths."
+    
+    }
+  }
+}
+
+return warnings
+
+}
+
+
+
+
   async function RunMultemHandler() {
 
   setLoading(true)
+
+  const warnings = CriticalErrors();
+  if (warnings && warnings!="" && warnings!=" " && warnings!=[]) 
+  {setLoading(false)
+    setIssues(warnings)
+    return
+  }
     
   const coreShells= parseInt(scatValues["CORESHELL"]["NumOfShells"][0]);
   let allShells = {};
@@ -1190,6 +1287,7 @@ defaultValue={scatValues[typeofScat][property]}
       ...envValues,
       ...lightValues,
       ...multExpansion,
+      typeofMaterialGE : scatValues["GYROELECTRICSPHERE"]["typeofMaterial"],
       epsxxReal: scatValues["GYROELECTRICSPHERE"]["epsxxReal"],
       epsxxImag: scatValues["GYROELECTRICSPHERE"]["epsxxImag"],
       epsxyReal: scatValues["GYROELECTRICSPHERE"]["epsxyReal"],
@@ -1199,7 +1297,7 @@ defaultValue={scatValues[typeofScat][property]}
       muRealGE: scatValues["GYROELECTRICSPHERE"]["muReal"],
       muImagGE: scatValues["GYROELECTRICSPHERE"]["muImag"],
       radiusGE: scatValues["GYROELECTRICSPHERE"]["radius"],
-
+      typeofMaterialGM : scatValues["GYROMAGNETICSPHERE"]["typeofMaterial"],
       epsRealGM: scatValues["GYROMAGNETICSPHERE"]["epsReal"],
       epsImagGM: scatValues["GYROMAGNETICSPHERE"]["epsImag"],
       muxxReal: scatValues["GYROMAGNETICSPHERE"]["muxxReal"],
@@ -1282,27 +1380,29 @@ defaultValue={scatValues[typeofScat][property]}
             ...allShells
           },
           GYROELECTRICSPHERE: {
-            epsxxReal: input[42+coreShells*6].split(" "),
-            epsxxImag: input[43+coreShells*6].split(" "),
-            epsxyReal: input[44+coreShells*6].split(" "),
-            epsxyImag: input[45+coreShells*6].split(" "),
-            epszzReal: input[46+coreShells*6].split(" "),
-            epszzImag: input[47+coreShells*6].split(" "),
-            muReal: input[48+coreShells*6].split(" "),
-            muImag: input[49+coreShells*6].split(" "),
-            radius: input[50+coreShells*6].split(" "),           
+            typeofMaterial : input[42+coreShells*6].toString(),
+            epsxxReal: input[43+coreShells*6].split(" "),
+            epsxxImag: input[44+coreShells*6].split(" "),
+            epsxyReal: input[45+coreShells*6].split(" "),
+            epsxyImag: input[46+coreShells*6].split(" "),
+            epszzReal: input[47+coreShells*6].split(" "),
+            epszzImag: input[48+coreShells*6].split(" "),
+            muReal: input[49+coreShells*6].split(" "),
+            muImag: input[50+coreShells*6].split(" "),
+            radius: input[51+coreShells*6].split(" "),           
           },
 
           GYROMAGNETICSPHERE: {
-            epsReal: input[51+coreShells*6].split(" "),
-            epsImag: input[52+coreShells*6].split(" "),
-            muxxReal: input[53+coreShells*6].split(" "),
-            muxxImag: input[54+coreShells*6].split(" "),
-            muxyReal: input[55+coreShells*6].split(" "),
-            muxyImag: input[56+coreShells*6].split(" "),
-            muzzReal: input[57+coreShells*6].split(" "),
-            muzzImag: input[58+coreShells*6].split(" "),
-            radius: input[59+coreShells*6].split(" "), 
+            typeofMaterial : input[52+coreShells*6].toString(),
+            epsReal: input[53+coreShells*6].split(" "),
+            epsImag: input[54+coreShells*6].split(" "),
+            muxxReal: input[55+coreShells*6].split(" "),
+            muxxImag: input[56+coreShells*6].split(" "),
+            muxyReal: input[57+coreShells*6].split(" "),
+            muxyImag: input[58+coreShells*6].split(" "),
+            muzzReal: input[59+coreShells*6].split(" "),
+            muzzImag: input[60+coreShells*6].split(" "),
+            radius: input[61+coreShells*6].split(" "), 
           },
 
         });
@@ -1450,6 +1550,27 @@ setLoading(false);
         </DialogActions>
       </Dialog>
   
+      <Dialog
+        open={issues}
+        onClose={()=>setIssues(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Please check frequency/wavelength range"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          {issues}
+          </DialogContentText>
+
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant="contained" onClick={()=>{
+setIssues(false)}}>Ok</Button>
+        </DialogActions>
+      </Dialog>
+  
+
+
   <div className={classes.allpage}
   key={loadingValues? "wait" : "done"}
   >
@@ -1871,11 +1992,15 @@ setLoading(false);
 
 
           {typeofScat=="GYROELECTRICSPHERE" &&
-          <GEChoices/>
+         <div key={typeofScat}>
+         {GEChoices()}
+</div>
             }
 
 {typeofScat=="GYROMAGNETICSPHERE" &&
-  <GMChoices/>
+<div key={typeofScat}>
+           {GMChoices()}
+  </div>
             }
 
 {/*           {typeofScat && (
@@ -1891,11 +2016,11 @@ setLoading(false);
 
 
   {typeofScat=="ELIPSE" && <div key={typeofScat}> 
-          <SpheroidChoices/>
+          {SpheroidChoices()}
   </div>}
 
   {typeofScat=="CORESHELL" && <div key={typeofScat}>
-          <CoreShellChoices/>
+         { CoreShellChoices()}
   </div>}
         </div>
       </div>

@@ -41,6 +41,13 @@ const PalikCu = {
     rangeEnd : 5.0,
 }
 
+const BiYIG = {
+    filename : "BiYIG_Bz_Doorman.txt" ,
+    optionName: "BiYIG_Bz_Doorman",
+    rangeStart : 1.05 ,
+    rangeEnd : 4.4,
+}
+
 export const materials =
 [SiliconAspnes,AgJohnChristy,AuJohnChristy,PalikAl,PalikAu,
-PalikCu]
+PalikCu,BiYIG]
