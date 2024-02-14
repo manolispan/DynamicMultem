@@ -46,6 +46,7 @@ const BiYIG = {
     optionName: "BiYIG_Bz_Doorman",
     rangeStart : 1.05 ,
     rangeEnd : 4.4,
+    matType : "GE"
 }
 
 export const materials =

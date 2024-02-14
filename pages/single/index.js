@@ -1139,10 +1139,27 @@ defaultValue={scatValues[typeofScat][property]}
    <option value="userdefined">User Defined</option>
 
   {materials.map((choice)=>{
-    return <option value={choice.filename} id={choice.filename}>
+    return <>
+    {typeofScat=="GYROELECTRICSPHERE" && choice.matType && choice.matType=="GE" &&
+    <option value={choice.filename} id={choice.filename}>
       {choice.optionName} 
-    </option>
+    </option>}
+    
+    {typeofScat=="GYROMAGNETICSPHERE" && choice.matType && choice.matType=="GM" &&
+    <option value={choice.filename} id={choice.filename}>
+      {choice.optionName} 
+    </option>}
+
+    {typeofScat!="GYROMAGNETICSPHERE" && typeofScat!="GYROELECTRICSPHERE" && 
+    (!choice.matType || (choice.matType!="GM" && choice.matType!="GE")) 
+    &&
+    <option value={choice.filename} id={choice.filename}>
+      {choice.optionName} 
+    </option>}
+    
+    </>
   })}
+  
           </select>
 
           {scatValues[typeofScat][property] && scatValues[typeofScat][property]!="userdefined" &&
@@ -1219,6 +1236,135 @@ function CriticalErrors() {
     }
   }
 }
+else if (typeofScat=="CORESHELL") {
+  if (scatValues[typeofScat]["typeofMaterial"]!="userdefined")
+  {
+    activeIndex = findIndex(materials,scatValues[typeofScat]["typeofMaterial"])
+  start=parseFloat(materials[activeIndex].rangeStart);
+  end=parseFloat(materials[activeIndex].rangeEnd);
+
+  if (lightValues.frequency[3]==true) {
+    units = lightValues.unitsOfFreq;
+    if (lightValues.unitsOfFreq=="MHz") 
+    {
+      start = start / (4.1357e-9)
+      end = end / (4.1357e-9)
+    }
+    else if (lightValues.unitsOfFreq=="GHz") 
+    {
+      start = start / (4.1357e-6)
+      end = end / (4.1357e-6)
+    }
+    else if (lightValues.unitsOfFreq=="THz") 
+    {
+      start = start / (4.1357e-3)
+      end = end / (4.1357e-3)
+    }
+
+    if (start>parseFloat(lightValues.frequency[0]) || 
+    end<parseFloat(lightValues.frequency[1])
+    ) {
+      warnings = "You have selected a frequency range outside of the material you used. Please change material or the selected frequencies."
+    }
+  }
+  
+  else if (lightValues.frequency[3]==false) 
+  
+  {units = lightValues.unitsOfWavelength; 
+  if (units=="microm") {units= "μm"}
+    if (lightValues.unitsOfWavelength=="mm") 
+    {
+      start = 1.2398e-3/start
+      end = 1.2398e-3/end
+    }
+    else if (lightValues.unitsOfWavelength=="microm") 
+    {
+      start = 1.2398/start
+      end = 1.2398/end
+    }
+    else if (lightValues.unitsOfWavelength=="nm") 
+    {
+      start = 1239.8/start
+      end = 1239.8/end
+    }
+
+    if (start<parseFloat(lightValues.wavelength[1]) || 
+    end>parseFloat(lightValues.wavelength[0])
+    ) {
+      warnings="You have selected a wavelength range outside of the material you used. Please change material or the selected wavelengths."
+    
+    }
+  }
+  }
+
+  for (let i=0;i<scatValues[typeofScat]["NumOfShells"][0];i++)
+  { let j=i+1
+    if (scatValues[typeofScat]["typeofMaterialShell"+j]!="userdefined")
+  {
+    activeIndex = findIndex(materials,scatValues[typeofScat]["typeofMaterialShell"+j])
+    start=parseFloat(materials[activeIndex].rangeStart);
+    end=parseFloat(materials[activeIndex].rangeEnd);
+  
+    if (lightValues.frequency[3]==true) {
+      units = lightValues.unitsOfFreq;
+      if (lightValues.unitsOfFreq=="MHz") 
+      {
+        start = start / (4.1357e-9)
+        end = end / (4.1357e-9)
+      }
+      else if (lightValues.unitsOfFreq=="GHz") 
+      {
+        start = start / (4.1357e-6)
+        end = end / (4.1357e-6)
+      }
+      else if (lightValues.unitsOfFreq=="THz") 
+      {
+        start = start / (4.1357e-3)
+        end = end / (4.1357e-3)
+      }
+  
+      if (start>parseFloat(lightValues.frequency[0]) || 
+      end<parseFloat(lightValues.frequency[1])
+      ) {
+        warnings = "You have selected a frequency range outside of the material you used. Please change material or the selected frequencies."
+      }
+    }
+    
+    else if (lightValues.frequency[3]==false) 
+    
+    {units = lightValues.unitsOfWavelength; 
+    if (units=="microm") {units= "μm"}
+      if (lightValues.unitsOfWavelength=="mm") 
+      {
+        start = 1.2398e-3/start
+        end = 1.2398e-3/end
+      }
+      else if (lightValues.unitsOfWavelength=="microm") 
+      {
+        start = 1.2398/start
+        end = 1.2398/end
+      }
+      else if (lightValues.unitsOfWavelength=="nm") 
+      {
+        start = 1239.8/start
+        end = 1239.8/end
+      }
+  
+      if (start<parseFloat(lightValues.wavelength[1]) || 
+      end>parseFloat(lightValues.wavelength[0])
+      ) {
+        warnings="You have selected a wavelength range outside of the material you used. Please change material or the selected wavelengths."
+      
+      }
+    }
+  }
+  
+  }
+
+}
+
+
+
 
 return warnings
 
