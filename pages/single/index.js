@@ -16,7 +16,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import {materials} from "../../variables/materials";
-import { FlashAuto } from "@mui/icons-material";
+import FastPlot from "../../components/fastplot/fastplot";
 
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
@@ -2172,8 +2172,15 @@ setIssues(false)}}>Ok</Button>
       </div>
 
       <div className={classes.geometry}>
-        <h1>Geometry</h1>
-        <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} />
+
+{/*         <h1>Geometry</h1>
+        <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> */}
+<div key={loading}>
+  <FastPlot
+/* loading= {loading} */
+/>
+</div>
+
       </div>
 
             <div

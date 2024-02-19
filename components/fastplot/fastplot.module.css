@@ -1,0 +1,134 @@
+.allpage {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px;
+    gap: 10px;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center
+
+}
+
+.plotdata {
+    padding-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    height: 610px;
+}
+
+
+.alldata {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    
+    flex-direction: column;
+}
+
+
+
+.alldata div {
+    margin: 5px;
+    background-color: rgb(196, 197, 202);
+    border-radius: 5px;
+}
+
+.addgraph {
+    display: flex;
+    font-size: 12px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+}
+
+.addgraph div {
+    background-color: var(--blue1);
+    color: white;
+    padding: 5px 10px;
+    height: min-content;
+}
+
+
+
+
+.savedfiles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.savedfilesprompt {
+    position: absolute;
+    z-index: 10;
+    top: 10%;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    max-height: 400px;
+    padding: 10px 20px;
+    width: min-content;
+    background-color: white;
+
+    overflow-y: auto;
+}
+
+
+.savedfilesprompt div {
+    background-color: white;
+    padding: 0px;
+}
+
+.allInputList {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.inputlist {
+    background-color: white;
+    padding: 5px;
+    text-align: left;
+    font-size: 16px;
+    height: 200px;
+    overflow-y: scroll;
+  }
+  
+  .inputlist div:hover {
+    background-color: rgb(107, 107, 221);
+    color: white;
+    cursor: pointer;
+    
+  }
+  
+  
+  .inputlistchosen {
+    background-color: rgb(7, 7, 207) !important;
+    color: white !important;
+  
+  }
+
+  .alldata select {
+    font-size: 14px;
+    font-weight: normal;
+    max-width: 100%;
+    padding: 5px 14px 5px 5px;
+    border: none;
+    background-color: #E6E6E6;
+    margin-left: 10px;
+    
+
+  }
+  .alldata select:active, .alldata select:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+
+  .alldata select:hover {
+    cursor: pointer;
+  }
+  .materialButton {
+    margin-left: 10px;
+  }
