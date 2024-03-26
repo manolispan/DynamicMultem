@@ -22,14 +22,10 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 function FastPlot(props) {
-  const [savePrompt, setSavePrompt] = useState(false);
-  const [saveInput,setSaveInput]=useState(false);
-  const [saveOutput,setSaveOutput]=useState(false);
+
   const [width, setWidth] = useState(500);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [xAxis, setXAxis] = useState([]);
-  const [yAxis, setYAxis] = useState([]);
   const [loadedResultFilesList, setLoadedResultFilesList] = useState([])
   const [loadedResults, setLoadedResults] = useState({});
 
@@ -79,9 +75,10 @@ function FastPlot(props) {
       tempdata[0]={};
       tempdata[0]=scs.data
       setData(tempdata);
-      setXAxis(scs.data.freq);
-      setYAxis(scs.data.trans);
-
+/*       let templotdata={};
+      templotdata.x=scs.data["freq(eV)"];
+      templotdata.y=scs.data["SCS"];
+setPlotData(templotdata) */
       setLoadedResultFilesList(["scs"])
       setLoadedResults(outputs);
 
@@ -144,8 +141,6 @@ function FastPlot(props) {
   const Plot = dynamic(import('react-plotly.js'), {
     ssr: false
   })
-
-
 
   return <div
   className={classes.allpage}
@@ -412,7 +407,8 @@ Load file
               setPlotData(temp);
               setXLegend(e.target.value)
             }
-            }>
+            }
+            >
             <option disabled selected>Select X</option>
             {data[number] && Object.keys(data[number]).map((keyName, i) => (
               <option key={i + "x"} value={keyName}>
