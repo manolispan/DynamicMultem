@@ -320,7 +320,7 @@ setPlotData(templotdata) */
       <div className={classes.plotdata}>
       <Plot
         data={plotData}
-        layout={{ /* width: width, */ height: 600, 
+        layout={{   height: 600, 
         title: 'Resuls',
         xaxis:{title: xLegend},
         yaxis:{title: yLegend}

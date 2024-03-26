@@ -218,6 +218,11 @@
     height: 100%;
 
    }
+   
+   .sxhma {
+height: 600px;
+background-color: #EBEFF8;
+   }
 
 @media screen and (min-width: 1700px) {
     .allpage {
@@ -230,7 +235,7 @@
         display: grid;
         grid-template-areas: "allproperties2 allproperties geometry";
         grid-template-columns: 30% 30% 40%; 
-        grid-template-rows: minmax(100vh,auto);
+        grid-template-rows: auto;
     
     }
     

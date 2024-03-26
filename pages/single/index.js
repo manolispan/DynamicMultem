@@ -17,6 +17,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import {materials} from "../../variables/materials";
 import FastPlot from "../../components/fastplot/fastplot";
+import BasicTabs from "../../components/twotabs/twotabs";
 
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
@@ -2174,12 +2175,22 @@ setIssues(false)}}>Ok</Button>
       <div className={classes.geometry}>
 
 {/*         <h1>Geometry</h1>
-        <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> */}
+        <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> 
 <div key={loading}>
   <FastPlot
-/* loading= {loading} */
 />
-</div>
+</div> */}
+
+<BasicTabs
+tab1= {<div className={classes.sxhma}>
+    <BoxesPage 
+  type={typeofScat} 
+  scatterer={scatValues[typeofScat]} />
+  </div>
+ }
+tab2 = {  <FastPlot
+  />}
+/>
 
       </div>
 
