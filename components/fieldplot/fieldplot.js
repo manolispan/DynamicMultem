@@ -54,7 +54,7 @@ const allPpoints = allData;
 
 
 let allPointsXYFiltered=[];
-if (plane[0]==true) {
+if (plane[2]==true) {
 allPointsXYFiltered= allPpoints.filter((word) => parseFloat(word[2]) == parseFloat(zPosition));
 }
 
@@ -64,7 +64,7 @@ if (plane[1]==true) {
 }
 
 let allPointsYZFiltered=[];
-if (plane[2]==true) {
+if (plane[0]==true) {
   allPointsYZFiltered= allPpoints.filter((word) => parseFloat(word[0]) == parseFloat(xPosition));
 }
 
