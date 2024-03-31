@@ -41,21 +41,7 @@ export default function Homepage(props) {
   const [issues,setIssues]=useState(false);
  
 
-  const [sweeps,setSweeps]= useState({
-    frequency : true,
-    wavelength : true,
-    thetaIn : false,
-    phiIn: false,
-    epsReal : false,
-    epsImag :false,
-    muReal : false,
-    muImag : false,
-    radius : false,
-    height : false,
-    radius1 : false,
-    radius2 :false
 
-  })
   const [scatValues, setScatValues] = useState({
     SPHERE: {
       typeofMaterial : typeofMaterial,
@@ -144,6 +130,10 @@ export default function Homepage(props) {
     ltmax: 6,
     Ngauss :256
   });
+
+  const [runMode,setRunMode]=useState("scs")
+
+const [fieldPoint,setFieldPoint]=useState(1);
 
   function findIndex (array, filenameToFind) {
     for (let i = 0; i < array.length; i++) {
@@ -1454,6 +1444,8 @@ return warnings
       muzzReal: scatValues["GYROMAGNETICSPHERE"]["muzzReal"],
       muzzImag: scatValues["GYROMAGNETICSPHERE"]["muzzImag"],
       radiusGM: scatValues["GYROMAGNETICSPHERE"]["radius"],
+      runMode : runMode,
+      fieldPoint : fieldPoint
 
     }
   
@@ -1588,6 +1580,8 @@ return warnings
         Ngauss: input[33+8+coreShells*6]
       });
 
+      setRunMode(input[62+coreShells*6]);
+     setFieldPoint(input[63+coreShells*6]) 
 
       setLoadingValues(false);
      
@@ -1723,7 +1717,30 @@ setIssues(false)}}>Ok</Button>
   >
       <div className={classes.allproperties}>
         <div id="lightproperties" className={classes.lightproperties}>
+
           <h1>Light Properties</h1>
+
+          <div className={classes.use}>
+            <h2 style={{ display: "inline" }}>Calculate</h2>{" "}
+            <select
+onChange={(e)=>setRunMode(e.target.value)}
+            >
+              <option
+                value={"scs"}
+                selected={runMode=="scs"}
+              >
+                Scattering Cross Section
+              </option>
+
+              <option
+                value={"field"}
+                selected={runMode=="field"}
+              >
+                Field
+              </option>
+            </select>{" "}
+            <i className="fa fa-question-circle" aria-hidden="true" />
+          </div>
 
           <div className={classes.use}>
             <h2 style={{ display: "inline" }}>Use:</h2>{" "}
@@ -1947,6 +1964,26 @@ setIssues(false)}}>Ok</Button>
               </>
             )}
 
+
+{runMode=="field" && (
+              <>
+
+                  <div>
+                  <b>Find Field at &nbsp;
+                    {lightValues.frequency[3] == true ? <span>({lightValues.unitsOfFreq})</span> :
+                    <span>({lightValues.unitsOfWavelength=="microm"? <>μm</> : <>{lightValues.unitsOfWavelength}</>})</span>
+
+                    }
+                     :{" "}</b>
+                    <input
+                    onChange={(e)=>setFieldPoint(e.target.value)}
+                      defaultValue={fieldPoint}
+                    />
+
+                  </div>
+                
+              </>
+            )}
 
           </div>
 
@@ -2188,8 +2225,8 @@ tab1= {<div className={classes.sxhma}>
   scatterer={scatValues[typeofScat]} />
   </div>
  }
-tab2 = {  <FastPlot
-  />}
+tab2 = {<div key={loading}>  <FastPlot
+  /></div>}
 />
 
       </div>

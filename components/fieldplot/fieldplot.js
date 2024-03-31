@@ -8,30 +8,27 @@ const CombinedPlanesPlot = () => {
   const [xPosition,setXPosition]= useState(0);
   const [yPosition,setYPosition]= useState(0);
   const [zPosition,setZPosition]= useState(0);
-  const [allData,setAllData] = useState([])
-  // Define your function f(x, y, z)
-  const f = (x, y, z) => {
-    // Example function: f(x, y, z) = sin(x) + cos(y) + z
-    return Math.sin(x) + Math.cos(y) -z;
-  };
+  const [allData,setAllData] = useState([]);
+  const [plane,setPlane]=useState([false,false,true]);
+
+
 
   useEffect(() => {
-    let outputs = {};
-    let list = {};
 
     const getThisOutputs = async () => {
-      const scs = await Axios.get('http://localhost:3001/loadfield/gpl_one_w0.83_.dat');
+      const scs = await Axios.get('http://localhost:3001/loadfield/fieldplot.dat');
 
 
 const data = scs.data;
-/* console.log(data) */
+
     let allData=[];
 
-    for (let i=0;i<data.length;i++) {
-      allData.push([data[i].x,data[i].y,data[i].ReEx,])
+    for (let i=0; i<data.x.length; i++) {
+      allData.push([data.x[i],data.y[i],data.z[i],data.ReEx[i]])
     }
 
-setAllData(allData)
+setAllData(allData);
+
 
     };
 
@@ -50,115 +47,33 @@ setAllData(allData)
     ssr: false
   })
 
-  const generateAllPlaneData = (numPoints) => {
-    const planeData = [];
-    for (let i = 0; i < numPoints; i++) {
-      for (let j = 0; j < numPoints; j++) {
-        for (let k = 0; k < numPoints; k++) {
-        let x, y, z;      
-          x = i / numPoints * 10;
-          y = j / numPoints * 10;
-          z = k / numPoints * 10;    
-        planeData.push([x, y, z]); 
-      }}
-    }
 
-    return planeData
-  };
 
-const allPpoints = generateAllPlaneData(50);
+  
+const allPpoints = allData;
 
-const allPointsXYFiltered= allPpoints.filter((word) => word[2] == zPosition);
-const allPointsXZFiltered= allPpoints.filter((word) => word[1] == yPosition);
-const allPointsYZFiltered= allPpoints.filter((word) => word[0] == xPosition);
+
+let allPointsXYFiltered=[];
+if (plane[0]==true) {
+allPointsXYFiltered= allPpoints.filter((word) => parseFloat(word[2]) == parseFloat(zPosition));
+}
+
+let allPointsXZFiltered=[];
+if (plane[1]==true) {
+  allPointsXZFiltered= allPpoints.filter((word) => parseFloat(word[1]) == parseFloat(yPosition));
+}
+
+let allPointsYZFiltered=[];
+if (plane[2]==true) {
+  allPointsYZFiltered= allPpoints.filter((word) => parseFloat(word[0]) == parseFloat(xPosition));
+}
+
 
 const allPointsFiltered = allPointsXYFiltered.concat(allPointsXZFiltered).concat(allPointsYZFiltered);
 
-let allColorsFiltered = [];
 
 
 
-for (let i=0; i<allPointsFiltered.length ; i++)
-{
-  allColorsFiltered.push(f(allPointsFiltered[i][0],allPointsFiltered[i][1],allPointsFiltered[i][2]))
-}
-
-const MyLayout =
-[{
-  x: allPointsFiltered.map(point => point[0]),
-  y: allPointsFiltered.map(point => point[1]),
-  z: allPointsFiltered.map(point => point[2]),
-  mode: 'markers',
-  type: 'scatter3d',
-  marker: {
-    size: 5,
-    color: allColorsFiltered,
-    colorscale: 'Viridis',
-    opacity: 0.8,
-    colorbar: {
-      title: 'f(x, y, z)'
-    }
-  }
-}]
-
-  // Function to generate data for a plane
-  const generatePlaneData = (plane, numPoints, f) => {
-    const planeData = [];
-    const colors = [];
-
-    for (let i = 0; i < numPoints; i++) {
-      for (let j = 0; j < numPoints; j++) {
-        let x, y, z;
-
-        if (plane === 'xy') {
-          x = i / numPoints * 10;
-          y = j / numPoints * 10;
-          z = 5;
-        } else if (plane === 'yz') {
-          x = 5;
-          y = i / numPoints * 10;
-          z = j / numPoints * 10;
-        } else if (plane === 'xz') {
-          x = i / numPoints * 10;
-          y = 5;
-          z = j / numPoints * 10;
-        }
-
-        const color = f(x, y, z);
-        planeData.push([x, y, z]);
-        colors.push(color);
-      }
-    }
-
-    return [{
-      x: planeData.map(point => point[0]),
-      y: planeData.map(point => point[1]),
-      z: planeData.map(point => point[2]),
-      mode: 'markers',
-      type: 'scatter3d',
-      marker: {
-        size: 5,
-        color: colors,
-        colorscale: 'Viridis',
-        opacity: 0.8,
-        colorbar: {
-          title: 'f(x, y, z)'
-        }
-      }
-    }];
-  };
-
-    // Generate data for a grid in the XY plane
-    const xyData = generatePlaneData('xy', 50, f);
-
-    // Generate data for a grid in the YZ plane
-    const yzData = generatePlaneData('yz', 50, f);
-
-    // Generate data for a grid in the XZ plane
-    const xzData = generatePlaneData('xz', 50, f);
-
-    // Combine data for all planes
-    const combinedData = xyData.concat(yzData).concat(xzData);
 
 
   return <><Plot data=
@@ -170,7 +85,7 @@ const MyLayout =
     type: 'scatter3d',
     marker: {
       size: 4,
-      color: allColorsFiltered,
+      color: allPointsFiltered.map(point => point[3]),
       colorscale: 'Viridis',
       opacity: 0.7,
       colorbar: {
@@ -178,33 +93,75 @@ const MyLayout =
       }
     }
   }]}  
-  layout={{ title: 'Combined Planes' }} />
+  layout={{ 
+    title: 'Combined Planes',
+  
+    scene:{
+      aspectmode: "manual",
+      aspectratio: {
+        x: 1, y: 1, z: 1,
+       },
+    xaxis: {
+    
+     range: [-1, 1],
+   },
+    yaxis: {
+    
+     range: [-1, 1],
+   },
+    zaxis: {
+   
+    range: [-1, 1],
+   }},
+    
+    }} />
 
 <div>
-<input type="range" min="0" max="10" defaultValue={xPosition}
+<input 
+onChange={(e)=> {
+  if (e.target.checked)
+{setPlane([true,plane[1],plane[2]])}
+else {setPlane([false,plane[1],plane[2]])}
+}}
+type="checkbox" id="yz plane" name="yz plane"/>
+<label for="yz plane"> YZ plane</label>
+<input type="range" min="-1" max="1" step="0.2" defaultValue={xPosition}
 onChange={(e)=>setXPosition(e.target.value)}
 />
 
-<input type="range" min="0" max="10" defaultValue={yPosition}
+
+<br/>
+
+<input 
+onChange={(e)=> {
+  if (e.target.checked)
+{setPlane([plane[0],true,plane[2]])}
+else {setPlane([plane[0],false,plane[2]])}
+}}
+type="checkbox" id="xz plane" name="xz plane"/>
+<label for="xz plane"> XZ plane</label>
+
+
+<input type="range" min="-1" max="1" step="0.2"  defaultValue={yPosition}
 onChange={(e)=>setYPosition(e.target.value)}
 />
 
-<input type="range" min="0" max="10" defaultValue={zPosition}
+<br/>
+
+<input 
+defaultChecked= {plane[2]}
+onChange={(e)=> {
+  if (e.target.checked)
+{setPlane([plane[0],plane[1],true])}
+else {setPlane([plane[0],plane[1],false])}
+}}
+type="checkbox" id="xy plane" name="xy plane"/>
+<label for="xy plane"> XY plane</label>
+<input type="range" min="-1" max="1" step="0.2" defaultValue={zPosition}
 onChange={(e)=>setZPosition(e.target.value)}
 />
 </div>
-{/*        <Slider
-       value={xPosition}
-       onChange={(e)=>setXPosition(e.target.value)}
-        aria-label="Temperature"
-        defaultValue={xPosition}
-        valueLabelDisplay="auto"
-        shiftStep={1}
-        step={1}
-        marks
-        min={0}
-        max={10}
-      /> */}
+
   </>
   
   ;
