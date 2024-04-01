@@ -24,7 +24,7 @@ const data = scs.data;
     let allData=[];
 
     for (let i=0; i<data.x.length; i++) {
-      allData.push([data.x[i],data.y[i],data.z[i],data.ReEx[i]])
+      allData.push([data.x[i],data.y[i],data.z[i],data.normE[i]])
     }
 
 setAllData(allData);

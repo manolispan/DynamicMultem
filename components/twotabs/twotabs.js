@@ -67,6 +67,10 @@ export default function BasicTabs(props) {
           <Tab label="Quick Graph" {...a11yProps(1)} 
 
           />
+
+<Tab label="Field Graph" {...a11yProps(2)} 
+
+/>
        
         </Tabs>
       </Box>
@@ -75,6 +79,10 @@ export default function BasicTabs(props) {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         {props.tab2}
+      </CustomTabPanel>
+
+      <CustomTabPanel value={value} index={2}>
+        {props.tab3}
       </CustomTabPanel>
 
     </Box>

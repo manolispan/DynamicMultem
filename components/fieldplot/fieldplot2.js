@@ -17,6 +17,7 @@ export default function PlanePlot() {
             const [x, setX] = useState([]);
             const [y, setY] = useState([]);
             const [z, setZ] = useState([]);
+            const [boundaries,setBoundaries]=useState([]);
             const [colors,setColors]=useState([])
         
       useEffect(() => {
@@ -27,6 +28,9 @@ export default function PlanePlot() {
     
     const data = scs.data;
     const length = Math.pow(data.x.length,1/3).toFixed(0);
+
+    if (data.RSph)
+    {setBoundaries[3*data.RSph[0]/2,3*data.RSph[0]/2,3*data.RSph[0]/2]}
  
     let allData=[];
 
@@ -116,15 +120,15 @@ export default function PlanePlot() {
        },
     xaxis: {
     
-     range: [-1, 1],
+     range: [-boundaries[0], boundaries[0]],
    },
     yaxis: {
     
-     range: [-1, 1],
+     range: [-boundaries[1], boundaries[1]],
    },
     zaxis: {
    
-    range: [-1, 1],
+    range: [-boundaries[2], boundaries[2]],
    }
                 }
             };

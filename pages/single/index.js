@@ -18,6 +18,7 @@ import TextField from '@mui/material/TextField';
 import {materials} from "../../variables/materials";
 import FastPlot from "../../components/fastplot/fastplot";
 import BasicTabs from "../../components/twotabs/twotabs";
+import PlanePlot from "../../components/fieldplot/fieldplot2";
 
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
@@ -2227,6 +2228,9 @@ tab1= {<div className={classes.sxhma}>
  }
 tab2 = {<div key={loading}>  <FastPlot
   /></div>}
+
+  tab3 = {<div key={loading}>   <PlanePlot/></div>}
+
 />
 
       </div>
