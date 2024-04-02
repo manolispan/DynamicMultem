@@ -17,8 +17,8 @@ export default function PlanePlot() {
             const [x, setX] = useState([]);
             const [y, setY] = useState([]);
             const [z, setZ] = useState([]);
-            const [boundaries,setBoundaries]=useState([]);
-            const [colors,setColors]=useState([])
+            const [boundaries,setBoundaries]=useState([1,1,1]);
+            const [colors,setColors]=useState([]);
         
       useEffect(() => {
     
@@ -28,9 +28,17 @@ export default function PlanePlot() {
     
     const data = scs.data;
     const length = Math.pow(data.x.length,1/3).toFixed(0);
+    
 
-    if (data.RSph)
-    {setBoundaries[3*data.RSph[0]/2,3*data.RSph[0]/2,3*data.RSph[0]/2]}
+    if (data.Rsph)
+    {setBoundaries([2*data.Rsph[0],2*data.Rsph[0],2*data.Rsph[0]])}
+
+
+    else if (data.Rcyl)
+    {setBoundaries([2*data.Rcyl[0],2*data.Rcyl[0],2*data.Hcyl[0]])}
+
+    else if (data.Ra)
+    {setBoundaries([2*data.Ra[0],2*data.Ra[0],2*data.Rb[0]])}
  
     let allData=[];
 
@@ -104,20 +112,22 @@ export default function PlanePlot() {
                 z: z,
                 surfacecolor: colors,
                 colorscale: 'Viridis', // Use the Viridis colorscale
-                showscale: false
+                showscale: false,
+            
             }];
         
             // Define layout
             const layout = {
                 title: 'Plane at z=0',
                 scene: {
+
                     xaxis: { title: 'X' },
                     yaxis: { title: 'Y' },
                     zaxis: { title: 'Z' },
                     aspectmode: "manual",
-      aspectratio: {
-        x: 1, y: 1, z: 1,
-       },
+    //   aspectratio: {
+    //     x: 1, y: 1, z: 1,
+    //    },
     xaxis: {
     
      range: [-boundaries[0], boundaries[0]],

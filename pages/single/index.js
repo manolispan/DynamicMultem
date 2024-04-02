@@ -2229,7 +2229,7 @@ tab1= {<div className={classes.sxhma}>
 tab2 = {<div key={loading}>  <FastPlot
   /></div>}
 
-  tab3 = {<div key={loading}>   <PlanePlot/></div>}
+  tab3 = {<div key={loading}>  {!loading && <PlanePlot/>} </div>}
 
 />
 
