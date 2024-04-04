@@ -1848,7 +1848,7 @@ onChange={(e)=>setRunMode(e.target.value)}
 
           <div key={lightValues.frequency[3] === true ? "freq" : "wave"}>
 
-
+{runMode=="scs" &&  <>
 {lightValues.frequency[3] == true && (
               <>
                 <h2 className={classes.inline}>
@@ -1963,7 +1963,10 @@ onChange={(e)=>setRunMode(e.target.value)}
                   </div>
                 
               </>
-            )}
+            )}</>
+
+}
+
 
 
 {runMode=="field" && (
