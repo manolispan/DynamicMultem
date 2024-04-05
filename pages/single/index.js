@@ -1459,6 +1459,10 @@ return warnings
   )
   setLoading(false);
   setMultemEnd(true);
+  if (runMode=="scs")
+  {document.getElementById("simple-tab-1").click()}
+  else if (runMode=="field")
+  {document.getElementById("simple-tab-2").click()}
 
   }
 
@@ -1623,7 +1627,7 @@ setLoading(false);
   return (<>    
   {loading && <LoadingPrompt/>}
   {loadingValues && <LoadingPrompt/>}
- <Dialog
+{/*  <Dialog
         open={multemEnd}
         onClose={()=>setMultemEnd(false)}
         aria-describedby="alert-dialog-slide-description"
@@ -1639,6 +1643,23 @@ setLoading(false);
           <Button onClick={()=>setMultemEnd(false)}>Stay Here</Button>
           <Button onClick={()=>{setMultemEnd(false);setSavePrompt(true)}}>Save the results</Button>
           <Button onClick={()=> router.push("/single/results")}>Go to the Graphs</Button>
+        </DialogActions>
+      </Dialog> */}
+
+
+ <Dialog
+        open={multemEnd}
+        onClose={()=>setMultemEnd(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"The simulation has finished successfully!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+          Successfully calculated 
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={()=>setMultemEnd(false)}>ok</Button>
         </DialogActions>
       </Dialog>
 

@@ -95,7 +95,7 @@ export default function PlanePlot() {
             /* Opoio 8es na krathseis sta8ero toy kaneis to parakatw alliws to 8eteis differentValues */
             let test=[]
             for (let i=0;i<length;i++)
-            {test.push(0)}
+            {test.push(planePos)}
             setX(test);
         
         }
@@ -113,7 +113,7 @@ export default function PlanePlot() {
         /* Opoio 8es na krathseis sta8ero toy kaneis to parakatw alliws to 8eteis differentValues */
         let test=[]
         for (let i=0;i<length;i++)
-        {test.push(0)}
+        {test.push(planePos)}
         setY(test);
     
     }
@@ -211,10 +211,10 @@ export default function PlanePlot() {
                         <option value={1}>xz</option>
                         <option value={0}>yz</option>
                     </select>
-
+{/* 
                     {-boundaries[plane]}<input type="range" min={-boundaries[plane]} max={boundaries[plane]} step={2*boundaries[plane]/(x.length-1)} defaultValue={0}
 onChange={(e)=>setPlanePos(e.target.value)}
-/>{boundaries[plane]}
+/>{boundaries[plane]} */}
                 </div>
                 </div>
             );

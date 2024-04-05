@@ -79,6 +79,25 @@ function FastPlot(props) {
       templotdata.x=scs.data["freq(eV)"];
       templotdata.y=scs.data["SCS"];
 setPlotData(templotdata) */
+setPlotData([
+  {
+    y:  tempdata[0].SCS,
+    x: tempdata[0]["freq(eV)"],
+  }
+]);
+
+setXLegend("freq(eV)");
+setYLegend("SCS");
+
+if (document.getElementById("file0"))
+{document.getElementById("file0").value= "scs"}
+
+if (document.getElementById("xaxis0"))
+{document.getElementById("xaxis0").value= "freq(eV)"}
+
+if (document.getElementById("yaxis0"))
+{document.getElementById("yaxis0").value= "SCS"}
+
       setLoadedResultFilesList(["scs"])
       setLoadedResults(outputs);
 
@@ -332,6 +351,7 @@ setPlotData(templotdata) */
 {
   numberofPlots.map((number) =>
     <div key={"key" + number + "extra" + idextra}>
+      
       <div className={classes.savedfiles}>
 
         <div>File
