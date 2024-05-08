@@ -23,6 +23,9 @@ import PlanePlot from "../../components/fieldplot/fieldplot2";
 const BoxesPage = dynamic(
   () => import('../../components/threejs/singlescat'), { ssr: false });
 
+  const Plot = dynamic(import('react-plotly.js'), {
+    ssr: false
+  })
 
 export default function Homepage(props) {
   const [saveInput,setSaveInput]=useState(false);
@@ -40,7 +43,19 @@ export default function Homepage(props) {
   const [typeofMaterial,setTypeofMaterial]=useState("userdefined");
   const [lengthUnitsScat,setLengthUnitsScat]=useState("nm");
   const [issues,setIssues]=useState(false);
- 
+  const [editMaterials,setEditMaterials]=useState(false)
+ const [addnewMaterial,setAddnewMaterial]=useState(false);
+
+  const fieldQuualityOptions = [
+    {name: "low" ,
+    value : 51
+    },
+    {name: "medium" ,
+    value : 101
+    },
+
+
+  ]
 
 
   const [scatValues, setScatValues] = useState({
@@ -131,6 +146,8 @@ export default function Homepage(props) {
     ltmax: 6,
     Ngauss :256
   });
+
+const [fieldQuality,setFieldQuality]= useState(51);
 
   const [runMode,setRunMode]=useState("scs")
 
@@ -1094,7 +1111,9 @@ if (units=="microm") {units= "μm"}
   }
 }
 
-return <div key={lightValues.unitsOfWavelength+"-"+lightValues.unitsOfWavelength+"-"+start+ end}>
+return <div key={lightValues.unitsOfWavelength+"-"+lightValues.unitsOfWavelength+"-"+start+ end}
+className={classes.materialinfo}
+>
   
   {lightValues.frequency[3]==false ? <>
   Wavelength Range: {end.toExponential(2)} to {start.toExponential(2)} {units}</> :
@@ -1152,7 +1171,11 @@ defaultValue={scatValues[typeofScat][property]}
     </>
   })}
   
-          </select>
+          </select> <Button 
+          variant="contained"
+          size = "small"
+          onClick={()=>setEditMaterials(true)}
+          >Edit Materials</Button>
 
           {scatValues[typeofScat][property] && scatValues[typeofScat][property]!="userdefined" &&
 
@@ -1363,6 +1386,134 @@ return warnings
 }
 
 
+function MaterialsEdit () {
+
+  const [x,setX]=useState([])
+  const [y,setY]=useState([])
+  const [z,setZ]=useState([])
+  const [materialList,setMaterialList] = useState([])
+
+  useEffect(()=>{
+    GetListMat ()
+  },[])
+
+  async function GetListMat () {
+    const response = await Axios.get('http://localhost:3001/materialslist');
+  
+    let newdata=[]
+   
+
+    for (let i=0; i<response.data.length;i++)
+    {newdata.push(JSON.parse(response.data[i]))}
+
+    setMaterialList(newdata)
+  }
+  
+
+
+  return <div className="flex flex-row justify-center items-start">
+    <div className="p-4">
+      <h2>Existing Materials</h2>
+      
+      <ul>
+        {materialList.map((item)=>{
+          return <li
+          onClick={()=>{
+            setX(item.eV)
+            setY(item.k)
+            setZ(item.n)
+          }}
+          >
+            {item.name}
+          </li>
+        })}
+      </ul>
+
+<div>
+  <Button variant="contained"
+  onClick={()=>setAddnewMaterial(true)}
+  >Add New</Button>
+</div>
+      </div>
+
+<div className="p-4">
+  <h2
+  className="text-center"
+  >Material Properties</h2>
+
+  <Plot
+data={[{
+  x: x,
+  y: y,
+  mode: 'markers',
+  type: 'scatter',
+  name : "k"
+},
+{
+x: x,
+y: z,
+mode: 'markers',
+type: 'scatter',
+name : "n"
+}
+]}
+        layout={{   height: 400,  width: 500,
+        title: 'Properties',
+        xaxis:{title: "freq(eV)"},
+        yaxis:{title: "k,n"}
+      }}
+        config={{ scrollZoom: true, editable: true }} />
+</div>
+  </div>
+}
+
+
+function AddNewMaterial () {
+
+  const [fileUpload,setFileUpload] = useState();
+
+
+  console.log(fileUpload)
+
+  async function filehandler () {
+    const fd = new FormData();
+    fd.append('name', document.getElementById("filename").value)
+    fd.append('skiplines', document.getElementById("skiplines").value)
+    fd.append('file', fileUpload, document.getElementById("filename").value)
+    try {
+     
+      const res= await Axios.post('http://localhost:3001/addnewmaterial',fd);
+
+      if (res.data.success && res.data.success===true) {
+        alert("success!")
+      
+      }
+      else {alert("Failed")}
+
+    }
+
+    catch (err) {console.log(err)}
+  
+  }
+
+  return <>
+        <DialogTitle>{"Add New Material"}</DialogTitle>
+        <DialogContent>
+
+        <div>Name of material: <input placeholder="Name of Material" id="filename"/></div>
+  <div>Lines to Skip: <input type="number" id="skiplines"/></div>
+  <div>Upoad file: <input type="file" 
+  onChange={(e) => setFileUpload(e.target.files?.[0])}/></div>
+
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={()=>setAddnewMaterial(false)}>Cancel</Button>
+          <Button onClick={()=>filehandler ()}>Upload</Button>
+        </DialogActions>
+
+
+</>
+}
 
 
   async function RunMultemHandler() {
@@ -1446,7 +1597,8 @@ return warnings
       muzzImag: scatValues["GYROMAGNETICSPHERE"]["muzzImag"],
       radiusGM: scatValues["GYROMAGNETICSPHERE"]["radius"],
       runMode : runMode,
-      fieldPoint : fieldPoint
+      fieldPoint : fieldPoint,
+      fieldQuality : fieldQuality
 
     }
   
@@ -1587,6 +1739,7 @@ return warnings
 
       setRunMode(input[62+coreShells*6]);
      setFieldPoint(input[63+coreShells*6]) 
+     setFieldQuality(input[64+coreShells*6])
 
       setLoadingValues(false);
      
@@ -1627,25 +1780,38 @@ setLoading(false);
   return (<>    
   {loading && <LoadingPrompt/>}
   {loadingValues && <LoadingPrompt/>}
-{/*  <Dialog
-        open={multemEnd}
-        onClose={()=>setMultemEnd(false)}
-        aria-describedby="alert-dialog-slide-description"
+
+
+  <Dialog
+maxWidth="xl"
+        open={addnewMaterial}
+        onClose={()=>setAddnewMaterial(false)}
+        aria-describedby="alert-dialog-add-materials"
       >
-        <DialogTitle>{"The simulation has finished successfully!"}</DialogTitle>
+
+<AddNewMaterial/>
+
+
+      </Dialog>
+
+
+
+<Dialog
+fullScreen
+        open={editMaterials}
+        onClose={()=>setEditMaterials(false)}
+        aria-describedby="alert-dialog-edit-materials"
+      >
+        <DialogTitle>{"Edit Materials"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-          How do you want to proceed? You can save the results either by pressing "save the results" or by 
-          selecting "Go to the graphs" and save later.
-          </DialogContentText>
+
+<MaterialsEdit/>
+
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setMultemEnd(false)}>Stay Here</Button>
-          <Button onClick={()=>{setMultemEnd(false);setSavePrompt(true)}}>Save the results</Button>
-          <Button onClick={()=> router.push("/single/results")}>Go to the Graphs</Button>
+          <Button onClick={()=>setEditMaterials(false)}>Done</Button>
         </DialogActions>
-      </Dialog> */}
-
+      </Dialog>
 
  <Dialog
         open={multemEnd}
@@ -2006,6 +2172,28 @@ onChange={(e)=>setRunMode(e.target.value)}
                     />
 
                   </div>
+
+                  <div>
+
+                  <b>Quality</b> <select
+                  onChange={(e) => {
+                    setFieldQuality(e.target.value)
+                  }}
+                  defaultValue={fieldQuality}
+                >
+                  {fieldQuualityOptions.map((item) => {
+                    return <option value={item.value}>{item.name}</option>;
+                  })}
+                </select>
+                  </div>
+
+
+
+                  <div 
+                  style={{
+                    color: fieldQuality==101 ? "orangered" : "transparent"
+                  }}
+                  >Medium Quality selected - slower run time</div>
                 
               </>
             )}

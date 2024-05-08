@@ -167,7 +167,7 @@ export default function PlanePlot() {
                 z: z,
                 surfacecolor: colors,
                 colorscale: 'Viridis', // Use the Viridis colorscale
-                showscale: false,
+                showscale: true,
             
             }];
         
@@ -221,105 +221,4 @@ onChange={(e)=>setPlanePos(e.target.value)}
         };
         
       
-    
-    
 
-    
-/*     const PlanePlot = () => {
-        // Define grid
-        const [x, setX] = useState([]);
-        const [y, setY] = useState([]);
-        const [z, setZ] = useState([]);
-    
-        useEffect(() => {
-            const generateGrid = () => {
-        setX([-1,0,1])
-        setY([-1,0,1])
-         setZ([
-            [
-                1,
-                1,
-                1
-            ],
-            [
-                0,
-                0,
-                0
-            ],
-            [
-                0,
-                0,
-                0
-            ]
-        ])   
-            
-            };
-    
-            generateGrid();
-        }, []);
-    
-        // Define the function to determine the color based on x and y
-        const getColor = (x, y) => {
-            // Example function: z = sin(x) + cos(y)
-            return Math.sin(x) + Math.cos(y);
-        };
-    
-        // Define colors based on the function value at each (x, y) point
-        // const colors = x.map((_, i) => {
-        //     return y.map((_, j) => {
-        //         const value = getColor(x[i], y[j]);
-        //         return value; // Use the function value directly
-        //     });
-        // });
-
-        const colors= [
-            
-               
-            [
-                1,
-                1,
-                1
-            ],
-            [
-                0,
-                0,
-                0
-            ],
-            [
-                0,
-                0,
-                0
-            ]
-        ]
-    
-        // Define data
-        const data = [{
-            type: 'surface',
-            x: x,
-            y: y,
-            z: z,
-            surfacecolor: colors,
-            colorscale: 'Viridis', // Use the Viridis colorscale
-            showscale: false
-        }];
-    
-        // Define layout
-        const layout = {
-            title: 'Plane at z=0',
-            scene: {
-                xaxis: { title: 'X' },
-                yaxis: { title: 'Y' },
-                zaxis: { title: 'Z' }
-            }
-        };
-    
-        return (
-            <Plot
-                data={data}
-                layout={layout}
-            />
-        );
-    };  export default PlanePlot;
-*/
-    
-   
