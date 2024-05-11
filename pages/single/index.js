@@ -43,8 +43,24 @@ export default function Homepage(props) {
   const [typeofMaterial,setTypeofMaterial]=useState("userdefined");
   const [lengthUnitsScat,setLengthUnitsScat]=useState("nm");
   const [issues,setIssues]=useState(false);
-  const [editMaterials,setEditMaterials]=useState(false)
- const [addnewMaterial,setAddnewMaterial]=useState(false);
+  const [editMaterials,setEditMaterials]=useState(false);
+  const [materialList,setMaterialList] = useState([])
+
+  useEffect(()=>{
+    GetListMat ()
+  },[])
+
+  async function GetListMat () {
+    const response = await Axios.get('http://localhost:3001/materialslist');
+  
+    let newdata=[]
+
+    for (let i=0; i<response.data.length;i++)
+    {newdata.push(JSON.parse(response.data[i]))}
+
+    setMaterialList(newdata)
+  }
+  
 
   const fieldQuualityOptions = [
     {name: "low" ,
@@ -160,147 +176,6 @@ const [fieldPoint,setFieldPoint]=useState(1);
       }
     }
     return -1;
-  }
-
-
-  function ScatChoices(items) {
-    let text = [];
-    Object.entries(items).forEach(([key, value]) => {
-      if (typeofMaterial=="userdefined" || 
-      (key!="epsReal" && key!="epsImag" && key!="muReal" && key!="muImag")
-      )
-      {
-        if (key=="epsxxReal" || key=="epsxxImag" ||
-        key=="epsxyReal" || key=="epsxyImag" ||
-        key=="epszzReal" || key=="epszzImag" ||
-        key=="muxxReal" || key=="muxxImag" ||
-        key=="muxyReal" || key=="muxyImag" ||
-        key=="muzzReal" || key=="muzzImag" 
-
-        ) {return}
-
-        if (key=="NumOfShells") 
-        {
-          text.push(<div> 
-       <h2>{key} </h2>     
-             <button
-             onClick={()=>{
-              const temp = Object.assign({}, scatValues);
-              let previousNo= parseInt(scatValues[typeofScat][key][0]);
-              if (previousNo==1) {return}
-              let newNo= previousNo-1;
-              temp[typeofScat][key][0]= newNo;
-              delete temp[typeofScat]["epsRealShell"+previousNo];
-              delete temp[typeofScat]["epsImagShell"+previousNo];
-              delete temp[typeofScat]["muRealShell"+previousNo];
-              delete temp[typeofScat]["muImagShell"+previousNo]; 
-              delete temp[typeofScat]["radiusShell"+previousNo];
-              setScatValues(temp);
-             }}
-             >-</button> {scatValues[typeofScat][key][0]} <button
-             onClick={()=>{
-              const temp = Object.assign({}, scatValues);
-              let previousNo= parseInt(scatValues[typeofScat][key][0]);
-              let newNo= previousNo+1;
-              temp[typeofScat][key][0]= newNo;
-              temp[typeofScat]["epsRealShell"+newNo]=temp[typeofScat]["epsRealShell"+previousNo].slice();
-              temp[typeofScat]["epsImagShell"+newNo]=temp[typeofScat]["epsImagShell"+previousNo].slice();
-              temp[typeofScat]["muRealShell"+newNo]=temp[typeofScat]["muRealShell"+previousNo].slice();
-              temp[typeofScat]["muImagShell"+newNo]=temp[typeofScat]["muImagShell"+previousNo].slice(); 
-              temp[typeofScat]["radiusShell"+newNo]=temp[typeofScat]["radiusShell"+previousNo].slice();
-              setScatValues(temp);
-             }}
-             >+</button> 
-          </div>)
-
-        }
-
-
-
-        else 
-{      text.push(
-        <div>
-          {typeofScat=="CORESHELL" && key=="epsReal" &&
-           <h2>Core Info</h2> 
-          }
-
-{typeofScat=="CORESHELL" && key.includes("epsRealShell") &&
-           <h2>Shell {key.split("ll")[1]} Info</h2> 
-          }
-
-          <h2 className={classes.inline}>{key} {key=="radius" || key=="height" ?
-          <>
-          ({lengthUnitsScat!="microm" ? <>{lengthUnitsScat}</>:<>μm</>})</>:null}:</h2>
-          {scatValues[typeofScat][key][2] == 0 ||
-            (scatValues[typeofScat][key][2] == 1 && (
-              <input
-                defaultValue={scatValues[typeofScat][key][0]}
-                onChange={(e) => {
-                  const temp = Object.assign({}, scatValues);
-                  temp[typeofScat][key][0] = e.target.value.replaceAll(
-                    ",",
-                    "."
-                  );
-                  setScatValues(temp);
-                }}
-              />
-            ))}
-
-
-          {scatValues[typeofScat][key][2] != 0 &&
-            scatValues[typeofScat][key][2] != 1 && (
-              <div>
-                From:{" "}
-                <input
-                  type="text"
-                  accept="[0,9]"
-                  defaultValue={scatValues[typeofScat][key][0]}
-                  onChange={(e) => {
-                    const temp = Object.assign({}, scatValues);
-                    temp[typeofScat][key][0] = e.target.value.replaceAll(
-                      ",",
-                      "."
-                    );
-                    setScatValues(temp);
-                  }}
-                />
-                To:
-                <input
-                  type="text"
-                  accept="[0,9]"
-                  defaultValue={scatValues[typeofScat][key][1]}
-                  onChange={(e) => {
-                    const temp = Object.assign({}, scatValues);
-                    temp[typeofScat][key][1] = e.target.value.replaceAll(
-                      ",",
-                      "."
-                    );
-                    setScatValues(temp);
-                  }}
-                />
-                Points:{" "}
-                <input
-                  type="text"
-                  accept="[0,9]"
-                  defaultValue={scatValues[typeofScat][key][2]}
-                  onChange={(e) => {
-                    const temp = Object.assign({}, scatValues);
-                    temp[typeofScat][key][2] = e.target.value.replaceAll(
-                      ",",
-                      "."
-                    );
-                    setScatValues(temp);
-                  }}
-                />
-              </div>
-            )}
-        </div>
-      )}
-      ;
-    }
-    });
-
-    return <>{text}</>;
   }
 
 
@@ -1391,55 +1266,178 @@ function MaterialsEdit () {
   const [x,setX]=useState([])
   const [y,setY]=useState([])
   const [z,setZ]=useState([])
-  const [materialList,setMaterialList] = useState([])
+  const [graphTitle,setGraphTitle]=useState("")
 
-  useEffect(()=>{
-    GetListMat ()
-  },[])
+  const [addnewMaterial,setAddnewMaterial]=useState(false);
 
-  async function GetListMat () {
-    const response = await Axios.get('http://localhost:3001/materialslist');
+  function AddNewMaterial () {
+
+    const [fileUpload,setFileUpload] = useState();
   
-    let newdata=[]
+  
+    async function filehandler () {
+      const fd = new FormData();
+      fd.append('name', document.getElementById("filename").value)
+      fd.append('skiplines', document.getElementById("skiplines").value)
+      fd.append('file', fileUpload, document.getElementById("filename").value)
+      try {
+       
+        const res= await Axios.post('http://localhost:3001/addnewmaterial',fd);
+  
+        if (res.data.success && res.data.success===true) {
+          alert("success!");
+          GetListMat ();
+          setAddnewMaterial(false)
+        
+        }
+        else {alert("Failed")}
+  
+      }
+  
+      catch (err) {console.log(err)}
+    
+    }
+  
+    return <>
+          <DialogTitle>{"Add New Material"}</DialogTitle>
+          <DialogContent>
+  
+          <div>Name of material: <input placeholder="Name of Material" id="filename"/></div>
+    <div>Lines to Skip: <input type="number" id="skiplines"/></div>
+    <div>Upoad file: <input type="file" 
+    onChange={(e) => setFileUpload(e.target.files?.[0])}/></div>
+  
+          </DialogContent>
+          <DialogActions>
+          <Button onClick={()=>setAddnewMaterial(false)}>Cancel</Button>
+            <Button onClick={()=>filehandler ()}>Upload</Button>
+          </DialogActions>
+  
+  
+  </>
+  }
+  
+  async function downloadMaterialData (file,kind) {
+    let fileToDnld= file;
+  
+    if (kind=="jsondata")
+      {fileToDnld= file.replace('.txt', '-info.txt');}
+  
+    alert(fileToDnld)
+  
+    const body = {filename : fileToDnld}
    
-
-    for (let i=0; i<response.data.length;i++)
-    {newdata.push(JSON.parse(response.data[i]))}
-
-    setMaterialList(newdata)
+    const result = await Axios.post('http://localhost:3001/downloadmaterial',
+      body
+    );
+  
+    let textToWrite=result.data;
+  
+   
+    if (kind=="jsondata") {
+      textToWrite=JSON.stringify(textToWrite)
+    }
+  
+    const blob = new Blob([textToWrite], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = fileToDnld;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
   
 
 
-  return <div className="flex flex-row justify-center items-start">
-    <div className="p-4">
-      <h2>Existing Materials</h2>
+  return <>
+  <Dialog
+maxWidth="xl"
+        open={addnewMaterial}
+        onClose={()=>setAddnewMaterial(false)}
+        aria-describedby="alert-dialog-add-materials"
+      >
+
+<AddNewMaterial/>
+
+
+      </Dialog>
+  <div className="flex flex-row justify-center items-stretch min-h-[600px]">
+
+
+
+    <div className={`p-4 mt-12 w-full h-full border-slate-200 border-solid border 
+      rounded-sm  min-w-60 flex flex-col 
+     flex-nowrap justify-between
+    `}>
       
-      <ul>
+      
+      <div className=" list-none p-0 ">
+      <h3 className="pb-0 mb-2">Materials</h3>
+      <div
+      className="text-slate-600 mb-4"
+      >Choose Material to see its properties graph. If you 
+      want to add more materials press the "add new" button. You can also download 
+      the material data in text format or json format.</div>
         {materialList.map((item)=>{
-          return <li
+          return <div className="flex flex-row justify-between items-center border-b border-solid border-t-0 border-x-0   mt-0 
+           border-slate-400"
+           key={item.name}>
+          <div
+          className={`p-0 m-0 py-2  pl-2 hover:cursor-pointer hover:bg-slate-200 w-full`}
           onClick={()=>{
             setX(item.eV)
             setY(item.k)
             setZ(item.n)
+            setGraphTitle(item.name)
           }}
           >
             {item.name}
-          </li>
-        })}
-      </ul>
+           
+          </div> 
 
-<div>
+          <div className=" min-w-fit py-2 pl-2 pr-2">
+          <span
+          onClick={()=>downloadMaterialData(item.filename,"jsondata")}
+          className=" text-xs text-sky-700 hover:cursor-pointer"
+          ><svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+          viewBox="0 0 24 24" strokeWidth={1.5} 
+          stroke="currentColor" 
+          className="w-3 h-3 translate-y-1 mr-1">
+          <path strokeLinecap="round" 
+          strokeLinejoin="round" 
+          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg> json
+        </span>
+
+        <span
+          onClick={()=>downloadMaterialData(item.filename,"plaindata")}
+          className=" text-xs text-sky-700 hover:cursor-pointer"
+          ><svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+          viewBox="0 0 24 24" strokeWidth={1.5} 
+          stroke="currentColor" 
+          className="w-3 h-3 translate-y-1 ml-3">
+          <path strokeLinecap="round" 
+          strokeLinejoin="round" 
+          d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg> data
+        </span>
+        </div>
+          
+          </div>
+          
+        })}
+      </div>
+
+<div className="pt-6">
   <Button variant="contained"
   onClick={()=>setAddnewMaterial(true)}
   >Add New</Button>
 </div>
       </div>
 
-<div className="p-4">
-  <h2
-  className="text-center"
-  >Material Properties</h2>
+<div className="p-4  pt-0 w-full">
+
 
   <Plot
 data={[{
@@ -1457,63 +1455,21 @@ type: 'scatter',
 name : "n"
 }
 ]}
-        layout={{   height: 400,  width: 500,
-        title: 'Properties',
+        layout={{   
+        title: graphTitle,
         xaxis:{title: "freq(eV)"},
-        yaxis:{title: "k,n"}
+        yaxis:{title: "k,n"},
+        autosize:true 
       }}
-        config={{ scrollZoom: true, editable: true }} />
+        config={{ scrollZoom: true, editable: true }} 
+        useResizeHandler
+        className="w-full h-full " 
+        />
 </div>
-  </div>
+  </div></>
 }
 
 
-function AddNewMaterial () {
-
-  const [fileUpload,setFileUpload] = useState();
-
-
-  console.log(fileUpload)
-
-  async function filehandler () {
-    const fd = new FormData();
-    fd.append('name', document.getElementById("filename").value)
-    fd.append('skiplines', document.getElementById("skiplines").value)
-    fd.append('file', fileUpload, document.getElementById("filename").value)
-    try {
-     
-      const res= await Axios.post('http://localhost:3001/addnewmaterial',fd);
-
-      if (res.data.success && res.data.success===true) {
-        alert("success!")
-      
-      }
-      else {alert("Failed")}
-
-    }
-
-    catch (err) {console.log(err)}
-  
-  }
-
-  return <>
-        <DialogTitle>{"Add New Material"}</DialogTitle>
-        <DialogContent>
-
-        <div>Name of material: <input placeholder="Name of Material" id="filename"/></div>
-  <div>Lines to Skip: <input type="number" id="skiplines"/></div>
-  <div>Upoad file: <input type="file" 
-  onChange={(e) => setFileUpload(e.target.files?.[0])}/></div>
-
-        </DialogContent>
-        <DialogActions>
-        <Button onClick={()=>setAddnewMaterial(false)}>Cancel</Button>
-          <Button onClick={()=>filehandler ()}>Upload</Button>
-        </DialogActions>
-
-
-</>
-}
 
 
   async function RunMultemHandler() {
@@ -1782,18 +1738,6 @@ setLoading(false);
   {loadingValues && <LoadingPrompt/>}
 
 
-  <Dialog
-maxWidth="xl"
-        open={addnewMaterial}
-        onClose={()=>setAddnewMaterial(false)}
-        aria-describedby="alert-dialog-add-materials"
-      >
-
-<AddNewMaterial/>
-
-
-      </Dialog>
-
 
 
 <Dialog
@@ -1802,15 +1746,23 @@ fullScreen
         onClose={()=>setEditMaterials(false)}
         aria-describedby="alert-dialog-edit-materials"
       >
-        <DialogTitle>{"Edit Materials"}</DialogTitle>
+      
+        <DialogTitle>{"Materials Management"}</DialogTitle>
         <DialogContent>
 
 <MaterialsEdit/>
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setEditMaterials(false)}>Done</Button>
+          <div className="p-10">
+            <Button variant="contained" 
+            size= "large"
+            onClick={()=>setEditMaterials(false)}>
+              Done</Button></div>
+          
         </DialogActions>
+        
+      
       </Dialog>
 
  <Dialog
