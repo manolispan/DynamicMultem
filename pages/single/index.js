@@ -1001,13 +1001,21 @@ className={classes.materialinfo}
 
 }
 
+function findIndexByName(arr, name) {
+  for (let i = 0; i < arr.length; i++) {
+      if (arr[i].filename === name) {
+          return i; // Return index if name matches
+      }
+  }
+  return -1; // Return -1 if name not found
+}
 
 function MaterialChoice (props) {
 
   let property = "typeofMaterial";
   if (props.type && props.type !="") {property=props.type }
 
-const activeIndex = findIndex(materials,scatValues[typeofScat][property])
+const activeIndex = findIndexByName(materialList,scatValues[typeofScat][property])
 
 
 
@@ -1024,7 +1032,7 @@ defaultValue={scatValues[typeofScat][property]}
 >
    <option value="userdefined">User Defined</option>
 
-  {materials.map((choice)=>{
+  {materialList.map((choice)=>{
     return <>
     {typeofScat=="GYROELECTRICSPHERE" && choice.matType && choice.matType=="GE" &&
     <option value={choice.filename} id={choice.filename}>
@@ -1040,7 +1048,7 @@ defaultValue={scatValues[typeofScat][property]}
     (!choice.matType || (choice.matType!="GM" && choice.matType!="GE")) 
     &&
     <option value={choice.filename} id={choice.filename}>
-      {choice.optionName} 
+      {choice.name} 
     </option>}
     
     </>
@@ -1055,8 +1063,8 @@ defaultValue={scatValues[typeofScat][property]}
           {scatValues[typeofScat][property] && scatValues[typeofScat][property]!="userdefined" &&
 
    <RangeOfFreqsMaterials
-   start = {materials[activeIndex].rangeStart}
-   end = {materials[activeIndex].rangeEnd}
+   start = {materialList[activeIndex].minValue}
+   end = {materialList[activeIndex].maxValue}
    />}
           
           </div>  
@@ -1069,9 +1077,9 @@ function CriticalErrors() {
   let warnings="";
   let units;
   if (typeofScat!="CORESHELL" && scatValues[typeofScat]["typeofMaterial"]!="userdefined")
-{  activeIndex = findIndex(materials,scatValues[typeofScat]["typeofMaterial"])
-  start=parseFloat(materials[activeIndex].rangeStart);
-  end=parseFloat(materials[activeIndex].rangeEnd);
+{  activeIndex = findIndexByName(materialList,scatValues[typeofScat]["typeofMaterial"])
+  start=parseFloat(materialList[activeIndex].minValue);
+  end=parseFloat(materialList[activeIndex].maxValue);
 
   if (lightValues.frequency[3]==true) {
     units = lightValues.unitsOfFreq;
@@ -1129,9 +1137,9 @@ function CriticalErrors() {
 else if (typeofScat=="CORESHELL") {
   if (scatValues[typeofScat]["typeofMaterial"]!="userdefined")
   {
-    activeIndex = findIndex(materials,scatValues[typeofScat]["typeofMaterial"])
-  start=parseFloat(materials[activeIndex].rangeStart);
-  end=parseFloat(materials[activeIndex].rangeEnd);
+    activeIndex = findIndexByName(materialList,scatValues[typeofScat]["typeofMaterial"])
+  start=parseFloat(materialList[activeIndex].minValue);
+  end=parseFloat(materialList[activeIndex].maxValue);
 
   if (lightValues.frequency[3]==true) {
     units = lightValues.unitsOfFreq;
@@ -1191,9 +1199,9 @@ else if (typeofScat=="CORESHELL") {
   { let j=i+1
     if (scatValues[typeofScat]["typeofMaterialShell"+j]!="userdefined")
   {
-    activeIndex = findIndex(materials,scatValues[typeofScat]["typeofMaterialShell"+j])
-    start=parseFloat(materials[activeIndex].rangeStart);
-    end=parseFloat(materials[activeIndex].rangeEnd);
+    activeIndex = findIndexByName(materialList,scatValues[typeofScat]["typeofMaterialShell"+j])
+    start=parseFloat(materialList[activeIndex].minValue);
+    end=parseFloat(materialList[activeIndex].maxValue);
   
     if (lightValues.frequency[3]==true) {
       units = lightValues.unitsOfFreq;
@@ -1266,7 +1274,7 @@ function MaterialsEdit () {
   const [x,setX]=useState([])
   const [y,setY]=useState([])
   const [z,setZ]=useState([])
-  const [graphTitle,setGraphTitle]=useState("")
+  const [graphTitle,setGraphTitle]=useState("");
 
   const [addnewMaterial,setAddnewMaterial]=useState(false);
 
@@ -1279,6 +1287,7 @@ function MaterialsEdit () {
       const fd = new FormData();
       fd.append('name', document.getElementById("filename").value)
       fd.append('skiplines', document.getElementById("skiplines").value)
+      fd.append('typeOfMat', document.getElementById("typeOfMat").value)
       fd.append('file', fileUpload, document.getElementById("filename").value)
       try {
        
@@ -1299,12 +1308,30 @@ function MaterialsEdit () {
     }
   
     return <>
-          <DialogTitle>{"Add New Material"}</DialogTitle>
+          <DialogTitle><span className=" w-full p-1 font-semibold ">
+            Add New Material</span></DialogTitle>
           <DialogContent>
+<div className="p-1 pb-3  w-full flex flex-row justify-between items-center text-slate-800 border-b border-solid border-t-0 border-x-0    
+           border-slate-400">Type of material: <select id="typeOfMat" className="p-1 mr-1 rounded-md">
+      <option value="normal">Normal</option>
+      <option value="Gyroelectric">Gyroelectric</option>
+      <option value="Gyromagnetic">Gyromagnetic</option>
+      </select></div>
   
-          <div>Name of material: <input placeholder="Name of Material" id="filename"/></div>
-    <div>Lines to Skip: <input type="number" id="skiplines"/></div>
-    <div>Upoad file: <input type="file" 
+          <div className=" text-slate-800 p-1 pb-2 pt-2 w-full flex flex-row justify-between items-center border-b border-solid border-t-0 border-x-0    
+           border-slate-400">
+            Name of material: <input 
+           className=" w-28 p-1"
+          placeholder="Name of Material" id="filename"/></div>
+    <div className="border-b border-solid border-t-0 border-x-0    
+           border-slate-400 text-slate-800 p-1 pb-2 pt-2 w-full flex flex-row justify-between items-center">
+      Lines to Skip: <input 
+    className="p-1"
+    type="number" id="skiplines" defaultValue={0}/></div>
+
+    <div className="border-b border-solid border-t-0 border-x-0    
+           border-slate-400 text-slate-800 p-1 pt-2 pb-2 w-full flex flex-row justify-between items-center">Upoad file: <input type="file" 
+    className="w-48 ml-4"
     onChange={(e) => setFileUpload(e.target.files?.[0])}/></div>
   
           </DialogContent>
@@ -1353,6 +1380,11 @@ function MaterialsEdit () {
   return <>
   <Dialog
 maxWidth="xl"
+fullscreen
+sx={{
+  ["&>div"] : 
+  {maxWidth:"none"}
+}}
         open={addnewMaterial}
         onClose={()=>setAddnewMaterial(false)}
         aria-describedby="alert-dialog-add-materials"
