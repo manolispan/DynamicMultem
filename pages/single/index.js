@@ -169,14 +169,6 @@ const [fieldQuality,setFieldQuality]= useState(51);
 
 const [fieldPoint,setFieldPoint]=useState(1);
 
-  function findIndex (array, filenameToFind) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].filename === filenameToFind) {
-        return i;
-      }
-    }
-    return -1;
-  }
 
 
 function SphereCylindChoices () {
@@ -2419,7 +2411,8 @@ onChange={(e)=>setRunMode(e.target.value)}
 tab1= {<div className={classes.sxhma}>
     <BoxesPage 
   type={typeofScat} 
-  scatterer={scatValues[typeofScat]} />
+  scatterer={scatValues[typeofScat]} 
+  lightValues= {lightValues} />
   </div>
  }
 tab2 = {<div key={loading}>  <FastPlot

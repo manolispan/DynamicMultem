@@ -9,6 +9,7 @@ import * as THREE from "three";
 export default function BoxesPage(props) {
     const type = props.type;
     const scatterer = props.scatterer;
+    const lightValues = props.lightValues
 
     function Sphere(props) {
 
@@ -129,6 +130,164 @@ export default function BoxesPage(props) {
         )
       } */
 
+
+      function Arrow(props) {
+        // Original direction vector
+        const originalDirection = new THREE.Vector3(0, -1, 0);
+      
+        // Calculate rotated direction vector for y-axis rotation
+        const rotationAngleY = THREE.MathUtils.degToRad(lightValues.thetaIn[0]); // Convert rotation angle to radians
+        const rotatedDirectionY = originalDirection.clone().applyAxisAngle(new THREE.Vector3(0, 0, 1), rotationAngleY);
+      
+        // Calculate rotated direction vector for x-axis rotation
+        const rotationAngleX = THREE.MathUtils.degToRad(lightValues.phiIn[0]); // Convert rotation angle to radians
+        const rotatedDirection = rotatedDirectionY.clone().applyAxisAngle(new THREE.Vector3(1, 0, 0), rotationAngleX);
+      
+     
+        return (<>
+          <arrowHelper
+            args={[
+              rotatedDirection, // Rotated direction vector
+              new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
+              props.length, // Length of the arrow shaft
+              0x001400, // Shaft color
+              0.5, // Head length
+              0.5, // Head width
+            ]}
+          />
+
+  
+
+          </>
+        );
+      }
+
+
+      function ArrowsCylind () {
+        let allSpheres=[];
+        const y = 2*scatterer.height[0]/scatterer.radius[0]
+        const R=2;
+        const length= scatterer.height[0]/scatterer.radius[0]
+
+        for (let i=-2;i<3;i++)
+          {
+            const x= i*2*R/3;
+           
+            for (let j=-2;j<3;j++)
+
+            { const z=j*2*R/3;
+              allSpheres.push(<Arrow
+              x={x-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={z+Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length}
+              />
+
+              )
+            }
+          }
+
+          return <>
+          {allSpheres}
+          </>
+
+      }
+
+
+
+     function ArrowsSphere () {
+        let allSpheres=[];
+        const y = 3*scatterer.radius[0]/scatterer.radius[0]
+        const R=2*scatterer.radius[0]/scatterer.radius[0];
+        const length= scatterer.radius[0]/scatterer.radius[0]
+
+        for (let i=-2;i<3;i++)
+          {
+            const x= i*2*R/3;
+           
+            for (let j=-2;j<3;j++)
+
+            { const z=j*2*R/3;
+              allSpheres.push(<Arrow
+              x={x-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={z+Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length}
+              />
+
+              )
+            }
+          }
+
+          return <>
+          {allSpheres}
+          </>
+
+      }
+
+
+      function ArrowsEl () {
+        let allSpheres=[];
+        const y = 3*scatterer.radius1[0]/scatterer.radius1[0]
+        const R=2*scatterer.radius1[0]/scatterer.radius1[0];
+        const length= scatterer.radius1[0]/scatterer.radius1[0]
+
+        for (let i=-2;i<3;i++)
+          {
+            const x= i*2*R/3;
+           
+            for (let j=-2;j<3;j++)
+
+            { const z=j*2*R/3;
+              allSpheres.push(<Arrow
+              x={x-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={z+Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length}
+              />
+
+              )
+            }
+          }
+
+          return <>
+          {allSpheres}
+          </>
+
+      }
+
+      function ArrowsGen (props) {
+        let allSpheres=[];
+        const y = 3*props.length
+        const R=2*props.length;
+        const length= props.length;
+
+        for (let i=-2;i<3;i++)
+          {
+            const x= i*2*R/3;
+           
+            for (let j=-2;j<3;j++)
+
+            { const z=j*2*R/3;
+              allSpheres.push(<Arrow
+              x={x-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={z+Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length}
+              />
+
+              )
+            }
+          }
+
+          return <>
+          {allSpheres}
+          </>
+
+      }
+
+
+
   return (
     <div className={classes.page}>
   <Canvas camera={{fov:"40"}}>
@@ -142,17 +301,27 @@ export default function BoxesPage(props) {
     <pointLight position={[0, 10, 20]}  />
 
  
-    {type=="SPHERE" && 
+{/*      <Arrow
+     x={0}
+     y={0}
+     z={0}
+      />  */}
+
+
+
+    {(type=="SPHERE" || type=="GYROELECTRICSPHERE" || type=="GYROMAGNETICSPHERE") &&  <>
     <Sphere radius={scatterer.radius[0]} position={0} 
     ellipseratio={1}
     />
-
+    <ArrowsSphere/></>
     }
 
-    {type=="CYLINDER" &&
+    {type=="CYLINDER" && <>
     <Cylinder radius={scatterer.radius[0]}
     height = {scatterer.height[0]}
     position={0}/>
+
+    <ArrowsCylind/></>
     }
 
 
@@ -173,6 +342,26 @@ export default function BoxesPage(props) {
     anglecut= {5}
     color ={scatterer.epsRealShell1[0]}
     /> 
+
+{scatterer.NumOfShells[0]==1 && 
+<ArrowsGen length= {scatterer.radiusShell1[0]/scatterer.coreRadius[0]}/>
+} 
+
+
+{scatterer.NumOfShells[0]==2 && 
+<ArrowsGen length= {scatterer.radiusShell2[0]/scatterer.coreRadius[0]}/>
+} 
+
+{scatterer.NumOfShells[0]==3 && 
+<ArrowsGen length= {scatterer.radiusShell3[0]/scatterer.coreRadius[0]}/>
+} 
+
+{scatterer.NumOfShells[0]==4 && 
+<ArrowsGen length= {scatterer.radiusShell4[0]/scatterer.coreRadius[0]}/>
+} 
+
+
+
 
 {scatterer.NumOfShells[0]>1 &&
      <SphereEl  
@@ -213,10 +402,12 @@ export default function BoxesPage(props) {
     </>
     }
 
-{type=="ELIPSE" &&
+{type=="ELIPSE" && <>
 <Sphere radius={scatterer.radius1[0]} position={0}
 ellipseratio={scatterer.radius2[0]/scatterer.radius1[0]}
-/>}
+/>
+<ArrowsEl/>
+</>}
     
     
   </Canvas>
