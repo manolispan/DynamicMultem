@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import {UserContextProvider} from '../stores/LoginStore';
 import Head from 'next/head';
 import Navbar from '../components/layout/navbar';
+import Footer from '../components/layout/footer';
 
 
 
@@ -10,7 +11,7 @@ function MyApp({ Component, pageProps }) {
 
 
  
-  return (<>{/* <SocketContext.Provider  value={socket}> */}
+  return (<>
   <UserContextProvider>
   <Head>
   <meta charSet="utf-8" />
@@ -18,7 +19,8 @@ function MyApp({ Component, pageProps }) {
   </Head>
   <Navbar/>
   <Component {...pageProps}/>
-   </UserContextProvider>{/* </SocketContext.Provider> */}
+  <Footer/>
+   </UserContextProvider>
   </>)
 }
 

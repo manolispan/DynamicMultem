@@ -1,15 +1,17 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef,useState,useMemo } from 'react';
+import { Canvas} from '@react-three/fiber';
+import { useRef,useState } from 'react';
 import classes from "./test.module.css";
-import { PerspectiveCamera, PositionalAudio, OrbitControls, Tube } from '@react-three/drei';
-import { AxesHelper,Vector3, BufferGeometry, DoubleSide } from 'three';
+import { /* PerspectiveCamera, Tube, PositionalAudio, */ OrbitControls } from '@react-three/drei';
+/* import { AxesHelper,Vector3, BufferGeometry, DoubleSide } from 'three'; */
 import * as THREE from "three";
 
 
 export default function BoxesPage(props) {
     const type = props.type;
     const scatterer = props.scatterer;
-    const lightValues = props.lightValues
+    const lightValues = props.lightValues;
+
+
 
     function Sphere(props) {
 
@@ -150,9 +152,9 @@ export default function BoxesPage(props) {
               rotatedDirection, // Rotated direction vector
               new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
               props.length, // Length of the arrow shaft
-              0x001400, // Shaft color
-              0.5, // Head length
-              0.5, // Head width
+              0xff2500, // Shaft color
+              0.3, // Head length
+              0.3, // Head width
             ]}
           />
 
@@ -162,6 +164,126 @@ export default function BoxesPage(props) {
         );
       }
 
+      function ArrowPol(props) {
+        // Original direction vector
+        const originalDirection = new THREE.Vector3(0, 0, -1);
+      
+        // Calculate rotated direction vector for y-axis rotation
+        const rotationAngleY = THREE.MathUtils.degToRad(lightValues.thetaIn[0]); // Convert rotation angle to radians
+        const rotatedDirectionY = originalDirection.clone().applyAxisAngle(new THREE.Vector3(0, 0, 1), rotationAngleY);
+      
+        // Calculate rotated direction vector for x-axis rotation
+        const rotationAngleX = THREE.MathUtils.degToRad(lightValues.phiIn[0]); // Convert rotation angle to radians
+        const rotatedDirection = rotatedDirectionY.clone().applyAxisAngle(new THREE.Vector3(1, 0, 0), rotationAngleX);
+      
+     
+        return (<>
+          <arrowHelper
+            args={[
+              rotatedDirection, // Rotated direction vector
+              new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
+              props.length, // Length of the arrow shaft
+              0xE49B0F, // Shaft color
+              0.2, // Head length
+              0.2, // Head width
+            ]}
+          />
+
+  
+
+          </>
+        );
+      }
+      function ArrowPol2(props) {
+        // Original direction vector
+        const originalDirection = new THREE.Vector3(0, 0, 1);
+      
+        // Calculate rotated direction vector for y-axis rotation
+        const rotationAngleY = THREE.MathUtils.degToRad(lightValues.thetaIn[0]); // Convert rotation angle to radians
+        const rotatedDirectionY = originalDirection.clone().applyAxisAngle(new THREE.Vector3(0, 0, 1), rotationAngleY);
+      
+        // Calculate rotated direction vector for x-axis rotation
+        const rotationAngleX = THREE.MathUtils.degToRad(lightValues.phiIn[0]); // Convert rotation angle to radians
+        const rotatedDirection = rotatedDirectionY.clone().applyAxisAngle(new THREE.Vector3(1, 0, 0), rotationAngleX);
+      
+     
+        return (<>
+          <arrowHelper
+            args={[
+              rotatedDirection, // Rotated direction vector
+              new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
+              props.length, // Length of the arrow shaft
+              0xE49B0F, // Shaft color
+              0.2, // Head length
+              0.2, // Head width
+            ]}
+          />
+
+  
+
+          </>
+        );
+      }
+
+      function ArrowPPol(props) {
+        // Original direction vector
+        const originalDirection = new THREE.Vector3(1, 0, 0);
+        // Calculate rotated direction vector for y-axis rotation
+        const rotationAngleY = THREE.MathUtils.degToRad(lightValues.thetaIn[0]); // Convert rotation angle to radians
+        const rotatedDirectionY = originalDirection.clone().applyAxisAngle(new THREE.Vector3(0, 0, 1), rotationAngleY);
+      
+        // Calculate rotated direction vector for x-axis rotation
+        const rotationAngleX = THREE.MathUtils.degToRad(lightValues.phiIn[0]); // Convert rotation angle to radians
+        const rotatedDirection = rotatedDirectionY.clone().applyAxisAngle(new THREE.Vector3(1, 0, 0), rotationAngleX);
+      
+     
+        return (<>
+          <arrowHelper
+            args={[
+              rotatedDirection, // Rotated direction vector
+              new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
+              props.length, // Length of the arrow shaft
+              0xE49B0F, // Shaft color
+              0.2, // Head length
+              0.2, // Head width
+            ]}
+          />
+
+  
+
+          </>
+        );
+      }
+      function ArrowPPol2(props) {
+        // Original direction vector
+        const originalDirection = new THREE.Vector3(-1, 0, 0);
+
+                // Calculate rotated direction vector for y-axis rotation
+                const rotationAngleY = THREE.MathUtils.degToRad(lightValues.thetaIn[0]); // Convert rotation angle to radians
+                const rotatedDirectionY = originalDirection.clone().applyAxisAngle(new THREE.Vector3(0, 0, 1), rotationAngleY);
+              
+                // Calculate rotated direction vector for x-axis rotation
+                const rotationAngleX = THREE.MathUtils.degToRad(lightValues.phiIn[0]); // Convert rotation angle to radians
+                const rotatedDirection = rotatedDirectionY.clone().applyAxisAngle(new THREE.Vector3(1, 0, 0), rotationAngleX);
+              
+
+        return (<>
+          <arrowHelper
+            args={[
+              rotatedDirection, // Rotated direction vector
+              new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
+              props.length, // Length of the arrow shaft
+              0xE49B0F, // Shaft color
+              0.2, // Head length
+              0.2, // Head width
+            ]}
+          />
+
+  
+
+          </>
+        );
+      }
 
       function ArrowsCylind () {
         let allSpheres=[];
@@ -169,11 +291,11 @@ export default function BoxesPage(props) {
         const R=2;
         const length= scatterer.height[0]/scatterer.radius[0]
 
-        for (let i=-2;i<3;i++)
+        for (let i=0;i<1;i++)
           {
             const x= i*2*R/3;
            
-            for (let j=-2;j<3;j++)
+            for (let j=-0;j<1;j++)
 
             { const z=j*2*R/3;
               allSpheres.push(<Arrow
@@ -189,6 +311,43 @@ export default function BoxesPage(props) {
 
           return <>
           {allSpheres}
+
+          {lightValues.polarization=="S" &&
+          <>
+                 <ArrowPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
+
+
+          {lightValues.polarization=="P" &&
+          <>
+               <ArrowPPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
+
+
           </>
 
       }
@@ -201,11 +360,11 @@ export default function BoxesPage(props) {
         const R=2*scatterer.radius[0]/scatterer.radius[0];
         const length= scatterer.radius[0]/scatterer.radius[0]
 
-        for (let i=-2;i<3;i++)
+        for (let i=0;i<1;i++)
           {
             const x= i*2*R/3;
            
-            for (let j=-2;j<3;j++)
+            for (let j=0;j<1;j++)
 
             { const z=j*2*R/3;
               allSpheres.push(<Arrow
@@ -221,6 +380,40 @@ export default function BoxesPage(props) {
 
           return <>
           {allSpheres}
+          {lightValues.polarization=="S" &&
+          <>
+                 <ArrowPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
+
+
+          {lightValues.polarization=="P" &&
+          <>
+               <ArrowPPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
           </>
 
       }
@@ -232,11 +425,11 @@ export default function BoxesPage(props) {
         const R=2*scatterer.radius1[0]/scatterer.radius1[0];
         const length= scatterer.radius1[0]/scatterer.radius1[0]
 
-        for (let i=-2;i<3;i++)
+        for (let i=0;i<1;i++)
           {
             const x= i*2*R/3;
            
-            for (let j=-2;j<3;j++)
+            for (let j=0;j<1;j++)
 
             { const z=j*2*R/3;
               allSpheres.push(<Arrow
@@ -252,6 +445,40 @@ export default function BoxesPage(props) {
 
           return <>
           {allSpheres}
+          {lightValues.polarization=="S" &&
+          <>
+                 <ArrowPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
+
+
+          {lightValues.polarization=="P" &&
+          <>
+               <ArrowPPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
           </>
 
       }
@@ -262,11 +489,11 @@ export default function BoxesPage(props) {
         const R=2*props.length;
         const length= props.length;
 
-        for (let i=-2;i<3;i++)
+        for (let i=0;i<1;i++)
           {
             const x= i*2*R/3;
            
-            for (let j=-2;j<3;j++)
+            for (let j=0;j<1;j++)
 
             { const z=j*2*R/3;
               allSpheres.push(<Arrow
@@ -282,6 +509,40 @@ export default function BoxesPage(props) {
 
           return <>
           {allSpheres}
+          {lightValues.polarization=="S" &&
+          <>
+                 <ArrowPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
+
+
+          {lightValues.polarization=="P" &&
+          <>
+               <ArrowPPol
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />
+                    <ArrowPPol2
+              x={-Math.sin(lightValues.thetaIn[0]*Math.PI/180)*length/2}
+              z={Math.sin(lightValues.phiIn[0]*Math.PI/180)*length/2}
+              y={y}
+              length= {length/2}
+              />   
+          
+          </>}
           </>
 
       }

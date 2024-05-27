@@ -3,12 +3,13 @@
   text-align: left;
   padding: 10px;
   padding-top: 50px;
+  min-height: 100vh;
 }
 
 .loadinput {
   position: fixed;
   z-index: 1000;
-  top: -5px;
+  top: 45px;
   left: 300px;
   margin: 40px;
 }

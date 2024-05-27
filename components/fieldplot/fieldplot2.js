@@ -198,12 +198,12 @@ export default function PlanePlot() {
                 }
             };
         
-            return (<div>
+            return (<div className='bg-white'>
                 <Plot
                     data={data}
                     layout={layout}
                 />
-                <div>Select plane to display:
+                <div className='text-black p-2'>Select plane to display:
                     <select
                     onChange={(e)=>{setPlanePos(0) ; setPlane(e.target.value)}}
                     >

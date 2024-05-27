@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import classes from "./index.module.css";
 import Axios from "axios";
 import LoadingPrompt from "../../components/ui/loadingPrompt/loadingPrompt";
-import ConfirmPrompt from "../../components/ui/confirmprompt/confirmprompt";
 import { useRouter } from "next/router";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -15,7 +14,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
-import {materials} from "../../variables/materials";
 import FastPlot from "../../components/fastplot/fastplot";
 import BasicTabs from "../../components/twotabs/twotabs";
 import PlanePlot from "../../components/fieldplot/fieldplot2";
@@ -47,8 +45,26 @@ export default function Homepage(props) {
   const [materialList,setMaterialList] = useState([])
 
   useEffect(()=>{
-    GetListMat ()
-  },[])
+    if (router.query.editmat && router.query.editmat=="open") {
+      setEditMaterials(true)}
+      else {
+        if (editMaterials==true)
+       { setEditMaterials(false)}}
+  },[router.query.editmat])
+
+
+  function addUrlParam(param, value) {
+    const { pathname, query } = router;
+    const updatedQuery = { ...query };
+
+    if (value === "") {
+        delete updatedQuery[param];
+    } else {
+        updatedQuery[param] = value;
+    }
+
+    router.push({ pathname, query: updatedQuery });
+}
 
   async function GetListMat () {
     const response = await Axios.get('http://localhost:3001/materialslist');
@@ -1026,18 +1042,18 @@ defaultValue={scatValues[typeofScat][property]}
 
   {materialList.map((choice)=>{
     return <>
-    {typeofScat=="GYROELECTRICSPHERE" && choice.matType && choice.matType=="GE" &&
+    {typeofScat=="GYROELECTRICSPHERE" && choice.typeOfMat && choice.typeOfMat=="gyroelectric" &&
     <option value={choice.filename} id={choice.filename}>
-      {choice.optionName} 
+      {choice.name} 
     </option>}
     
-    {typeofScat=="GYROMAGNETICSPHERE" && choice.matType && choice.matType=="GM" &&
+    {typeofScat=="GYROMAGNETICSPHERE" && choice.typeOfMat && choice.typeOfMat=="gyromagnetic" &&
     <option value={choice.filename} id={choice.filename}>
-      {choice.optionName} 
+      {choice.name} 
     </option>}
 
     {typeofScat!="GYROMAGNETICSPHERE" && typeofScat!="GYROELECTRICSPHERE" && 
-    (!choice.matType || (choice.matType!="GM" && choice.matType!="GE")) 
+    (!choice.typeOfMat || (choice.typeOfMat!="gyromagnetic" && choice.typeOfMat!="gyroelectric")) 
     &&
     <option value={choice.filename} id={choice.filename}>
       {choice.name} 
@@ -1049,7 +1065,7 @@ defaultValue={scatValues[typeofScat][property]}
           </select> <Button 
           variant="contained"
           size = "small"
-          onClick={()=>setEditMaterials(true)}
+          onClick={()=>addUrlParam("editmat","open")}
           >Edit Materials</Button>
 
           {scatValues[typeofScat][property] && scatValues[typeofScat][property]!="userdefined" &&
@@ -1306,8 +1322,8 @@ function MaterialsEdit () {
 <div className="p-1 pb-3  w-full flex flex-row justify-between items-center text-slate-800 border-b border-solid border-t-0 border-x-0    
            border-slate-400">Type of material: <select id="typeOfMat" className="p-1 mr-1 rounded-md">
       <option value="normal">Normal</option>
-      <option value="Gyroelectric">Gyroelectric</option>
-      <option value="Gyromagnetic">Gyromagnetic</option>
+      <option value="gyroelectric">Gyroelectric</option>
+      <option value="gyromagnetic">Gyromagnetic</option>
       </select></div>
   
           <div className=" text-slate-800 p-1 pb-2 pt-2 w-full flex flex-row justify-between items-center border-b border-solid border-t-0 border-x-0    
@@ -1342,7 +1358,7 @@ function MaterialsEdit () {
     if (kind=="jsondata")
       {fileToDnld= file.replace('.txt', '-info.txt');}
   
-    alert(fileToDnld)
+    
   
     const body = {filename : fileToDnld}
    
@@ -1421,7 +1437,19 @@ sx={{
           </div> 
 
           <div className=" min-w-fit py-2 pl-2 pr-2">
+
+            {item.typeOfMat=="gyromagnetic" || item.typeOfMat=="gyroelectric" &&           
+            <span
+          className=" text-xs text-sky-700 mr-4"
+          >
+            {item.typeOfMat=="gyromagnetic" && <span title="Gyromagnetic">GM</span>}
+            {item.typeOfMat=="gyroelectric" && <span title="Gyroelectric">GE</span>}
+        </span>}
+
+
+
           <span
+          title="download json data"
           onClick={()=>downloadMaterialData(item.filename,"jsondata")}
           className=" text-xs text-sky-700 hover:cursor-pointer"
           ><svg xmlns="http://www.w3.org/2000/svg" fill="none" 
@@ -1435,6 +1463,7 @@ sx={{
         </span>
 
         <span
+        title="download txt data"
           onClick={()=>downloadMaterialData(item.filename,"plaindata")}
           className=" text-xs text-sky-700 hover:cursor-pointer"
           ><svg xmlns="http://www.w3.org/2000/svg" fill="none" 
@@ -1598,130 +1627,147 @@ name : "n"
 
   }
 
-  useEffect(async()=>{
+
+  async function FetchInput () {
     const response = await Axios.get('http://localhost:3001/singleinputdefault');
    
-      const input = response.data;
-      const coreShells= parseInt(input[29].split(" ")[0]);
-      let allShells = {};
-      for (let i=0 ; i<coreShells; i++) {
-        const j=i+1
-        const tempShells= {
-          ["typeofMaterialShell"+j] : input[29+6*i+1].toString(),
-          ["epsRealShell"+j] : input[29+6*i+2].split(" "),
-          ["epsImagShell"+j] : input[29+6*i+3].split(" "),
-          ["muRealShell"+j] : input[29+6*i+4].split(" "),
-          ["muImagShell"+j] : input[29+6*i+5].split(" "),
-          ["radiusShell"+j] : input[29+6*i+6].split(" "),
-        }
-        allShells={...allShells,...tempShells}
+    const input = response.data;
+    const coreShells= parseInt(input[29].split(" ")[0]);
+    let allShells = {};
+    for (let i=0 ; i<coreShells; i++) {
+      const j=i+1
+      const tempShells= {
+        ["typeofMaterialShell"+j] : input[29+6*i+1].toString(),
+        ["epsRealShell"+j] : input[29+6*i+2].split(" "),
+        ["epsImagShell"+j] : input[29+6*i+3].split(" "),
+        ["muRealShell"+j] : input[29+6*i+4].split(" "),
+        ["muImagShell"+j] : input[29+6*i+5].split(" "),
+        ["radiusShell"+j] : input[29+6*i+6].split(" "),
       }
-      setTypeOfScat(input[1]);
-      setLengthUnitsScat(input[2]);
-        setScatValues({
-          SPHERE: {
-            typeofMaterial : input[3].toString(),
-            epsReal: input[4].split(" "),
-            epsImag: input[5].split(" "),
-            muReal: input[6].split(" "),
-            muImag: input[7].split(" "),
-            radius: input[8].split(" "),
-          },
-          CYLINDER: {
-            typeofMaterial : input[9].toString(),
-            epsReal: input[10].split(" "),
-            epsImag: input[11].split(" "),
-            muReal: input[12].split(" "),
-            muImag: input[13].split(" "),
-            radius: input[14].split(" "),
-            height: input[15].split(" "),
-          },
-          ELIPSE: {
-            typeofMaterial : input[16].toString(),
-            epsReal: input[17].split(" "),
-            epsImag: input[18].split(" "),
-            muReal: input[19].split(" "),
-            muImag: input[20].split(" "),
-            radius1: input[21].split(" "),
-            radius2: input[22].split(" "),
-          },
-          CORESHELL: {
-            typeofMaterial : input[23].toString(),
-            epsReal: input[24].split(" "),
-            epsImag: input[25].split(" "),
-            muReal: input[26].split(" "),
-            muImag: input[27].split(" "),
-            coreRadius: input[28].split(" "),
-            NumOfShells: input[29].split(" "),
-            ...allShells
-          },
-          GYROELECTRICSPHERE: {
-            typeofMaterial : input[42+coreShells*6].toString(),
-            epsxxReal: input[43+coreShells*6].split(" "),
-            epsxxImag: input[44+coreShells*6].split(" "),
-            epsxyReal: input[45+coreShells*6].split(" "),
-            epsxyImag: input[46+coreShells*6].split(" "),
-            epszzReal: input[47+coreShells*6].split(" "),
-            epszzImag: input[48+coreShells*6].split(" "),
-            muReal: input[49+coreShells*6].split(" "),
-            muImag: input[50+coreShells*6].split(" "),
-            radius: input[51+coreShells*6].split(" "),           
-          },
+      allShells={...allShells,...tempShells}
+    }
+    setTypeOfScat(input[1]);
+    setLengthUnitsScat(input[2]);
+      setScatValues({
+        SPHERE: {
+          typeofMaterial : input[3].toString(),
+          epsReal: input[4].split(" "),
+          epsImag: input[5].split(" "),
+          muReal: input[6].split(" "),
+          muImag: input[7].split(" "),
+          radius: input[8].split(" "),
+        },
+        CYLINDER: {
+          typeofMaterial : input[9].toString(),
+          epsReal: input[10].split(" "),
+          epsImag: input[11].split(" "),
+          muReal: input[12].split(" "),
+          muImag: input[13].split(" "),
+          radius: input[14].split(" "),
+          height: input[15].split(" "),
+        },
+        ELIPSE: {
+          typeofMaterial : input[16].toString(),
+          epsReal: input[17].split(" "),
+          epsImag: input[18].split(" "),
+          muReal: input[19].split(" "),
+          muImag: input[20].split(" "),
+          radius1: input[21].split(" "),
+          radius2: input[22].split(" "),
+        },
+        CORESHELL: {
+          typeofMaterial : input[23].toString(),
+          epsReal: input[24].split(" "),
+          epsImag: input[25].split(" "),
+          muReal: input[26].split(" "),
+          muImag: input[27].split(" "),
+          coreRadius: input[28].split(" "),
+          NumOfShells: input[29].split(" "),
+          ...allShells
+        },
+        GYROELECTRICSPHERE: {
+          typeofMaterial : input[42+coreShells*6].toString(),
+          epsxxReal: input[43+coreShells*6].split(" "),
+          epsxxImag: input[44+coreShells*6].split(" "),
+          epsxyReal: input[45+coreShells*6].split(" "),
+          epsxyImag: input[46+coreShells*6].split(" "),
+          epszzReal: input[47+coreShells*6].split(" "),
+          epszzImag: input[48+coreShells*6].split(" "),
+          muReal: input[49+coreShells*6].split(" "),
+          muImag: input[50+coreShells*6].split(" "),
+          radius: input[51+coreShells*6].split(" "),           
+        },
 
-          GYROMAGNETICSPHERE: {
-            typeofMaterial : input[52+coreShells*6].toString(),
-            epsReal: input[53+coreShells*6].split(" "),
-            epsImag: input[54+coreShells*6].split(" "),
-            muxxReal: input[55+coreShells*6].split(" "),
-            muxxImag: input[56+coreShells*6].split(" "),
-            muxyReal: input[57+coreShells*6].split(" "),
-            muxyImag: input[58+coreShells*6].split(" "),
-            muzzReal: input[59+coreShells*6].split(" "),
-            muzzImag: input[60+coreShells*6].split(" "),
-            radius: input[61+coreShells*6].split(" "), 
-          },
+        GYROMAGNETICSPHERE: {
+          typeofMaterial : input[52+coreShells*6].toString(),
+          epsReal: input[53+coreShells*6].split(" "),
+          epsImag: input[54+coreShells*6].split(" "),
+          muxxReal: input[55+coreShells*6].split(" "),
+          muxxImag: input[56+coreShells*6].split(" "),
+          muxyReal: input[57+coreShells*6].split(" "),
+          muxyImag: input[58+coreShells*6].split(" "),
+          muzzReal: input[59+coreShells*6].split(" "),
+          muzzImag: input[60+coreShells*6].split(" "),
+          radius: input[61+coreShells*6].split(" "), 
+        },
 
-        });
-      
-      setEnvValues({
-        //epsEnv: input[20],
-        epsEnv: input[22+8+coreShells*6],
-        muEnv: input[23+8+coreShells*6]
       });
+    
+    setEnvValues({
+      //epsEnv: input[20],
+      epsEnv: input[22+8+coreShells*6],
+      muEnv: input[23+8+coreShells*6]
+    });
 
-      let a = true;
-      let b = false;
-      if (input[24+8+coreShells*6].split(" ")[3]=="false")
-      {a= false;
-        b=true; }
+    let a = true;
+    let b = false;
+    if (input[24+8+coreShells*6].split(" ")[3]=="false")
+    {a= false;
+      b=true; }
 
-      setLightValues({
-        frequency: 
-        [input[24+8+coreShells*6].split(" ")[0],
-        input[24+8+coreShells*6].split(" ")[1],
-        input[24+8+coreShells*6].split(" ")[2],a],
-        wavelength: 
-        [input[25+8+coreShells*6].split(" ")[0],
-        input[25+8+coreShells*6].split(" ")[1],
-        input[25+8+coreShells*6].split(" ")[2],b],
-        thetaIn: input[26+8+coreShells*6].split(" "),
-        phiIn: input[27+8+coreShells*6].split(" "),
-        polarization: input[28+8+coreShells*6],
-        unitsOfFreq: input[29+8+coreShells*6],
-        unitsOfWavelength: input[30+8+coreShells*6],
-      });
+    setLightValues({
+      frequency: 
+      [input[24+8+coreShells*6].split(" ")[0],
+      input[24+8+coreShells*6].split(" ")[1],
+      input[24+8+coreShells*6].split(" ")[2],a],
+      wavelength: 
+      [input[25+8+coreShells*6].split(" ")[0],
+      input[25+8+coreShells*6].split(" ")[1],
+      input[25+8+coreShells*6].split(" ")[2],b],
+      thetaIn: input[26+8+coreShells*6].split(" "),
+      phiIn: input[27+8+coreShells*6].split(" "),
+      polarization: input[28+8+coreShells*6],
+      unitsOfFreq: input[29+8+coreShells*6],
+      unitsOfWavelength: input[30+8+coreShells*6],
+    });
 
-      setMultExpansion({
-        lmax: input[31+8+coreShells*6],
-        ltmax: input[32+8+coreShells*6],
-        Ngauss: input[33+8+coreShells*6]
-      });
+    setMultExpansion({
+      lmax: input[31+8+coreShells*6],
+      ltmax: input[32+8+coreShells*6],
+      Ngauss: input[33+8+coreShells*6]
+    });
 
-      setRunMode(input[62+coreShells*6]);
-     setFieldPoint(input[63+coreShells*6]) 
-     setFieldQuality(input[64+coreShells*6])
+    setRunMode(input[62+coreShells*6]);
+   setFieldPoint(input[63+coreShells*6]) 
+   setFieldQuality(input[64+coreShells*6])
 
-      setLoadingValues(false);
+
+  }
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        await GetListMat();
+        await FetchInput();
+      } catch (error) {
+        alert("Error fetching data: ", error);
+      } finally {
+        setLoadingValues(false);
+      }
+    };
+
+    fetchData();
+    
      
 
   
@@ -1767,7 +1813,7 @@ setLoading(false);
 <Dialog
 fullScreen
         open={editMaterials}
-        onClose={()=>setEditMaterials(false)}
+        onClose={()=>addUrlParam("editmat","")}
         aria-describedby="alert-dialog-edit-materials"
       >
       
@@ -1781,7 +1827,7 @@ fullScreen
           <div className="p-10">
             <Button variant="contained" 
             size= "large"
-            onClick={()=>setEditMaterials(false)}>
+            onClick={()=>addUrlParam("editmat","")}>
               Done</Button></div>
           
         </DialogActions>
@@ -2158,7 +2204,9 @@ onChange={(e)=>setRunMode(e.target.value)}
                   defaultValue={fieldQuality}
                 >
                   {fieldQuualityOptions.map((item) => {
-                    return <option value={item.value}>{item.name}</option>;
+                    let text=item.name;
+                    if (item.name=="medium") {text="medium (locked)"}
+                    return <option value={item.value} disabled={item.name=="medium"}>{text}</option>;
                   })}
                 </select>
                   </div>
@@ -2176,7 +2224,7 @@ onChange={(e)=>setRunMode(e.target.value)}
 
           </div>
 
-          {typeofScat != "SPHERE" && (
+         
             <>
 
 <h2 className={classes.inline}>
@@ -2199,7 +2247,7 @@ onChange={(e)=>setRunMode(e.target.value)}
                 )}{" "}
 
 
-<div>
+{/* <div>
 <h2 className={classes.inline}>
                   PhiIn (deg):
                 </h2>{" "}
@@ -2219,10 +2267,10 @@ onChange={(e)=>setRunMode(e.target.value)}
                   />
                 )}{" "}
 
-</div>
+</div> */}
 
               <div>
-                <h2>polarization:</h2>{" "}
+                <h2 className={classes.inline}>polarization:</h2>{" "}
                 <select
                   onChange={(e) => {
                     setLightValues({
@@ -2237,7 +2285,7 @@ onChange={(e)=>setRunMode(e.target.value)}
                 </select>
               </div>
             </>
-          )}
+          
         </div>
 
         <div id="envperties">
@@ -2399,6 +2447,20 @@ onChange={(e)=>setRunMode(e.target.value)}
       </div>
 
       <div className={classes.geometry}>
+
+
+
+<div className=" absolute mt-24 text-zinc-900 ml-3 flex flex-row">
+  <div
+  className="w-10 mr-2 text-transparent border-solid border-orange-600 border-b-0 border-r-0 border-l-0 translate-y-3"
+  >E</div> <div>Wave Vector</div>
+</div>
+
+<div className=" absolute mt-32 text-zinc-900 ml-3 flex flex-row">
+  <div
+  className="w-10 mr-2 text-transparent border-solid border-yellow-400 border-b-0 border-r-0 border-l-0 translate-y-3"
+  >E</div> <div>Electric Field</div>
+</div>
 
 {/*         <h1>Geometry</h1>
         <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> 

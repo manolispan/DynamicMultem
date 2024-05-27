@@ -58,6 +58,7 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
+    color: rgb(7, 7, 207);
 }
 
 .savedfilesprompt {
@@ -131,4 +132,9 @@
   }
   .materialButton {
     margin-left: 10px;
+  }
+
+  .settings {
+    padding-bottom: 4px;
+    color: rgb(7, 7, 207);
   }
