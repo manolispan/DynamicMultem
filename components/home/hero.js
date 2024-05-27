@@ -39,7 +39,7 @@ className=" text-white text-7xl font-bold  pb-10"
 </div>
 
 <img
-           className=" pt-24 "
+           className=" pt-24 w-80"
            src="/photos/hero4.png"
            />
 
