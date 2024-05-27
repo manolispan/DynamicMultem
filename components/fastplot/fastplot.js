@@ -80,7 +80,7 @@ function FastPlot(props) {
       templotdata.y=scs.data["SCS"];
 setPlotData(templotdata) */
 
-if (props.polarization!="L" && props.polarization!="R" )
+if ((props.polarization!="L" && props.polarization!="R") || props.typeofScat=="SPHERE" || props.typeofScat=="CORESHELL" )
 {
 setPlotData([
   {

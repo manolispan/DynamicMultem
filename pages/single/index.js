@@ -2491,6 +2491,7 @@ tab1= {<div className={classes.sxhma}>
  }
 tab2 = {<div key={loading}>  <FastPlot
  polarization={lightValues.polarization}
+ typeofScat={typeofScat}
   /></div>}
 
   tab3 = {<div key={loading}>  {!loading && <PlanePlot/>} </div>}
