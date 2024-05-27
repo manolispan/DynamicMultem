@@ -79,6 +79,9 @@ function FastPlot(props) {
       templotdata.x=scs.data["freq(eV)"];
       templotdata.y=scs.data["SCS"];
 setPlotData(templotdata) */
+
+if (props.polarization!="L" && props.polarization!="R" )
+{
 setPlotData([
   {
     y:  tempdata[0].SCS,
@@ -97,6 +100,31 @@ if (document.getElementById("xaxis0"))
 
 if (document.getElementById("yaxis0"))
 {document.getElementById("yaxis0").value= "SCS"}
+
+}
+
+else {
+
+  setPlotData([
+    {
+      y:  tempdata[0].CRSSCAlcp,
+      x: tempdata[0]["freq(eV)"],
+    }
+  ]);
+  
+  setXLegend("freq(eV)");
+  setYLegend("CRSSCAlcp");
+  
+  if (document.getElementById("file0"))
+  {document.getElementById("file0").value= "scs"}
+  
+  if (document.getElementById("xaxis0"))
+  {document.getElementById("xaxis0").value= "freq(eV)"}
+  
+  if (document.getElementById("yaxis0"))
+  {document.getElementById("yaxis0").value= "CRSSCAlcp"}
+
+}
 
       setLoadedResultFilesList(["scs"])
       setLoadedResults(outputs);

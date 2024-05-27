@@ -2272,6 +2272,7 @@ onChange={(e)=>setRunMode(e.target.value)}
               <div>
                 <h2 className={classes.inline}>polarization:</h2>{" "}
                 <select
+                defaultValue={lightValues.polarization}
                   onChange={(e) => {
                     setLightValues({
                       ...lightValues,
@@ -2489,6 +2490,7 @@ tab1= {<div className={classes.sxhma}>
   </div>
  }
 tab2 = {<div key={loading}>  <FastPlot
+ polarization={lightValues.polarization}
   /></div>}
 
   tab3 = {<div key={loading}>  {!loading && <PlanePlot/>} </div>}
