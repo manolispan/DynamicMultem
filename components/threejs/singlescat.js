@@ -152,7 +152,7 @@ export default function BoxesPage(props) {
               rotatedDirection, // Rotated direction vector
               new THREE.Vector3(props.x, props.y, props.z), // Origin at the midpoint
               props.length, // Length of the arrow shaft
-              0xff2500, // Shaft color
+              props.color? props.color : 0xff2500, // Shaft color
               0.3, // Head length
               0.3, // Head width
             ]}
@@ -561,19 +561,25 @@ export default function BoxesPage(props) {
  
     <pointLight position={[0, 10, 20]}  />
 
- 
-{/*      <Arrow
-     x={0}
-     y={0}
-     z={0}
-      />  */}
-
 
 
     {(type=="SPHERE" || type=="GYROELECTRICSPHERE" || type=="GYROMAGNETICSPHERE") &&  <>
     <Sphere radius={scatterer.radius[0]} position={0} 
     ellipseratio={1}
     />
+
+{(type=="GYROELECTRICSPHERE" || type=="GYROMAGNETICSPHERE") && 
+
+     <Arrow
+     x={0}
+     y={1.5}
+     z={0}
+     length={3*scatterer.radius[0]/scatterer.radius[0]}
+     color= {0x000001}
+      /> 
+}
+
+
     <ArrowsSphere/></>
     }
 
