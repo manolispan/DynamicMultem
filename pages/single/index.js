@@ -2462,6 +2462,17 @@ onChange={(e)=>setRunMode(e.target.value)}
   >E</div> <div>Electric Field</div>
 </div>
 
+
+
+
+{(typeofScat=="GYROELECTRICSPHERE" || typeofScat=="GYROMAGNETICSPHERE") && 
+<div className=" absolute mt-40 text-zinc-900 ml-3 flex flex-row">
+  <div
+  className="w-10 mr-2 text-transparent border-solid border-black border-b-0 border-r-0 border-l-0 translate-y-3"
+  >E</div> <div>Polarization</div>
+</div>
+}
+
 {/*         <h1>Geometry</h1>
         <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> 
 <div key={loading}>
