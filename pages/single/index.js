@@ -1282,7 +1282,21 @@ function MaterialsEdit () {
   const [x,setX]=useState([])
   const [y,setY]=useState([])
   const [z,setZ]=useState([])
+
+  const [y1,setY1]=useState([])
+  const [z1,setZ1]=useState([])
+  const [y2,setY2]=useState([])
+  const [z2,setZ2]=useState([])
+
+  const [y3,setY3]=useState([])
+  const [z3,setZ3]=useState([])
+
+  const [y4,setY4]=useState([])
+  const [z4,setZ4]=useState([])
+
+
   const [graphTitle,setGraphTitle]=useState("");
+  const [typeOfMaterial,setTypeofMaterial]=useState("normal");
 
   const [addnewMaterial,setAddnewMaterial]=useState(false);
 
@@ -1319,6 +1333,12 @@ function MaterialsEdit () {
           <DialogTitle><span className=" w-full p-1 font-semibold ">
             Add New Material</span></DialogTitle>
           <DialogContent>
+            <div className=" max-w-[500px] pb-10 text-sm">
+    About the file format: There should be columns with the following order: Energy(eV), n, k. <br/>
+    If the material is gyroelectric the columns should be: Energy(eV), EpsRxx, EpsImxx, EpsRyy, EpsImyy, EpsRzz, EpsImzz, EpsRxy, EpsImxy, EpsRyx, EpsImyx. <br/>
+    The file should contain only numbers. If the first lines contain info or headers, please select how many lines to skip.
+            </div>
+
 <div className="p-1 pb-3  w-full flex flex-row justify-between items-center text-slate-800 border-b border-solid border-t-0 border-x-0    
            border-slate-400">Type of material: <select id="typeOfMat" className="p-1 mr-1 rounded-md">
       <option value="normal">Normal</option>
@@ -1426,10 +1446,28 @@ sx={{
           <div
           className={`p-0 m-0 py-2  pl-2 hover:cursor-pointer hover:bg-slate-200 w-full`}
           onClick={()=>{
-            setX(item.eV)
+            if (item.typeOfMat=="normal" || !item.typeOfMat)
+{            setX(item.eV)
             setY(item.k)
-            setZ(item.n)
-            setGraphTitle(item.name)
+            setZ(item.n)}
+
+            else if (item.typeOfMat=="gyroelectric") {
+              setX(item.eV);
+              setY(item.epsrxx);
+              setZ(item.epsixx);
+              setY1(item.epsryy);
+              setZ1(item.epsiyy);
+              setY2(item.epsrzz);
+              setZ2(item.epsizz);
+              setY3(item.epsrxy);
+              setZ3(item.epsixy);
+              setY4(item.epsryx);
+              setZ4(item.epsiyx);
+            }
+
+            setGraphTitle(item.name);
+            setTypeofMaterial(item.typeOfMat);
+            
           }}
           >
             {item.name}
@@ -1491,33 +1529,124 @@ sx={{
 
 <div className="p-4  pt-0 w-full">
 
-
+{(!typeOfMaterial || typeOfMaterial=="normal") &&
   <Plot
-data={[{
+  data={[{
+    x: x,
+    y: y,
+    mode: 'markers',
+    type: 'scatter',
+    name : "k"
+  },
+  {
   x: x,
-  y: y,
+  y: z,
   mode: 'markers',
   type: 'scatter',
-  name : "k"
-},
-{
-x: x,
-y: z,
-mode: 'markers',
-type: 'scatter',
-name : "n"
+  name : "n"
+  }
+  ]}
+          layout={{   
+          title: graphTitle,
+          xaxis:{title: "freq(eV)"},
+          yaxis:{title: "k,n"},
+          autosize:true 
+        }}
+          config={{ scrollZoom: true, editable: true }} 
+          useResizeHandler
+          className="w-full h-full " 
+          />
 }
-]}
-        layout={{   
-        title: graphTitle,
-        xaxis:{title: "freq(eV)"},
-        yaxis:{title: "k,n"},
-        autosize:true 
-      }}
-        config={{ scrollZoom: true, editable: true }} 
-        useResizeHandler
-        className="w-full h-full " 
-        />
+
+
+
+{typeOfMaterial=="gyroelectric" &&
+  <Plot
+  data={[{
+    x: x,
+    y: y,
+    mode: 'markers',
+    type: 'scatter',
+    name : "epsrxx"
+  },
+  {
+  x: x,
+  y: z,
+  mode: 'markers',
+  type: 'scatter',
+  name : "epsixx"
+  },
+  {
+    x: x,
+    y: y1,
+    mode: 'markers',
+    type: 'scatter',
+    name : "epsryy"
+  },
+  {
+  x: x,
+  y: z1,
+  mode: 'markers',
+  type: 'scatter',
+  name : "epsiyy"
+  },
+  {
+    x: x,
+    y: y2,
+    mode: 'markers',
+    type: 'scatter',
+    name : "epsrzz"
+  },
+  {
+  x: x,
+  y: z2,
+  mode: 'markers',
+  type: 'scatter',
+  name : "epsizz"
+  },
+  {
+    x: x,
+    y: y3,
+    mode: 'markers',
+    type: 'scatter',
+    name : "epsrxy"
+  },
+  {
+  x: x,
+  y: z3,
+  mode: 'markers',
+  type: 'scatter',
+  name : "epsixy"
+  },
+  {
+    x: x,
+    y: y4,
+    mode: 'markers',
+    type: 'scatter',
+    name : "epsryx"
+  },
+  {
+  x: x,
+  y: z4,
+  mode: 'markers',
+  type: 'scatter',
+  name : "epsiyx"
+  }
+  ]}
+          layout={{   
+          title: graphTitle,
+          xaxis:{title: "freq(eV)"},
+          yaxis:{title: "eps"},
+          autosize:true 
+        }}
+          config={{ scrollZoom: true, editable: true }} 
+          useResizeHandler
+          className="w-full h-full " 
+          />
+}
+
+
+
 </div>
   </div></>
 }
