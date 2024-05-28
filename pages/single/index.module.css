@@ -3,7 +3,7 @@
     max-width: 1800px;
     margin: auto;
     padding: 0px;
-    padding-top: 70px;
+    padding-top: 100px;
     /* background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893); */
     color: white;
     display: grid;
@@ -236,7 +236,7 @@ background-color: #EBEFF8;
         max-width: 1800px;
         margin: auto;
         padding: 0px;
-        padding-top: 70px;
+        padding-top: 100px;
         /* background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893); */
         color: white;
         display: grid;

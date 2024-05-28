@@ -183,6 +183,32 @@ else {
 
   }
 
+  async function SaveLastRunData (file) {
+    let fileToDnld= "fort.98";
+  
+
+  
+    const body = {filename : fileToDnld}
+   
+    const result = await Axios.post('http://localhost:3001/downloadlastrundata',
+      body
+    );
+  
+    let textToWrite=result.data;
+  
+   
+
+  
+    const blob = new Blob([textToWrite], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = fileToDnld;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  
 
 
   const Plot = dynamic(import('react-plotly.js'), {
@@ -374,15 +400,24 @@ else {
       }}
         config={{ scrollZoom: true, editable: true }} />
         </div>
-        <div className={classes.alldata}>
+        
 
 {
   numberofPlots.map((number) =>
-    <div key={"key" + number + "extra" + idextra}>
-      
-      <div className={classes.savedfiles}>
+    <div key={"key" + number + "extra" + idextra}
+    className="w-full bg-white text-black p-5 pt-5
+    border border-slate-400 border-solid border-l-0 border-r-0 border-b-0
+    "
+    >
+    <div
+    className="pb-6 text-lg font-semibold"
+    >Graph Settings</div>
 
-        <div>File
+    <div className="flex w-full">
+      
+      <div className="flex flex-col items-start justify-start pr-5" >
+
+        <div className="pb-3">File
           <select
             id={"file" + number + idextra}
             onChange={(e) => {
@@ -409,7 +444,7 @@ else {
           </select></div>
 
  
-<div className={classes.materialButton}>
+<div >
 <Button variant="contained"
 size="small"
 onClick={() => setSavedFilesPrompt(true)}>
@@ -420,8 +455,8 @@ Load file
 
       </div>
 
-      <div className={classes.settings}>
-        <div> Y AXIS
+      <div className="flex flex-col items-start justify-start pr-5">
+        <div className="pb-3"> Y AXIS
           <select
             id={"yaxis" + number + idextra}
             onChange={(e) => {
@@ -467,9 +502,9 @@ Load file
           </select>
 
         </div>
-
-
-        <div> Color
+</div>
+<div className="flex flex-col items-start justify-start pr-5">
+        <div className="pb-3"> Color
           <select
             id={"color" + number + idextra}
             onChange={(e) => {
@@ -489,7 +524,13 @@ Load file
           </select>
 
         </div>
-
+        <div >
+<Button variant="contained"
+size="small"
+onClick={() => SaveLastRunData()}>
+Download latest data
+</Button>
+</div>
 
         {/* FIX THE OPTIONS OF SELECT DO NOT CHANGE if u have a different file! */}
 
@@ -522,12 +563,13 @@ Remove Graph
 
 
       </div>
+</div>
 
     </div>
   )
 }
 
-</div>
+
     </>}
 
   </div>
