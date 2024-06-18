@@ -9,7 +9,13 @@ export default function Team () {
         triggerOnce: true
       });
 
-return <section class="py-24 bg-gray-50">
+return <section class="py-24 bg-gray-50 md:py-48 relative">
+{/*   <div className="absolute w-full h-full top-0 left-0 opacity-5">
+<img
+src="/photos/lines.svg"
+className="h-full w-full object-cover"
+/>
+</div> */}
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center flex-col lg:flex-row md:mt-20 md:mb-20">
         <div class="w-full lg:w-1/2">
@@ -29,139 +35,112 @@ return <section class="py-24 bg-gray-50">
 
         <div class="w-full lg:w-1/2 lg:mt-0 md:mt-40 mt-16 max-lg:max-w-2xl">
 
-            <div class="grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-3 grid-rows-2 gap-8">
 
 
-               <Link href="/team">
-                <a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-100 animate-ease-linear animate-fill-forwards"} `}>
-              <div class="w-44 h-56 rounded-2xl object-cover md:mt-20 
-              mx-auto min-[450px]:mr-0 relative overflow-hidden
-              group/edit
-              ">                        
                
+                
+              <div class="w-44 h-56 rounded-2xl object-cover  
+              mx-auto  relative overflow-hidden
+              group/edit col-start-1 col-end-2 row-start-1 row-span-2 justify-center items-center self-center
+              ">                        
+               <Link href="/team">
+               <a className={`opacity-0 text-transparent 
+               ${inView && "animate-fade-up animate-once animate-delay-200 animate-ease-linear animate-fill-forwards"} `}>
+                <img 
+                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300 animate-delay-200"
+                src="/photos/almpanis-evangelos.jpg" alt="Team tailwind section"
+                     />
+                <div
+                className=" px-2 py-1 
+                flex flex-col bg-trasparent text-trasparent  w-full
+                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
+                ">
+                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
+                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
+                  
+                </div></a></Link>
+                    </div>
+                
+
+
+               
+
+                    <div class="w-44 h-56 rounded-2xl object-cover  
+              mx-auto  relative overflow-hidden
+              group/edit col-start-2 col-end-2 row-start-1 
+              ">                        
+               <Link href="/team">
+               <a className={`opacity-0 text-transparent 
+               ${inView && "animate-fade-up animate-once animate-delay-100 animate-ease-linear animate-fill-forwards"} `}>
                 <img 
                 class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
-                src="https://pagedone.io/asset/uploads/1696238644.png" alt="Team tailwind section"
+                src="/photos/panagiotidis-manolis.jpg" alt="Team tailwind section"
                      />
                 <div
                 className="absolute bottom-0 left-0 px-2 py-1 
                 flex flex-col bg-trasparent text-trasparent  w-full
                 group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
                 ">
-                  <div>John Doe</div>
-                  <div className="text-xs">Senior Developer</div>
+                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
+                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
                   
-                </div>
-                    </div></a>
-                </Link>
-
-
-                <Link href="/team"><a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-200 animate-ease-linear animate-fill-forwards"} `}>
-
-                    <div class="w-44 h-56 rounded-2xl object-cover mx-auto min-[450px]:ml-0 md:mx-auto 
-                    relative overflow-hidden group/edit">                        
-                <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
-                src="https://pagedone.io/asset/uploads/1696238665.png" alt="Team tailwind section"
-                     />
-                <div
-                className="absolute bottom-0 left-0 px-2 py-1 flex flex-col bg-trasparent text-trasparent w-full
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
-                ">
-                  <div>John Doe</div>
-                  <div className="text-xs">Senior Developer</div>
-                  
-                </div>
+                </div></a></Link>
                     </div>
-                    </a>
-                </Link>
+               
 
 
-                <Link href="/team"><a className={`opacity-0 text-transparent 
+                    <div class="w-44 h-56 rounded-2xl object-cover  
+              mx-auto  relative overflow-hidden
+              group/edit col-start-2 col-end-3 row-start-2 
+              ">                        
+               <Link href="/team">
+               <a className={`opacity-0 text-transparent 
                ${inView && "animate-fade-up animate-once animate-delay-300 animate-ease-linear animate-fill-forwards"} `}>
-
-                    <div class="w-44 h-56 rounded-2xl object-cover md:mt-20 mx-auto 
-                    min-[450px]:mr-0 md:ml-0 relative overflow-hidden group/edit">                        
                 <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
-                src="https://pagedone.io/asset/uploads/1696238684.png" alt="Team tailwind section"
+                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300 "
+                src="/photos/nikolaos-stefanou.jpg" alt="Team tailwind section"
                      />
                 <div
-                className="absolute bottom-0 left-0 px-2 py-1 flex flex-col bg-trasparent text-trasparent  w-full
+                className="absolute bottom-0 left-0 px-2 py-1 
+                flex flex-col bg-trasparent text-trasparent  w-full
                 group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
                 ">
-                  <div>John Doe</div>
-                  <div className="text-xs">Senior Developer</div>
+                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
+                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
                   
-                </div>
+                </div></a></Link>
                     </div>
-                    </a>
-                </Link>
 
               
-                <Link href="/team"><a className={`opacity-0 text-transparent 
+
+                    <div class="w-44 h-56 rounded-2xl object-cover  
+              mx-auto  relative overflow-hidden
+              group/edit col-start-3 col-end-4 row-start-1 row-end-3 items-center justify-center self-center
+              ">                        
+               <Link href="/team">
+               <a className={`opacity-0 text-transparent 
                ${inView && "animate-fade-up animate-once animate-delay-[400ms] animate-ease-linear animate-fill-forwards"} `}>
-                    <div class="w-44 h-56 rounded-2xl object-cover mx-auto 
-                    min-[450px]:ml-0 md:mr-0 md:ml-auto relative overflow-hidden group/edit">                        
                 <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
-                src="https://pagedone.io/asset/uploads/1696238684.png" alt="Team tailwind section"
+                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300 "
+                src="/photos/papanikolaou-nikolaos.jpg" alt="Team tailwind section"
                      />
                 <div
-                className="absolute bottom-0 left-0 px-2 py-1 flex flex-col bg-trasparent text-trasparent w-full 
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500">
-                  <div>John Doe</div>
-                  <div className="text-xs">Senior Developer</div>
+                className="absolute bottom-0 left-0 px-2 py-1 
+                flex flex-col bg-trasparent text-trasparent  w-full
+                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
+                ">
+                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
+                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
                   
-                </div>
+                </div></a></Link>
                     </div>
-                    </a>
-                </Link>
 
 
-                <Link href="/team"><a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-500 animate-ease-linear animate-fill-forwards"} `}>
-                    <div class="w-44 h-56 rounded-2xl object-cover 
-                    md:-mt-20 mx-auto min-[450px]:mr-0 md:mx-auto relative 
-                    overflow-hidden group/edit">                        
-                <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
-                src="https://pagedone.io/asset/uploads/1696238720.png" alt="Team tailwind section"
-                     />
-                <div
-                className="absolute bottom-0 left-0 px-2 py-1 flex flex-col bg-trasparent text-trasparent  w-full 
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500">
-                  <div>John Doe</div>
-                  <div className="text-xs">Senior Developer</div>
-                  
-                </div>
-                    </div>
-                    </a>
-                </Link>
 
 
-                <Link href="/team"><a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-[600ms] animate-ease-linear animate-fill-forwards"} `}>
-                    <div class="w-44 h-56 rounded-2xl 
-                    object-cover 
-                    mx-auto min-[450px]:ml-0 md:mr-0 relative 
-                    overflow-hidden group/edit">                        
-                <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
-                src="https://pagedone.io/asset/uploads/1696238737.png" alt="Team tailwind section"
-                     />
-                <div
-                className="absolute bottom-0 left-0 px-2 py-1 flex flex-col bg-trasparent text-trasparent  w-full 
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500">
-                  <div>John Doe</div>
-                  <div className="text-xs">Senior Developer</div>
-                  
-                </div>
-                    </div>
-                    </a>
-                </Link>
+
+
                
             </div>
         </div>
