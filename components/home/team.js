@@ -17,124 +17,199 @@ className="h-full w-full object-cover"
 />
 </div> */}
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center flex-col lg:flex-row md:mt-20 md:mb-20">
-        <div class="w-full lg:w-1/2">
-            <h2 
-                class="font-manrope text-5xl text-gray-900 font-bold leading-[4rem] mb-7 text-center lg:text-left">
+    <div class="flex justify-between items-start flex-col  md:mt-20 md:mb-20">
+        <div class="w-full ">
+            <h2  ref={ref}
+                class="font-manrope text-5xl text-gray-900 font-bold leading-[4rem] mb-7 text-center ">
                 The Minds Behind the Science</h2>
-            <p class="text-lg text-gray-500 mb-16 text-center lg:text-left">
+            <p class="text-lg text-gray-500 mb-16 text-center ">
               Meet our team.</p>
-            <button
-            ref={ref}
-            class="cursor-pointer py-3 px-8 w-60 bg-blue-600
-             text-white text-base font-semibold transition-all duration-500 
-             block text-center rounded-2xl hover:bg-blue-800 mx-auto lg:mx-0
-             border-none">
-              Contact Us</button>
+
         </div>
 
-        <div class="w-full lg:w-1/2 lg:mt-0 md:mt-40 mt-16 max-lg:max-w-2xl">
 
-            <div class="grid grid-cols-3 grid-rows-2 gap-8">
+        <div class="w-full  lg:mt-0 md:mt-40 mt-16 ">
+
+           
 
 
-               
-                
-              <div class="w-44 h-56 rounded-2xl object-cover  
-              mx-auto  relative overflow-hidden
-              group/edit col-start-1 col-end-2 row-start-1 row-span-2 justify-center items-center self-center
-              ">                        
+       <div className="flex flex-col xl:flex-row xl:my-32 flex-wrap items-center justify-center">
+
+
+
+                      <div class= {` max-w-[280px] sm:max-w-none mb-24 sm:mb-12 xl:mb-0 sm:h-60  object-cover  
+              ml-0 sm:rounded-l-2xl  relative overflow-hidden 
+              group/edit border w-full xl:w-1/2 xl:pr-10 
+             
+             `} >                        
                <Link href="/team">
-               <a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-200 animate-ease-linear animate-fill-forwards"} `}>
-                <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300 animate-delay-200"
-                src="/photos/almpanis-evangelos.jpg" alt="Team tailwind section"
-                     />
-                <div
-                className=" px-2 py-1 
-                flex flex-col bg-trasparent text-trasparent  w-full
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
-                ">
-                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
-                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
-                  
-                </div></a></Link>
-                    </div>
-                
-
-
+               <a className={`  
+               flex flex-col sm:flex-row no-underline text-black 
                
-
-                    <div class="w-44 h-56 rounded-2xl object-cover  
-              mx-auto  relative overflow-hidden
-              group/edit col-start-2 col-end-2 row-start-1 
-              ">                        
-               <Link href="/team">
-               <a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-100 animate-ease-linear animate-fill-forwards"} `}>
+               `}>
                 <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300"
+                class="sm:w-44 h-60 rounded-t-xl  sm:rounded-t-none  sm:rounded-l-2xl object-cover"
                 src="/photos/panagiotidis-manolis.jpg" alt="Team tailwind section"
                      />
                 <div
-                className="absolute bottom-0 left-0 px-2 py-1 
-                flex flex-col bg-trasparent text-trasparent  w-full
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
+                className=" px-5 py-6 border border-solid sm:rounded-r-2xl border-slate-300
+                flex flex-col   w-full bg-slate-100
+                
                 ">
-                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
-                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
-                  
-                </div></a></Link>
+                  <div className=" text-xl font-semibold ">Panagiotidis Manolis</div>
+                  <div className=" text-slate-700 py-1 ">Dr. Physics, FullStack Developer</div>
+                  <div
+                  className="text-slate-600 py-4"
+                  >Creator of the UI, backend and website. Contributions to the Fortran Code Development.</div>
+                </div>
+                
+                
+                <button type="button" 
+                className=" rounded-b-xl
+                sm:absolute sm:bottom-0 sm:right-0 xl:right-10
+                border-0 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none
+                 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium sm:rounded-lg 
+                 text-sm px-5 py-2.5 text-center sm:me-2 mb-2">
+                  Contact</button>
+                
+                </a></Link>
                     </div>
-               
+                
 
-
-                    <div class="w-44 h-56 rounded-2xl object-cover  
-              mx-auto  relative overflow-hidden
-              group/edit col-start-2 col-end-3 row-start-2 
-              ">                        
-               <Link href="/team">
-               <a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-300 animate-ease-linear animate-fill-forwards"} `}>
-                <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300 "
-                src="/photos/nikolaos-stefanou.jpg" alt="Team tailwind section"
-                     />
-                <div
-                className="absolute bottom-0 left-0 px-2 py-1 
-                flex flex-col bg-trasparent text-trasparent  w-full
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
-                ">
-                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
-                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
-                  
-                </div></a></Link>
-                    </div>
-
+                    <div class= {` max-w-[280px] sm:max-w-none mb-24 sm:mb-12 xl:mb-0 sm:h-60  object-cover  
+              ml-0 sm:rounded-l-2xl  relative overflow-hidden 
+              group/edit border w-full xl:w-1/2 xl:pl-10
               
-
-                    <div class="w-44 h-56 rounded-2xl object-cover  
-              mx-auto  relative overflow-hidden
-              group/edit col-start-3 col-end-4 row-start-1 row-end-3 items-center justify-center self-center
-              ">                        
+             `} >                        
                <Link href="/team">
-               <a className={`opacity-0 text-transparent 
-               ${inView && "animate-fade-up animate-once animate-delay-[400ms] animate-ease-linear animate-fill-forwards"} `}>
+               <a className={`  
+               flex flex-col sm:flex-row no-underline text-black 
+               
+               `}>
                 <img 
-                class="w-44 h-56 rounded-2xl object-cover group-hover/edit:scale-110 transition-all duration-300 "
-                src="/photos/papanikolaou-nikolaos.jpg" alt="Team tailwind section"
+                class=" object-top sm:w-44 h-60 rounded-t-xl  sm:rounded-r-none  sm:rounded-l-2xl object-cover"
+                src="/photos/almpanis-evangelos.jpg" alt="Team tailwind section"
                      />
                 <div
-                className="absolute bottom-0 left-0 px-2 py-1 
-                flex flex-col bg-trasparent text-trasparent  w-full
-                group-hover/edit:bg-black group-hover/edit:text-white transition-all duration-500
+                className=" px-5 py-6 border border-solid sm:rounded-r-2xl border-slate-300
+                flex flex-col   w-full bg-slate-100
+                
                 ">
-                  <div className="text-transparent group-hover/edit:text-white">John Doe</div>
-                  <div className="text-xs text-transparent group-hover/edit:text-white">Senior Developer</div>
-                  
-                </div></a></Link>
+                  <div className=" text-xl font-semibold ">Almpanis Evangelos</div>
+                  <div className=" text-slate-700 py-1 ">Dr. Applied Physics</div>
+                  <div
+                  className="text-slate-600 py-4"
+                  >Contributions to the UI and the Fortran Code Development.</div>
+                </div>
+                
+                
+                <button type="button" 
+                className=" rounded-b-xl
+                sm:absolute sm:bottom-0 sm:right-0
+                border-0 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none
+                 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium sm:rounded-lg 
+                 text-sm px-5 py-2.5 text-center sm:me-2 mb-2">
+                  Contact</button>
+                
+                </a></Link>
                     </div>
+                
+
+      
+        </div>        
+
+
+
+        <div className="flex flex-col xl:flex-row xl:my-20 flex-wrap items-center justify-center">
+
+
+
+<div class= {` max-w-[280px] sm:max-w-none mb-24 sm:mb-12 xl:mb-0 sm:h-60  object-cover  
+ml-0 sm:rounded-l-2xl  relative overflow-hidden 
+group/edit border w-full xl:w-1/2 xl:pr-10 
+
+`} >                        
+<Link href="/team">
+<a className={`  
+flex flex-col sm:flex-row no-underline text-black 
+
+`}>
+<img 
+class=" object-top sm:w-44 h-60 rounded-t-xl  sm:rounded-t-none  sm:rounded-l-2xl object-cover"
+src="/photos/papanikolaou-nikolaos.jpg" alt="Team tailwind section"
+/>
+<div
+className=" px-5 py-6 border border-solid sm:rounded-r-2xl border-slate-300
+flex flex-col   w-full bg-slate-100
+
+">
+<div className=" text-xl font-semibold ">Nikolaos Papanikolaou</div>
+<div className=" text-slate-700 py-1 ">Research Director, NCSR “Demokritos”</div>
+<div
+className="text-slate-600 py-4"
+>Significant contributions to the Fortran Code for many years.</div>
+</div>
+
+
+<button type="button" 
+className=" rounded-b-xl
+sm:absolute sm:bottom-0 sm:right-0 xl:right-10
+border-0 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none
+focus:ring-blue-300 dark:focus:ring-blue-800 font-medium sm:rounded-lg 
+text-sm px-5 py-2.5 text-center sm:me-2 mb-2">
+Contact</button>
+
+</a></Link>
+</div>
+
+
+<div class= {` max-w-[280px] sm:max-w-none mb-12 xl:mb-0 sm:h-60  object-cover  
+ml-0 sm:rounded-l-2xl  relative overflow-hidden 
+group/edit border w-full xl:w-1/2 xl:pl-10
+
+`} >                        
+<Link href="/team">
+<a className={`  
+flex flex-col sm:flex-row no-underline text-black 
+
+`}>
+<img 
+class=" sm:w-44 h-60 rounded-t-xl  sm:rounded-r-none  sm:rounded-l-2xl object-cover"
+src="/photos/nikolaos-stefanou.jpg" alt="Team tailwind section"
+/>
+<div
+className=" px-5 py-6 border border-solid sm:rounded-r-2xl border-slate-300
+flex flex-col   w-full bg-slate-100
+
+">
+<div className=" text-xl font-semibold ">Stefanou Nikolaos</div>
+<div className=" text-slate-700 py-1 ">Professor of Physics, NKUA</div>
+<div
+className="text-slate-600 py-4"
+>One of the original authors of the first Multem program and Significant contributor until now.</div>
+</div>
+
+
+<button type="button" 
+className=" rounded-b-xl
+sm:absolute sm:bottom-0 sm:right-0
+border-0 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none
+focus:ring-blue-300 dark:focus:ring-blue-800 font-medium sm:rounded-lg 
+text-sm px-5 py-2.5 text-center sm:me-2 mb-2">
+Contact</button>
+
+</a></Link>
+</div>
+
+
+
+</div>        
+
+
+
+
+
+
 
 
 
@@ -142,7 +217,7 @@ className="h-full w-full object-cover"
 
 
                
-            </div>
+            
         </div>
     </div>
 </div>
