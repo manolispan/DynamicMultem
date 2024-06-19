@@ -45,7 +45,7 @@ function Navbar() {
     <div>
     <Link href="/"><a><span className={classes.navfile}>Home</span></a></Link>
     <Link href="/single"><a><span className={classes.navfile}>Single Scatterer</span></a></Link>
-    <Link href="/multiple-scattering"><a><span className={classes.navfile}>Multiple Scattering</span></a></Link>
+    <Link href="/"><a><span className={classes.navfile}><i class="fa fa-lock" aria-hidden="true"/> Multiple Scattering</span></a></Link>
     <Link href="/single/results"><a><span className={classes.navfile}>Results</span></a></Link>
     </div>
     <div className={classes.rightside}>
