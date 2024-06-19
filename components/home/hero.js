@@ -15,12 +15,12 @@ src="/photos/hero3.jpg"
 className="w-full h-full object-cover  -z-10 absolute "
 /> */}
 
-<div className="flex flex-col items-center justify-center pt-40 pb-16">
+<div className="flex flex-col items-center justify-center pt-28 sm:pt-40 pb-16">
 
 <div className="flex flex-col items-center justify-center p-5
 ">
 <div
-className=" text-white text-7xl font-bold  pb-10"
+className="text-5xl text-white md:text-7xl font-bold  pb-10"
 >EM wave scattering </div>
 
 <div 
@@ -31,16 +31,16 @@ className={`text-white flex-1`}>Find the scattering parameters of a single parti
 
 </div>
 
-<div className="flex flex-row">
+<div className="flex flex-row flex-wrap gap-4 items-start justify-between w-full px-5 m-auto max-w-lg pt-5">
 
 <Link href="/single">
-<button className={`m-5 border-none bg-blue-600 hover:bg-blue-800 text-white  py-2 px-4 rounded hover:cursor-pointer text-lg opacity-0 ${inView && "animate-fade-up animate-once animate-delay-100 animate-ease-linear animate-fill-forwards"}`}>
+<button className={`text-base sm:m-5 border-none bg-blue-600 hover:bg-blue-800 text-white  py-2 px-4 rounded hover:cursor-pointer sm:text-lg opacity-0 ${inView && "animate-fade-up animate-once animate-delay-100 animate-ease-linear animate-fill-forwards"}`}>
  Single Scatterer
 </button>
 </Link>
 
 <Link href="/multiple-scattering">
-<button className={`m-5 border-none bg-blue-600 hover:bg-blue-800 text-white  py-2 px-4 rounded hover:cursor-pointer text-lg opacity-0 ${inView && "animate-fade-up animate-once animate-delay-300 animate-ease-linear animate-fill-forwards"}`}>
+<button className={`text-base sm:m-5 border-none bg-blue-600 hover:bg-blue-800 text-white  py-2 px-4 rounded hover:cursor-pointer sm:text-lg opacity-0 ${inView && "animate-fade-up animate-once animate-delay-300 animate-ease-linear animate-fill-forwards"}`}>
  Multiple Scattering
 </button>
 </Link>
@@ -48,7 +48,7 @@ className={`text-white flex-1`}>Find the scattering parameters of a single parti
 </div>
 
 <img
-           className=" pt-24 "
+           className="pt-14 sm:pt-24 w-56 sm:w-auto"
            src="/photos/hero4.png"
            />
 
