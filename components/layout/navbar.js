@@ -72,37 +72,47 @@ onClick={handleClick}
 </button>
 
 
-<img 
-className={`fixed top-0 left-0 z-40 h-screen w-full object-cover opacity-20 ${isOpen ? "translate-x-0" : "-translate-x-full"} transition pt-20`}
-src="/photos/menu.svg" />
+
 
 
 <div 
 className={`flex flex-col bg-neutral-800 text-slate-100 fixed top-0 left-0 h-screen w-full z-30 pt-40 px-10 ${isOpen ? "translate-x-0" : "-translate-x-full"} transition`}
 >
 
+<img 
+className={`absolute top-0  h-screen w-full object-cover opacity-20 pt-20 z-10`}
+src="/photos/menu.svg" />
+
 <Link href={"/"}>
-  <a className="text-slate-100 no-underline p-2 text-xl">
+  <a className="text-slate-100 no-underline p-2 text-xl relative z-20"
+  onClick={handleClick}
+  >
     Home
   </a>
 </Link>
 
 
 <Link href={"/single"}>
-  <a className="text-slate-100 no-underline p-2 text-xl">
+  <a className="text-slate-100 no-underline p-2 text-xl relative z-20"
+   onClick={handleClick}
+  >
     Single Scatterer
   </a>
 </Link>
 
 
-<Link href={"/multiple-scattering"}>
-  <a className="text-slate-100 no-underline p-2 text-xl">
-  Multiple Scattering
+<Link href={"/"}>
+  <a className="text-slate-100 no-underline p-2 text-xl relative z-20"
+   onClick={handleClick}
+  >
+  Multiple Scattering (soon available)
   </a>
 </Link>
 
 <Link href={"/single/results"}>
-  <a className="text-slate-100 no-underline p-2 text-xl">
+  <a className="text-slate-100 no-underline p-2 text-xl"
+   onClick={handleClick}
+  >
   Results
   </a>
 </Link>

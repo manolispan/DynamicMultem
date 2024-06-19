@@ -2580,6 +2580,16 @@ onChange={(e)=>setRunMode(e.target.value)}
 
 
 
+
+
+{/*         <h1>Geometry</h1>
+        <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> 
+<div key={loading}>
+  <FastPlot
+/>
+</div> */}
+
+<div className="max-w-[500px] min-w-[280px] w-[95%] mx-auto relative 2xl:max-w-none 2xl:w-full">
 <div className=" absolute mt-24 text-zinc-900 ml-3 flex flex-row">
   <div
   className="w-10 mr-2 text-transparent border-solid border-orange-600 border-b-0 border-r-0 border-l-0 translate-y-3"
@@ -2602,14 +2612,6 @@ onChange={(e)=>setRunMode(e.target.value)}
   >E</div> <div>Polarization</div>
 </div>
 }
-
-{/*         <h1>Geometry</h1>
-        <BoxesPage type={typeofScat} scatterer={scatValues[typeofScat]} /> 
-<div key={loading}>
-  <FastPlot
-/>
-</div> */}
-
 <BasicTabs
 tab1= {<div className={classes.sxhma}>
     <BoxesPage 
@@ -2626,13 +2628,13 @@ tab2 = {<div key={loading}>  <FastPlot
   tab3 = {<div key={loading}>  {!loading && <PlanePlot/>} </div>}
 
 />
-
+</div>
       </div>
 
             <div
             className={classes.runMultem}
             onClick={RunMultemHandler}
-            ><div>Run Multem</div>
+            ><div>Begin Simulation</div>
               
             </div>
 

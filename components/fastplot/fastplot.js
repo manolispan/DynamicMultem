@@ -393,12 +393,15 @@ else {
       <div className={classes.plotdata}>
       <Plot
         data={plotData}
-        layout={{   height: 600, 
+        layout={{    
         title: 'Resuls',
         xaxis:{title: xLegend},
         yaxis:{title: yLegend}
       }}
-        config={{ scrollZoom: true, editable: true }} />
+        config={{ scrollZoom: true, editable: true }}
+        useResizeHandler={true}
+        style={{width: "100%", height: "100%"}}
+        />
         </div>
         
 

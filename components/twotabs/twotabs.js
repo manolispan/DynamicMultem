@@ -53,6 +53,7 @@ export default function BasicTabs(props) {
     backgroundColor : "#EBEFF8"
     }}>
         <Tabs value={value} onChange={handleChange} 
+        wrapped
         aria-label="basic tabs example"
         TabIndicatorProps={{
             style: {

@@ -7,6 +7,7 @@ html {
   background: #e3e2df;
   background: linear-gradient(to right,#7D68E7,#3B4DB9,#023893);
   background: url('/photos/hero3.jpg');
+  background-repeat: no-repeat;
   --red1: #5d001e;
   --white: #e3e2df;
   --pink1: #e3afbc;

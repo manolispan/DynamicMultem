@@ -198,10 +198,12 @@ export default function PlanePlot() {
                 }
             };
         
-            return (<div className='bg-white'>
+            return (<div className='bg-white max-w-full'>
                 <Plot
                     data={data}
                     layout={layout}
+                    useResizeHandler={true}
+style={{width: "100%", height: "100%"}}
                 />
                 <div className='text-black p-2'>Select plane to display:
                     <select
