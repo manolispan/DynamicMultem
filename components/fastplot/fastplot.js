@@ -416,7 +416,7 @@ else {
     className="pb-6 text-lg font-semibold"
     >Graph Settings</div>
 
-    <div className="flex w-full">
+    <div className="flex w-full flex-wrap sm:flex-nowrap">
       
       <div className="flex flex-col items-start justify-start pr-5" >
 
@@ -458,7 +458,7 @@ Load file
 
       </div>
 
-      <div className="flex flex-col items-start justify-start pr-5">
+      <div className="flex flex-col items-start justify-start pr-5 mt-5 sm:mt-0">
         <div className="pb-3"> Y AXIS
           <select
             id={"yaxis" + number + idextra}
@@ -506,7 +506,8 @@ Load file
 
         </div>
 </div>
-<div className="flex flex-col items-start justify-start pr-5">
+
+<div className="flex flex-col items-start justify-start pr-5 mt-5 sm:mt-0">
         <div className="pb-3"> Color
           <select
             id={"color" + number + idextra}

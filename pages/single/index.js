@@ -1062,11 +1062,15 @@ defaultValue={scatValues[typeofScat][property]}
     </>
   })}
   
-          </select> <Button 
+          </select> <span
+          className="block pt-2 sm:inline sm:pt-0"
+          >
+            <Button 
           variant="contained"
           size = "small"
           onClick={()=>addUrlParam("editmat","open")}
           >Edit Materials</Button>
+            </span>
 
           {scatValues[typeofScat][property] && scatValues[typeofScat][property]!="userdefined" &&
 
@@ -1422,7 +1426,7 @@ sx={{
 
 
       </Dialog>
-  <div className="flex flex-row justify-center items-stretch min-h-[600px]">
+  <div className="flex flex-col 2xl:flex-row justify-center items-stretch min-h-[600px]">
 
 
 
@@ -1440,11 +1444,11 @@ sx={{
       want to add more materials press the "add new" button. You can also download 
       the material data in text format or json format.</div>
         {materialList.map((item)=>{
-          return <div className="flex flex-row justify-between items-center border-b border-solid border-t-0 border-x-0   mt-0 
+          return <div className="mt-2 flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-solid border-t-0 border-x-0   sm:mt-0 
            border-slate-400"
            key={item.name}>
           <div
-          className={`p-0 m-0 py-2  pl-2 hover:cursor-pointer hover:bg-slate-200 w-full`}
+          className={`p-0 m-0  sm:py-2  pl-2 hover:cursor-pointer hover:bg-slate-200 w-full`}
           onClick={()=>{
             if (item.typeOfMat=="normal" || !item.typeOfMat)
 {            setX(item.eV)
@@ -1474,7 +1478,7 @@ sx={{
            
           </div> 
 
-          <div className=" min-w-fit py-2 pl-2 pr-2">
+          <div className=" min-w-fit pb-2 sm:py-2 pl-2 pr-2">
 
             {item.typeOfMat=="gyromagnetic" || item.typeOfMat=="gyroelectric" &&           
             <span

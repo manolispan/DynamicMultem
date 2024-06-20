@@ -89,7 +89,7 @@ className="h-full w-full object-cover"
                
                `}>
                 <img 
-                class="w-44 h-44 mx-auto sm:w-44 sm:h-60 rounded-full  sm:rounded-t-none sm:rounded-b-none  sm:rounded-l-2xl object-cover"
+                class="w-44 h-44 mx-auto sm:w-44 sm:h-60 rounded-full  sm:rounded-t-none sm:rounded-b-none sm:rounded-tl-2xl  sm:rounded-l-2xl object-cover"
                 src="/photos/almpanis-evangelos.jpg" alt="Team tailwind section"
                      />
                 <div
@@ -176,7 +176,7 @@ flex flex-col sm:flex-row no-underline text-black bg-slate-100 pt-6 sm:pt-0 bord
 
 `}>
 <img 
-                class="w-44 h-44 mx-auto sm:w-44 sm:h-60 rounded-full  sm:rounded-t-none sm:rounded-b-none  sm:rounded-l-2xl object-cover"
+                class="w-44 h-44 mx-auto sm:w-44 sm:h-60 rounded-full sm:rounded-tl-2xl  sm:rounded-t-none sm:rounded-b-none  sm:rounded-l-2xl object-cover"
 src="/photos/nikolaos-stefanou.jpg" alt="Team tailwind section"
 />
 <div
