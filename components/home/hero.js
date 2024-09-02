@@ -21,12 +21,11 @@ className="w-full h-full object-cover  -z-10 absolute "
 ">
 <div
 className="text-5xl text-white md:text-7xl font-bold  pb-10"
->EM wave scattering </div>
+>Photon Scatter Solvers   </div>
 
 <div 
 ref={ref}
-className={`text-white flex-1`}>Find the scattering parameters of a single particle or from a 
-   periodic geometry.
+className={`text-white flex-1`}>Cutting-edge computational tools designed for full-wave, fast and efficient electromagnetic wave scattering calculations
 </div>
 
 </div>

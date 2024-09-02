@@ -85,18 +85,18 @@ if ((props.polarization!="L" && props.polarization!="R") || props.typeofScat=="S
 setPlotData([
   {
     y:  tempdata[0].SCS,
-    x: tempdata[0]["freq(eV)"],
+    x: tempdata[0]["freq(GHz)"],
   }
 ]);
 
-setXLegend("freq(eV)");
+setXLegend("freq(GHz)");
 setYLegend("SCS");
 
 if (document.getElementById("file0"))
 {document.getElementById("file0").value= "scs"}
 
 if (document.getElementById("xaxis0"))
-{document.getElementById("xaxis0").value= "freq(eV)"}
+{document.getElementById("xaxis0").value= "freq(GHz)"}
 
 if (document.getElementById("yaxis0"))
 {document.getElementById("yaxis0").value= "SCS"}

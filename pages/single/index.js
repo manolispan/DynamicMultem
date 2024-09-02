@@ -2460,7 +2460,7 @@ onChange={(e)=>setRunMode(e.target.value)}
           /> <i className="fa fa-question-circle" aria-hidden="true" />
 
 
- {typeofScat != "SPHERE" && typeofScat != "ELIPSE" && 
+ {typeofScat != "SPHERE"  &&  typeofScat != "CORESHELL" &&
            <div>
           <h2 style={{ display: "inline" }}>Ltmax: </h2>
           <input
@@ -2474,7 +2474,7 @@ onChange={(e)=>setRunMode(e.target.value)}
           />{" "}
           
 
-          <h2 style={{ display: "inline" }}>Ngauss: </h2>
+{/*           <h2 style={{ display: "inline" }}>Ngauss: </h2>
           <input
             defaultValue={multExpansion.Ngauss}
             onChange={(e) => {
@@ -2484,7 +2484,7 @@ onChange={(e)=>setRunMode(e.target.value)}
               });
             }}
           />{" "}
-          <i className="fa fa-question-circle" aria-hidden="true" />
+          <i className="fa fa-question-circle" aria-hidden="true" /> */}
 </div>
  }
 
