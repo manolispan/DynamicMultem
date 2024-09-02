@@ -23,6 +23,9 @@ export default function PlanePlot() {
             const [plane,setPlane]=useState(2);
             const [fieldToDisplay,setFieldToDisplay]=useState("normE");
             const [planePos,setPlanePos]=useState(0);        
+
+
+
       useEffect(() => {
     
         const getThisOutputs = async () => {
@@ -156,7 +159,7 @@ export default function PlanePlot() {
 
         setColors(colors1);
         setZ(z)}
-      },[fortranData,plane,planePos])
+      },[fortranData,plane,planePos,fieldToDisplay])
 
 
             // Define data
@@ -217,7 +220,20 @@ style={{width: "100%", height: "100%"}}
                     {-boundaries[plane]}<input type="range" min={-boundaries[plane]} max={boundaries[plane]} step={2*boundaries[plane]/(x.length-1)} defaultValue={0}
 onChange={(e)=>setPlanePos(e.target.value)}
 />{boundaries[plane]} */}
+
                 </div>
+
+                <div className='text-black p-2'>Select data to display:
+                    <select
+                    onChange={(e)=>{setFieldToDisplay(e.target.value)}}
+                    >
+                        <option value={"normE"}>normE</option>
+                        <option value={"normH"}>normH</option>
+                     
+                    </select>
+
+                </div>
+
                 </div>
             );
         };
